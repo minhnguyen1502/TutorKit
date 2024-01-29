@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "502158164515",
+    "firebase_url": "https://tutorkit-d114a-default-rtdb.firebaseio.com",
+    "project_id": "tutorkit-d114a",
+    "storage_bucket": "tutorkit-d114a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:502158164515:android:63381a02faea1d5980e796",
+        "android_client_info": {
+          "package_name": "com.example.tutorkit"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCpitKTUB7BnZyq_6559hamJENDrUGwMzc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

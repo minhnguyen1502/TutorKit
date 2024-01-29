@@ -3,7 +3,7 @@ pluginManagement {
         google()
         mavenCentral()
         gradlePluginPortal()
-       
+        jcenter()
     }
 }
 dependencyResolutionManagement {
@@ -11,14 +11,10 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-
-    }
-}
-allprojects {
-    repositories {
         jcenter()
         maven { url "https://jitpack.io/" }
     }
 }
+
 rootProject.name = "Tutorkit"
 include ':app'

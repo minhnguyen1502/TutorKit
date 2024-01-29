@@ -13,6 +13,45 @@
         android:theme="@style/Theme.Tutorkit"
         tools:targetApi="31">
         <activity
+            android:name=".Edit_student_profile"
+            android:exported="false" />
+        <activity
+            android:name=".Tutor_register"
+            android:exported="false" />
+        <activity
+            android:name=".Edit_tutor_profile"
+            android:exported="false" />
+        <activity
+            android:name=".Student"
+            android:exported="false" />
+        <activity
+            android:name=".Tutor_home"
+            android:exported="false" />
+        <activity
+            android:name=".Support"
+            android:exported="false" />
+        <activity
+            android:name=".Tutor_Profile"
+            android:exported="false" />
+        <activity
+            android:name=".Assignment"
+            android:exported="false" />
+        <activity
+            android:name=".Tuition"
+            android:exported="false" />
+        <activity
+            android:name=".Time_table"
+            android:exported="false" />
+        <activity
+            android:name=".Student_home"
+            android:exported="false" />
+        <activity
+            android:name=".Student_register"
+            android:exported="false" />
+        <activity
+            android:name=".Login"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
@@ -24,3 +63,5 @@
     </application>
 
 </manifest>
+
+<!--    -->
