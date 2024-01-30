@@ -31,6 +31,9 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.i18n.phonenumbers.NumberParseException;
+import com.google.i18n.phonenumbers.PhoneNumberUtil;
+import com.google.i18n.phonenumbers.Phonenumber;
 
 import java.util.Calendar;
 import java.util.regex.Matcher;
@@ -42,6 +45,8 @@ public class Tutor_register extends AppCompatActivity {
                     edt_re_subject, edt_re_class, edt_re_password, edt_re_confirm_password;
     private RadioButton re_gender_selected;
     private RadioGroup group_re_gender;
+    private Phonenumber.PhoneNumber swissNumberProto;
+
 
 //    private DatePickerDialog datePickerDialog;
 
@@ -120,10 +125,14 @@ public class Tutor_register extends AppCompatActivity {
                 String txt_gender;
 
                 // validate phone no. sung Matcher and Pattern
-                String mobileRegex = "^0\\d{2}-\\d{7}$";
-                Matcher phoneMatcher;
-                Pattern phonePattern = Pattern.compile(mobileRegex);
-                phoneMatcher =  phonePattern.matcher(txt_phone);
+                PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();
+                try {
+                    swissNumberProto = phoneUtil.parse(txt_phone, "VN");
+                } catch (NumberParseException e) {
+                    System.err.println("NumberParseException was thrown: " + e.toString());
+                }
+                boolean isValid = phoneUtil.isValidNumber(swissNumberProto); // returns true
+
 
                 // pick date
 
@@ -144,7 +153,7 @@ public class Tutor_register extends AppCompatActivity {
                     Toast.makeText(Tutor_register.this, "Enter your DOB", Toast.LENGTH_SHORT).show();
                     edt_re_DOB.setError("DOB is required");
                     edt_re_DOB.requestFocus();
-                } else if (phoneMatcher.find()) {
+                } else if (!isValid ) {
                     Toast.makeText(Tutor_register.this, "re-Enter your phone", Toast.LENGTH_SHORT).show();
                     edt_re_phone.setError("Phone no. is not valid");
                     edt_re_phone.requestFocus();

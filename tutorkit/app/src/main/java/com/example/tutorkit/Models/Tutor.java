@@ -3,7 +3,6 @@ package com.example.tutorkit.Models;
 public class Tutor {
     private  String  DOB, address, email, phone, gender, subject, t_class;
 
-
     public Tutor() {
     }
 

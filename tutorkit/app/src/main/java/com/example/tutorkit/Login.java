@@ -4,8 +4,12 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.text.method.HideReturnsTransformationMethod;
@@ -26,6 +30,7 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.List;
 import java.util.regex.Pattern;
 
 public class Login extends AppCompatActivity {
@@ -40,9 +45,9 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        register =  findViewById(R.id.txt_register) ;
-        edt_password =  findViewById(R.id.edt_password) ;
-        edt_email = findViewById(R.id.edt_email) ;
+        register = findViewById(R.id.txt_register);
+        edt_password = findViewById(R.id.edt_password);
+        edt_email = findViewById(R.id.edt_email);
         firebaseAuth = FirebaseAuth.getInstance();
 
         // forgot password
@@ -60,10 +65,10 @@ public class Login extends AppCompatActivity {
         show.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (edt_password.getTransformationMethod().equals(HideReturnsTransformationMethod.getInstance())){
+                if (edt_password.getTransformationMethod().equals(HideReturnsTransformationMethod.getInstance())) {
                     //if password is visible then Hide it
                     edt_password.setTransformationMethod(PasswordTransformationMethod.getInstance());
-                }else {
+                } else {
                     edt_password.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
                 }
             }
@@ -84,7 +89,7 @@ public class Login extends AppCompatActivity {
                 String txt_email = edt_email.getText().toString();
                 String txt_password = edt_password.getText().toString();
 
-                if (TextUtils.isEmpty(txt_email)){
+                if (TextUtils.isEmpty(txt_email)) {
                     Toast.makeText(Login.this, "Enter your email", Toast.LENGTH_SHORT).show();
                     edt_email.setError("Email is required");
                     edt_email.requestFocus();
@@ -92,12 +97,12 @@ public class Login extends AppCompatActivity {
                     Toast.makeText(Login.this, "Re-enter email", Toast.LENGTH_SHORT).show();
                     edt_email.setError("valid email is required");
                     edt_email.requestFocus();
-                }else if (TextUtils.isEmpty(txt_password)){
+                } else if (TextUtils.isEmpty(txt_password)) {
                     Toast.makeText(Login.this, "Enter your email", Toast.LENGTH_SHORT).show();
                     edt_password.setError("Email is required");
                     edt_password.requestFocus();
-                }else {
-                    login(txt_email,txt_password);
+                } else {
+                    login(txt_email, txt_password);
                 }
             }
         });
@@ -108,32 +113,33 @@ public class Login extends AppCompatActivity {
         firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()){
+                if (task.isSuccessful()) {
                     //get instant of current tutor
                     FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
                     //check if email is verified before tutor can access their profile
-                    if(firebaseUser.isEmailVerified()){
+                    // check tutor or student.
+
+                    if (firebaseUser.isEmailVerified()) {
                         Toast.makeText(Login.this, "Login success", Toast.LENGTH_SHORT).show();
                         //open profile
                         Intent intent = new Intent(Login.this, Tutor_home.class);
                         startActivity(intent);
                         finish();
-                    }else {
+                    } else {
                         firebaseUser.sendEmailVerification();
-                        firebaseAuth.signOut();
+//                        firebaseAuth.signOut();
                         showAlerDialog();
                     }
-
-                }else {
+                } else {
                     try {
                         throw task.getException();
-                    }catch (FirebaseAuthInvalidUserException e){
+                    } catch (FirebaseAuthInvalidUserException e) {
                         edt_email.setError("not exists, please register ");
                         edt_email.requestFocus();
-                    }catch (FirebaseAuthInvalidCredentialsException e){
+                    } catch (FirebaseAuthInvalidCredentialsException e) {
                         edt_email.setError("Invalid credential, please check and re-enter");
                         edt_email.requestFocus();
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         Log.e("Login activity", e.getMessage());
                         Toast.makeText(Login.this, e.getMessage(), Toast.LENGTH_SHORT).show();
 
@@ -143,6 +149,30 @@ public class Login extends AppCompatActivity {
         });
     }
 
+//    public static boolean isMailClientPresent(Context context){
+//        Intent intent = new Intent(Intent.ACTION_SEND);
+//        intent.setType("text/html");
+//        final PackageManager packageManager = context.getPackageManager();
+//        List<ResolveInfo> list = packageManager.queryIntentActivities(intent, 0);
+//
+//        if(list.size() == 0)
+//            return false;
+//        else
+//            return true;
+//    }
+
+    private boolean available(String name) {
+        boolean available = true;
+        try {
+            // check if available
+            getPackageManager().getPackageInfo(name, 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            // if not available set
+            // available as false
+            available = false;
+        }
+        return available;
+    }
     private void showAlerDialog() {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(Login.this);
@@ -153,11 +183,18 @@ public class Login extends AppCompatActivity {
         builder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                Intent intent = new Intent(Intent.ACTION_MAIN);
-                intent.addCategory(Intent.CATEGORY_APP_EMAIL);
-                // to email app in new window and not within app
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
+
+                // check mobile have app email
+//                ComponentName emailApp = intent.resolveActivity(getPackageManager());
+                if (available("com.google.android.gm") ){
+                    Intent intent = new Intent(Intent.ACTION_MAIN);
+                    intent.addCategory(Intent.CATEGORY_APP_EMAIL);
+                    // to email app in new window and not within app
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                }else {
+                    Toast.makeText(Login.this, "Don't have email app", Toast.LENGTH_SHORT).show();
+                }
 
             }
         });
@@ -169,20 +206,17 @@ public class Login extends AppCompatActivity {
     }
 
     // check login
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        if (firebaseAuth.getCurrentUser() != null){
-            Toast.makeText(Login.this, "logged in", Toast.LENGTH_SHORT).show();
-
-            //start profile
-            Intent intent = new Intent(Login.this, Tutor_home.class);
-            startActivity(intent);
-            finish();
-
-        }else {
-            Toast.makeText(Login.this, "Log in now", Toast.LENGTH_SHORT).show();
-        }
-    }
+//    @Override
+//    protected void onStart() {
+//        super.onStart();
+//        if (firebaseAuth.getCurrentUser() != null) {
+//            Toast.makeText(Login.this, "logged in", Toast.LENGTH_SHORT).show();
+//            //start profile
+//            Intent intent = new Intent(Login.this, Tutor_home.class);
+//            startActivity(intent);
+//            finish();
+//        } else {
+//            Toast.makeText(Login.this, "Log in now", Toast.LENGTH_SHORT).show();
+//        }
+//    }
 }
