@@ -13,6 +13,18 @@
         android:theme="@style/Theme.Tutorkit"
         tools:targetApi="31">
         <activity
+            android:name=".UploadAvatar"
+            android:exported="false" />
+        <activity
+            android:name=".ForgotPassword"
+            android:exported="false" />
+        <activity
+            android:name=".UpdateEmail"
+            android:exported="false" />
+        <activity
+            android:name=".UpdatePassword"
+            android:exported="false" />
+        <activity
             android:name=".Edit_student_profile"
             android:exported="false" />
         <activity
@@ -63,5 +75,3 @@
     </application>
 
 </manifest>
-
-<!--    -->

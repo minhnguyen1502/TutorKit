@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/edit"
-        android:icon="@drawable/baseline_edit_24"
-        app:showAsAction="ifRoom"
-        android:title="check" />
+        android:id="@+id/update_profile"
+        android:title="update profile"></item>
+    <item
+        android:id="@+id/update_password"
+        android:title="update password"></item>
+    <item
+        android:id="@+id/update_email"
+        android:title="update email"></item>
+    <item
+        android:id="@+id/setting"
+        android:title="setting"></item>
 
 
 

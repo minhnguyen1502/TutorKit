@@ -6,10 +6,14 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 public class Tutor_home extends AppCompatActivity {
 
     ConstraintLayout student, calendar, grade, assignment, tuition, profile, support, logout;
+    FirebaseAuth firebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,9 +95,13 @@ public class Tutor_home extends AppCompatActivity {
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), Login.class);
-                startActivity(intent);
-
+                firebaseAuth.signOut();
+                Toast.makeText(Tutor_home.this, "Sign Out success", Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(Tutor_home.this, Login.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK
+                           | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(i);
+                finish();
             }
         });
 

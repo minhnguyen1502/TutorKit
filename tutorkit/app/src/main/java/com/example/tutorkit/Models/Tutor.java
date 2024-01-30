@@ -18,6 +18,15 @@ public class Tutor {
         this.t_class = t_class;
     }
 
+    public Tutor(String DOB, String address, String phone, String gender, String subject, String t_class) {
+        this.DOB = DOB;
+        this.address = address;
+        this.phone = phone;
+        this.gender = gender;
+        this.subject = subject;
+        this.t_class = t_class;
+    }
+
 //    public String getName() {
 //        return name;
 //    }

@@ -102,6 +102,7 @@
                         android:textStyle="bold" />
 
                     <EditText
+                        android:id="@+id/edt_email"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="tutor@gmail.com"
@@ -129,7 +130,7 @@
                         android:textStyle="bold" />
 
                     <EditText
-                        android:id="@+id/edt_address2"
+                        android:id="@+id/edt_phone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textEmailAddress" />
@@ -142,6 +143,7 @@
                         android:textStyle="bold" />
 
                     <RadioGroup
+                        android:id="@+id/group_gender"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="horizontal">
@@ -198,60 +200,66 @@
                         android:layout_height="wrap_content"
                         android:inputType="textEmailAddress" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/_8sdp"
-                        android:layout_marginTop="@dimen/_8sdp"
-                        android:alpha="0.7"
-                        android:text="Edit Password"
-                        android:textStyle="bold" />
+<!--                    <TextView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginBottom="@dimen/_8sdp"-->
+<!--                        android:layout_marginTop="@dimen/_8sdp"-->
+<!--                        android:alpha="0.7"-->
+<!--                        android:text="Edit Password"-->
+<!--                        android:textStyle="bold" />-->
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:alpha="0.7"
-                        android:text="Old Password"
-                        android:textStyle="bold" />
+<!--                    <TextView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:alpha="0.7"-->
+<!--                        android:text="Old Password"-->
+<!--                        android:textStyle="bold" />-->
 
-                    <EditText
-                        android:id="@+id/edt_old_password"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:drawableEnd="@drawable/password_icon"
-                        android:inputType="textPassword" />
+<!--                    <EditText-->
+<!--                        android:id="@+id/edt_old_password"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:drawableEnd="@drawable/password_icon"-->
+<!--                        android:inputType="textPassword" />-->
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:alpha="0.7"
-                        android:text="New Password"
-                        android:textStyle="bold" />
+<!--                    <TextView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:alpha="0.7"-->
+<!--                        android:text="New Password"-->
+<!--                        android:textStyle="bold" />-->
 
-                    <EditText
-                        android:id="@+id/edt_new_password"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:drawableEnd="@drawable/password_icon"
-                        android:inputType="textPassword" />
+<!--                    <EditText-->
+<!--                        android:id="@+id/edt_new_password"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:drawableEnd="@drawable/password_icon"-->
+<!--                        android:inputType="textPassword" />-->
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:alpha="0.7"
-                        android:text="Confirm Password"
-                        android:textStyle="bold" />
+<!--                    <TextView-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:alpha="0.7"-->
+<!--                        android:text="Confirm Password"-->
+<!--                        android:textStyle="bold" />-->
 
-                    <EditText
-                        android:id="@+id/edt_confirm_password"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:drawableEnd="@drawable/password_icon"
-                        android:inputType="textPassword" />
+<!--                    <EditText-->
+<!--                        android:id="@+id/edt_confirm_password"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:drawableEnd="@drawable/password_icon"-->
+<!--                        android:inputType="textPassword" />-->
 
                     <View
                         android:layout_width="wrap_content"
                         android:layout_height="@dimen/_15sdp" />
+
+                    <Button
+                        android:id="@+id/done"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Done" />
 
 
                 </LinearLayout>

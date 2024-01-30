@@ -45,6 +45,16 @@ public class Login extends AppCompatActivity {
         edt_email = findViewById(R.id.edt_email) ;
         firebaseAuth = FirebaseAuth.getInstance();
 
+        // forgot password
+        TextView forgotPassword = findViewById(R.id.txt_forgot_password);
+        forgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(Login.this, "You can reset password", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(Login.this, ForgotPassword.class));
+            }
+        });
+
         //show hide password
         TextView show = findViewById(R.id.txt_show_pasword);
         show.setOnClickListener(new View.OnClickListener() {

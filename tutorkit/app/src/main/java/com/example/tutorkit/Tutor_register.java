@@ -76,6 +76,28 @@ public class Tutor_register extends AppCompatActivity {
 
         group_re_gender = findViewById(R.id.group_gender);
         group_re_gender.clearCheck();
+        edt_re_DOB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DatePickerDialog datePickerDialog = new DatePickerDialog(
+                        Tutor_register.this,
+                        new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                                // Người dùng đã chọn ngày. Cập nhật trường ngày (edate).
+                                String selectedDate =dayOfMonth + "/"+ (month+1)+"/"+year;
+                                edt_re_DOB.setText(selectedDate);
+                            }
+                        },
+                        // Truyền ngày hiện tại làm ngày mặc định cho DatePickerDialog.
+                        Calendar.getInstance().get(Calendar.YEAR),
+                        Calendar.getInstance().get(Calendar.MONTH),
+                        Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
+                );
+
+                datePickerDialog.show();
+            }
+        });
 
         Button register = findViewById(R.id.btn_register);
         register.setOnClickListener(new View.OnClickListener() {
@@ -104,28 +126,7 @@ public class Tutor_register extends AppCompatActivity {
                 phoneMatcher =  phonePattern.matcher(txt_phone);
 
                 // pick date
-                edt_re_DOB.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        DatePickerDialog datePickerDialog = new DatePickerDialog(
-                                Tutor_register.this,
-                                new DatePickerDialog.OnDateSetListener() {
-                                    @Override
-                                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                                        // Người dùng đã chọn ngày. Cập nhật trường ngày (edate).
-                                        String selectedDate =dayOfMonth + "/"+ (month+1)+"/"+year;
-                                        edt_re_DOB.setText(selectedDate);
-                                    }
-                                },
-                                // Truyền ngày hiện tại làm ngày mặc định cho DatePickerDialog.
-                                Calendar.getInstance().get(Calendar.YEAR),
-                                Calendar.getInstance().get(Calendar.MONTH),
-                                Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
-                        );
 
-                        datePickerDialog.show();
-                    }
-                });
 
                 if (TextUtils.isEmpty(txt_name)) {
                     Toast.makeText(Tutor_register.this, "Enter your name", Toast.LENGTH_SHORT).show();
