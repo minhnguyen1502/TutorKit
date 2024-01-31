@@ -44,11 +44,19 @@
                 android:alpha="0.7"
                 android:textStyle="bold"/>
 
-            <EditText
-                android:id="@+id/edt_email"
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textEmailAddress"/>
+                >
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edt_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
 
             <View
                 android:layout_width="wrap_content"
@@ -60,30 +68,33 @@
                 android:alpha="0.7"
                 android:textStyle="bold"/>
 
-            <EditText
-                android:id="@+id/edt_password"
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPassword" />
+                app:endIconMode="password_toggle">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edt_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword"
+                    />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/_5sdp">
 
-                <TextView
-                    android:id="@+id/txt_show_pasword"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="show password"
-                    android:textStyle="italic"/>
 
                 <TextView
                     android:id="@+id/txt_forgot_password"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="I forgot my password"
-                    android:textStyle="bold"
+                    android:textStyle="italic"
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"/>
 

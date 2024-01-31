@@ -60,20 +60,6 @@ public class Login extends AppCompatActivity {
             }
         });
 
-        //show hide password
-        TextView show = findViewById(R.id.txt_show_pasword);
-        show.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (edt_password.getTransformationMethod().equals(HideReturnsTransformationMethod.getInstance())) {
-                    //if password is visible then Hide it
-                    edt_password.setTransformationMethod(PasswordTransformationMethod.getInstance());
-                } else {
-                    edt_password.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-                }
-            }
-        });
-
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -149,17 +135,6 @@ public class Login extends AppCompatActivity {
         });
     }
 
-//    public static boolean isMailClientPresent(Context context){
-//        Intent intent = new Intent(Intent.ACTION_SEND);
-//        intent.setType("text/html");
-//        final PackageManager packageManager = context.getPackageManager();
-//        List<ResolveInfo> list = packageManager.queryIntentActivities(intent, 0);
-//
-//        if(list.size() == 0)
-//            return false;
-//        else
-//            return true;
-//    }
 
     private boolean available(String name) {
         boolean available = true;
@@ -185,7 +160,6 @@ public class Login extends AppCompatActivity {
             public void onClick(DialogInterface dialogInterface, int i) {
 
                 // check mobile have app email
-//                ComponentName emailApp = intent.resolveActivity(getPackageManager());
                 if (available("com.google.android.gm") ){
                     Intent intent = new Intent(Intent.ACTION_MAIN);
                     intent.addCategory(Intent.CATEGORY_APP_EMAIL);

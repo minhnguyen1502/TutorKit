@@ -7,6 +7,8 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
@@ -36,6 +38,7 @@ import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
 
 import java.util.Calendar;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -46,6 +49,7 @@ public class Tutor_register extends AppCompatActivity {
     private RadioButton re_gender_selected;
     private RadioGroup group_re_gender;
     private Phonenumber.PhoneNumber swissNumberProto;
+    private TextView showpassword;
 
 
 //    private DatePickerDialog datePickerDialog;
@@ -78,6 +82,7 @@ public class Tutor_register extends AppCompatActivity {
         edt_re_subject = findViewById(R.id.edt_subject);
         edt_re_password = findViewById(R.id.edt_password);
         edt_re_confirm_password = findViewById(R.id.edt_confirm_password);
+        showpassword = findViewById(R.id.show);
 
         group_re_gender = findViewById(R.id.group_gender);
         group_re_gender.clearCheck();
@@ -104,6 +109,18 @@ public class Tutor_register extends AppCompatActivity {
             }
         });
 
+        showpassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (edt_re_password.getTransformationMethod().equals(HideReturnsTransformationMethod.getInstance())) {
+                    //if password is visible then Hide it
+                    edt_re_password.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                } else {
+                    edt_re_password.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                }
+            }
+        });
+
         Button register = findViewById(R.id.btn_register);
         register.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -125,15 +142,19 @@ public class Tutor_register extends AppCompatActivity {
                 String txt_gender;
 
                 // validate phone no. sung Matcher and Pattern
-                PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();
+                boolean isValid = false;
                 try {
-                    swissNumberProto = phoneUtil.parse(txt_phone, "VN");
-                } catch (NumberParseException e) {
-                    System.err.println("NumberParseException was thrown: " + e.toString());
+                    PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance(Tutor_register.this);
+                    try {
+                        swissNumberProto = phoneUtil.parse(txt_phone, Locale.getDefault().getCountry());
+                    } catch (NumberParseException e) {
+                        System.err.println("NumberParseException was thrown: " + e.toString());
+                    }
+                    isValid = phoneUtil.isValidNumber(swissNumberProto); // returns true
+
+                }catch (Exception e){
+                    e.printStackTrace();
                 }
-                boolean isValid = phoneUtil.isValidNumber(swissNumberProto); // returns true
-
-
                 // pick date
 
 

@@ -94,6 +94,7 @@
                         android:id="@+id/edt_DOB"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:focusable="false"
                         android:hint="Select date"/>
 
                     <TextView
@@ -102,6 +103,7 @@
                         android:layout_height="wrap_content"
                         android:alpha="0.7"
                         android:text="Phone"
+                        android:inputType="number"
                         android:textStyle="bold" />
 
                     <EditText
@@ -178,11 +180,11 @@
                         android:text="Password"
                         android:textStyle="bold" />
 
-                    <EditText
+                    <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/edt_password"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:drawableEnd="@drawable/password_icon"
+                        app:endIconMode="@drawable/password_icon"
                         android:inputType="textPassword" />
 
                     <TextView
@@ -198,6 +200,14 @@
                         android:layout_height="wrap_content"
                         android:drawableEnd="@drawable/password_icon"
                         android:inputType="textPassword" />
+
+                    <TextView
+                        android:id="@+id/show"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="italic"
+                        android:text="show password"
+                        />
 
                     <View
                         android:layout_width="wrap_content"
