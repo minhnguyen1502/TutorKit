@@ -1,24 +1,43 @@
-package com.example.tutorkit;
+package com.example.tutorkit.Tutor;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.tutorkit.Login;
+import com.example.tutorkit.Models.Tutor;
+import com.example.tutorkit.R;
+import com.example.tutorkit.Student.Student;
+import com.example.tutorkit.Support;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class Tutor_home extends AppCompatActivity {
 
     ConstraintLayout student, calendar, grade, assignment, tuition, profile, support, logout;
     FirebaseAuth firebaseAuth;
+    String name;
+    TextView tv_name;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tutor_home);
+
+        tv_name = findViewById(R.id.tv_name);
 
         student = (ConstraintLayout) findViewById(R.id.student);
         calendar = (ConstraintLayout) findViewById(R.id.calendar);
@@ -28,6 +47,30 @@ public class Tutor_home extends AppCompatActivity {
         profile = (ConstraintLayout) findViewById(R.id.profile);
         support = (ConstraintLayout) findViewById(R.id.support);
         logout = (ConstraintLayout) findViewById(R.id.logout);
+
+        firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+
+        String tutorID = firebaseUser.getUid();
+
+        //extracting tutor reference from database for registered tutor
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Tutor");
+        databaseReference.child(tutorID).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Tutor tutor = snapshot.getValue(Tutor.class);
+                if (tutor != null) {
+                    name = firebaseUser.getDisplayName();
+                    tv_name.setText(name);
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(Tutor_home.this, "something wrong", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         student.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,4 +149,5 @@ public class Tutor_home extends AppCompatActivity {
         });
 
     }
+
 }

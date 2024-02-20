@@ -28,14 +28,16 @@
         android:layout_width="@dimen/_100sdp"
         android:layout_height="@dimen/_100sdp"
         android:layout_marginStart="@dimen/_100sdp"
+        android:layout_marginTop="@dimen/_60sdp"
         android:layout_marginEnd="@dimen/_100sdp"
         android:src="@drawable/avata"
-        android:layout_marginTop="@dimen/_60sdp"
 
         app:layout_constraintBottom_toTopOf="@+id/sclv"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.523"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
 
     <ImageView
         android:layout_width="wrap_content"
@@ -77,6 +79,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/_8sdp"
                         android:alpha="0.7"
+                        android:textSize="@dimen/_15sdp"
                         android:text="Edit information"
                         android:textStyle="bold" />
 
@@ -95,20 +98,6 @@
                         android:inputType="textEmailAddress" />
 
                     <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:alpha="0.7"
-                        android:text="Email Address"
-                        android:textStyle="bold" />
-
-                    <EditText
-                        android:id="@+id/edt_email"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="tutor@gmail.com"
-                        android:inputType="textEmailAddress" />
-
-                    <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:alpha="0.7"
@@ -119,6 +108,7 @@
                         android:id="@+id/edt_DOB"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:focusable="false"
                         android:inputType="textEmailAddress" />
 
                     <TextView
@@ -161,95 +151,68 @@
                             android:text="Female" />
                     </RadioGroup>
 
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="@dimen/_130sdp"
+                                android:layout_height="wrap_content"
+                                android:alpha="0.7"
+                                android:text="Subject"
+                                android:textStyle="bold" />
+
+                            <Spinner
+                                android:id="@+id/subject"
+                                android:layout_width="@dimen/_130sdp"
+                                android:layout_height="@dimen/_30sdp"
+                                android:entries="@array/subject"
+                                android:hint="Select subject"
+                                tools:ignore="TouchTargetSizeCheck" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="@dimen/_140sdp"
+                                android:layout_height="wrap_content"
+                                android:alpha="0.7"
+                                android:text="Address"
+                                android:textStyle="bold" />
+
+                            <Spinner
+                                android:id="@+id/address"
+                                android:layout_width="@dimen/_140sdp"
+                                android:layout_height="@dimen/_30sdp"
+                                android:entries="@array/address"
+                                android:hint="Select Address"
+                                tools:ignore="TouchTargetSizeCheck" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:alpha="0.7"
-                        android:text="Address"
+                        android:text="Introduction"
                         android:textStyle="bold" />
 
                     <EditText
-                        android:id="@+id/edt_address"
+                        android:id="@+id/edt_intro"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textEmailAddress" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:alpha="0.7"
-                        android:text="Subject"
-                        android:textStyle="bold" />
-
-                    <EditText
-                        android:id="@+id/edt_subject"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="textEmailAddress" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:alpha="0.7"
-                        android:text="Class"
-                        android:textStyle="bold" />
-
-                    <EditText
-                        android:id="@+id/edt_class"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="textEmailAddress" />
-
-<!--                    <TextView-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_marginBottom="@dimen/_8sdp"-->
-<!--                        android:layout_marginTop="@dimen/_8sdp"-->
-<!--                        android:alpha="0.7"-->
-<!--                        android:text="Edit Password"-->
-<!--                        android:textStyle="bold" />-->
-
-<!--                    <TextView-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:alpha="0.7"-->
-<!--                        android:text="Old Password"-->
-<!--                        android:textStyle="bold" />-->
-
-<!--                    <EditText-->
-<!--                        android:id="@+id/edt_old_password"-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:drawableEnd="@drawable/password_icon"-->
-<!--                        android:inputType="textPassword" />-->
-
-<!--                    <TextView-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:alpha="0.7"-->
-<!--                        android:text="New Password"-->
-<!--                        android:textStyle="bold" />-->
-
-<!--                    <EditText-->
-<!--                        android:id="@+id/edt_new_password"-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:drawableEnd="@drawable/password_icon"-->
-<!--                        android:inputType="textPassword" />-->
-
-<!--                    <TextView-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:alpha="0.7"-->
-<!--                        android:text="Confirm Password"-->
-<!--                        android:textStyle="bold" />-->
-
-<!--                    <EditText-->
-<!--                        android:id="@+id/edt_confirm_password"-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:drawableEnd="@drawable/password_icon"-->
-<!--                        android:inputType="textPassword" />-->
 
                     <View
                         android:layout_width="wrap_content"

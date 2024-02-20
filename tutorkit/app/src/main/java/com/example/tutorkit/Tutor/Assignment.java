@@ -1,8 +1,10 @@
-package com.example.tutorkit;
+package com.example.tutorkit.Tutor;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.example.tutorkit.R;
 
 public class Assignment extends AppCompatActivity {
 

@@ -1,4 +1,4 @@
-package com.example.tutorkit;
+package com.example.tutorkit.Tutor;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -7,15 +7,18 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.tutorkit.Models.Tutor;
+import com.example.tutorkit.R;
+import com.example.tutorkit.UpdateEmail;
+import com.example.tutorkit.UpdatePassword;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -26,9 +29,10 @@ import com.google.firebase.database.ValueEventListener;
 
 public class Tutor_Profile extends AppCompatActivity {
 
-    private TextView txt_name, txt_email, txt_phone, txt_gender, txt_DOB, txt_address, txt_subject, txt_class;
-    private String name, email, phone, gender, DOB, address, subject, t_class;
+    private TextView txt_name, txt_email, txt_phone, txt_gender, txt_DOB, txt_address, txt_subject, txt_intro;
+    private String name, email, phone, gender, DOB, address, subject, intro;
     private ImageView avatar;
+    Uri imguri;
     private FirebaseAuth firebaseAuth;
 
     @Override
@@ -46,15 +50,8 @@ public class Tutor_Profile extends AppCompatActivity {
         txt_DOB = findViewById(R.id.DOB);
         txt_address = findViewById(R.id.address);
         txt_subject = findViewById(R.id.subject);
-        txt_class = findViewById(R.id.t_class);
+        txt_intro = findViewById(R.id.intro);
         avatar = findViewById(R.id.avatar);
-
-        avatar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(Tutor_Profile.this, UploadAvatar.class));
-            }
-        });
 
         firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
@@ -103,7 +100,7 @@ public class Tutor_Profile extends AppCompatActivity {
         String tutorID = firebaseUser.getUid();
 
         //extracting tutor reference from database for registered tutor
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Registered Tutor");
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Tutor");
         databaseReference.child(tutorID).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -111,21 +108,22 @@ public class Tutor_Profile extends AppCompatActivity {
                 if (tutor != null) {
                     name = firebaseUser.getDisplayName();
                     email = firebaseUser.getEmail();
+//                    imguri = tutor.getImg();
                     phone = tutor.getPhone();
                     gender = tutor.getGender();
                     DOB = tutor.getDOB();
                     address = tutor.getAddress();
                     subject = tutor.getSubject();
-                    t_class = tutor.getT_class();
+                    intro = tutor.getIntro();
 
                     txt_name.setText(name);
                     txt_email.setText(email);
                     txt_phone.setText(phone);
                     txt_gender.setText(gender);
-                    txt_DOB.setText(gender);
+                    txt_DOB.setText(DOB);
                     txt_address.setText(address);
                     txt_subject.setText(subject);
-                    txt_class.setText(t_class);
+                    txt_intro.setText(intro);
                 }
             }
 
@@ -148,12 +146,15 @@ public class Tutor_Profile extends AppCompatActivity {
         if (id == R.id.update_profile) {
             Intent i = new Intent(Tutor_Profile.this, Edit_tutor_profile.class);
             startActivity(i);
+            finish();
         } else if (id == R.id.update_email) {
             Intent i = new Intent(Tutor_Profile.this, UpdateEmail.class);
             startActivity(i);
+            finish();
         } else if (id == R.id.update_password) {
             Intent i = new Intent(Tutor_Profile.this, UpdatePassword.class);
             startActivity(i);
+            finish();
         }
         else {
             Toast.makeText(this, "Something Wrong", Toast.LENGTH_SHORT).show();

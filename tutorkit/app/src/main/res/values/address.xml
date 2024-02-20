@@ -1,0 +1,38 @@
+<resources>
+    <string-array name="address">
+        <item>Thành phố Hà Nội</item>
+        <item>Tỉnh Hà Giang</item>
+        <item>Tỉnh Cao Bằng</item>
+        <item>Thành phố Hồ Chí Minh</item>
+        <item>Tỉnh Tuyên Quang</item>
+        <item>Tỉnh Lào Cai</item>
+        <item>Tỉnh Điện Biên</item>
+        <item>Tỉnh Lai Châu</item>
+        <item>Tỉnh Sơn La</item>
+        <item>Tỉnh Yên Bái</item>
+        <item>Tỉnh Hoà Bình</item>
+        <item>Tỉnh Thái Nguyên</item>
+        <item>Tỉnh Lạng Sơn</item>
+        <item>Tỉnh Quảng Ninh</item>
+        <item>Tỉnh Bắc Giang</item>
+        <item>Tỉnh Phú Thọ</item>
+        <item>Tỉnh Vĩnh Phúc</item>
+        <item>Tỉnh Bắc Ninh</item>
+        <item>Tỉnh Hải Dương</item>
+        <item>Thành phố Hải Phòng</item>
+        <item>Tỉnh Thái Bình</item>
+        <item>Tỉnh Hà Nam</item>
+        <item>Tỉnh Nam Định</item>
+        <item>Tỉnh Ninh Bình</item>
+        <item>Tỉnh Thanh Hóa</item>
+        <item>Tỉnh Nghệ An</item>
+        <item>Tỉnh Hà Tĩnh</item>
+        <item>Tỉnh Quảng Bình</item>
+        <item>Tỉnh Quảng Trị</item>
+        <item>Tỉnh Thừa Thiên Huế</item>
+        <item>Thành phố Đà Nẵng</item>
+        <item>Tỉnh Quảng Nam</item>
+        <item>Tỉnh Quảng Ngãi</item>
+        <item>Tỉnh Bình Định</item>
+          </string-array>
+</resources>

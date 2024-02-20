@@ -1,0 +1,13 @@
+<resources>
+    <string-array name="subject">
+        <item>Mathematics</item>
+        <item>Literature</item>
+        <item>English</item>
+        <item>Physics</item>
+        <item>Chemistry</item>
+        <item>Biology</item>
+        <item>History</item>
+        <item>Civic Education</item>
+        <item>Geography</item>
+    </string-array>
+</resources>

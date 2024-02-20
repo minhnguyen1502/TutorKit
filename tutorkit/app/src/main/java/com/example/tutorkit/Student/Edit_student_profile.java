@@ -1,10 +1,12 @@
-package com.example.tutorkit;
+package com.example.tutorkit.Student;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.os.Bundle;
 import android.view.Menu;
+
+import com.example.tutorkit.R;
 
 public class Edit_student_profile extends AppCompatActivity {
 

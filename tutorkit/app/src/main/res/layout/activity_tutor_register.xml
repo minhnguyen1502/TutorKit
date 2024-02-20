@@ -29,10 +29,30 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/rgt" />
 
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/avatar"
+        android:layout_width="@dimen/_100sdp"
+        android:layout_height="@dimen/_100sdp"
+        android:layout_marginTop="@dimen/_28sdp"
+        android:layout_marginEnd="@dimen/_28sdp"
+        android:src="@drawable/avata"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/_27sdp"
+        android:layout_marginBottom="@dimen/_22sdp"
+        app:layout_constraintBottom_toTopOf="@+id/sclv"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@android:drawable/ic_menu_camera" />
+
     <ScrollView
+        android:id="@+id/sclv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/_100sdp"
+        android:layout_marginTop="@dimen/_150sdp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -108,6 +128,7 @@
 
                     <EditText
                         android:id="@+id/edt_phone"
+                        android:hint="(+84)"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
 
@@ -137,39 +158,65 @@
                             android:text="Female" />
                     </RadioGroup>
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="@dimen/_130sdp"
+                                android:layout_height="wrap_content"
+                                android:alpha="0.7"
+                                android:text="Subject"
+                                android:textStyle="bold" />
+
+                            <Spinner
+                                android:id="@+id/subject"
+                                android:layout_width="@dimen/_130sdp"
+                                android:layout_height="@dimen/_30sdp"
+                                android:entries="@array/subject"
+                                android:hint="Select subject"
+                                tools:ignore="TouchTargetSizeCheck" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="@dimen/_140sdp"
+                                android:layout_height="wrap_content"
+                                android:alpha="0.7"
+                                android:text="Address"
+                                android:textStyle="bold" />
+
+                            <Spinner
+                                android:id="@+id/address"
+                                android:layout_width="@dimen/_140sdp"
+                                android:layout_height="@dimen/_30sdp"
+                                android:entries="@array/address"
+                                android:hint="Select Address"
+                                tools:ignore="TouchTargetSizeCheck" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:alpha="0.7"
-                        android:text="Address"
+                        android:text="Introduction"
                         android:textStyle="bold" />
 
                     <EditText
-                        android:id="@+id/edt_address"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:alpha="0.7"
-                        android:text="Subject"
-                        android:textStyle="bold" />
-
-                    <EditText
-                        android:id="@+id/edt_subject"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:alpha="0.7"
-                        android:text="Class"
-                        android:textStyle="bold" />
-
-                    <EditText
-                        android:id="@+id/edt_class"
+                        android:id="@+id/edt_intro"
+                        android:hint="About yourself"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
 
@@ -198,22 +245,13 @@
                         android:id="@+id/edt_confirm_password"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:drawableEnd="@drawable/password_icon"
                         android:inputType="textPassword" />
-
-                    <TextView
-                        android:id="@+id/show"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textStyle="italic"
-                        android:text="show password"
-                        />
 
                     <View
                         android:layout_width="wrap_content"
                         android:layout_height="@dimen/_10sdp" />
 
-                    <com.google.android.material.button.MaterialButton
+                    <Button
                         android:id="@+id/btn_register"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_40sdp"

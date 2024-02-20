@@ -1,4 +1,4 @@
-package com.example.tutorkit;
+package com.example.tutorkit.Tutor;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -8,18 +8,20 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Patterns;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.tutorkit.Models.Tutor;
+import com.example.tutorkit.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,21 +32,26 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.i18n.phonenumbers.NumberParseException;
+import com.google.i18n.phonenumbers.PhoneNumberUtil;
+import com.google.i18n.phonenumbers.Phonenumber;
 
 import java.util.Calendar;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.Locale;
 
 public class Edit_tutor_profile extends AppCompatActivity {
 
 
-    private EditText edt_name, edt_email, edt_DOB, edt_phone, edt_address,
-            edt_subject, edt_class;
+    private EditText edt_name, edt_email, edt_DOB, edt_phone,
+            edt_intro;
+    private Spinner edit_subject, edit_address;
     private RadioButton gender_selected;
     private RadioGroup group_gender;
-    private String name, email, phone, gender, DOB, address, subject, t_class;
+    private String name, phone, gender, DOB, address, subject, intro;
     private FirebaseAuth firebaseAuth;
     private FirebaseUser firebaseUser;
+    private Phonenumber.PhoneNumber swissNumberProto;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,13 +62,12 @@ public class Edit_tutor_profile extends AppCompatActivity {
         setSupportActionBar(myToolbar);
 
         edt_name = findViewById(R.id.edt_name);
-        edt_email = findViewById(R.id.edt_email);
         edt_DOB = findViewById(R.id.edt_DOB);
-        edt_address = findViewById(R.id.edt_address);
+        edit_address = findViewById(R.id.address);
         group_gender = findViewById(R.id.group_gender);
         edt_phone = findViewById(R.id.edt_phone);
-        edt_subject = findViewById(R.id.edt_subject);
-        edt_class = findViewById(R.id.edt_class);
+        edit_subject = findViewById(R.id.subject);
+        edt_intro = findViewById(R.id.edt_intro);
 
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
@@ -107,14 +113,19 @@ public class Edit_tutor_profile extends AppCompatActivity {
         int selectedGenderID = group_gender.getCheckedRadioButtonId();
         gender_selected = findViewById(selectedGenderID);
 
-        // validate phone no. sung Matcher and Pattern
-        String mobileRegex = "^0\\d{2}-\\d{7}$";
-        Matcher phoneMatcher;
-        Pattern phonePattern = Pattern.compile(mobileRegex);
-        phoneMatcher =  phonePattern.matcher(phone);
+        boolean isValid = false;
+        try {
+            PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance(Edit_tutor_profile.this);
+            try {
+                swissNumberProto = phoneUtil.parse(phone, Locale.getDefault().getCountry());
+            } catch (NumberParseException e) {
+                System.err.println("NumberParseException was thrown: " + e.toString());
+            }
+            isValid = phoneUtil.isValidNumber(swissNumberProto); // returns true
 
-
-
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         if (TextUtils.isEmpty(name)) {
             Toast.makeText(Edit_tutor_profile.this, "Enter your name", Toast.LENGTH_SHORT).show();
             edt_name.setError("Name is required");
@@ -123,7 +134,7 @@ public class Edit_tutor_profile extends AppCompatActivity {
             Toast.makeText(Edit_tutor_profile.this, "Enter your DOB", Toast.LENGTH_SHORT).show();
             edt_DOB.setError("DOB is required");
             edt_DOB.requestFocus();
-        } else if (phoneMatcher.find()) {
+        } else if (!isValid) {
             Toast.makeText(Edit_tutor_profile.this, "re-Enter your phone", Toast.LENGTH_SHORT).show();
             edt_phone.setError("Phone no. is not valid");
             edt_phone.requestFocus();
@@ -131,22 +142,14 @@ public class Edit_tutor_profile extends AppCompatActivity {
             Toast.makeText(Edit_tutor_profile.this, "Enter your phone", Toast.LENGTH_SHORT).show();
             edt_phone.setError("phone is required");
             edt_phone.requestFocus();
-        } else if (phone.length() !=10) {
+        } else if (phone.length() != 10) {
             Toast.makeText(Edit_tutor_profile.this, "Re-enter your phone no.", Toast.LENGTH_SHORT).show();
             edt_phone.setError("Phone no. should be 10 digits");
             edt_phone.requestFocus();
-        } else if (TextUtils.isEmpty(address)) {
-            Toast.makeText(Edit_tutor_profile.this, "Enter your address", Toast.LENGTH_SHORT).show();
-            edt_address.setError("address is required");
-            edt_address.requestFocus();
-        } else if (TextUtils.isEmpty(subject)) {
-            Toast.makeText(Edit_tutor_profile.this, "Enter your subject", Toast.LENGTH_SHORT).show();
-            edt_subject.setError("subject is required");
-            edt_subject.requestFocus();
-        }else if (TextUtils.isEmpty(t_class)) {
+        } else if (TextUtils.isEmpty(intro)) {
             Toast.makeText(Edit_tutor_profile.this, "Enter your class", Toast.LENGTH_SHORT).show();
-            edt_class.setError("class is required");
-            edt_class.requestFocus();
+            edt_intro.setError("class is required");
+            edt_intro.requestFocus();
         } else if (TextUtils.isEmpty(gender_selected.getText())) {
             Toast.makeText(Edit_tutor_profile.this, "select your gender", Toast.LENGTH_SHORT).show();
             gender_selected.setError("gender is required");
@@ -156,14 +159,14 @@ public class Edit_tutor_profile extends AppCompatActivity {
             name = edt_name.getText().toString();
             DOB = edt_DOB.getText().toString();
             phone = edt_phone.getText().toString();
-            address = edt_address.getText().toString();
-            subject = edt_subject.getText().toString();
-            t_class = edt_class.getText().toString();
+            address = edit_address.getSelectedItem().toString();
+            subject = edit_subject.getSelectedItem().toString();
+            intro = edt_intro.getText().toString();
         // enter data into firebase
 
-            Tutor tutor = new Tutor(DOB, address,phone, gender, subject, t_class);
+            Tutor tutor = new Tutor(DOB, address,phone, gender, subject, intro);
             // extract tutor reference from Database for register tutor
-            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Registered Tutor");
+            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Tutor");
 
             String tutorID = firebaseUser.getUid();
 
@@ -198,28 +201,35 @@ public class Edit_tutor_profile extends AppCompatActivity {
 
     private void showProfile(FirebaseUser firebaseUser) {
         String tutor = firebaseUser.getUid();
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Registered Tutor");
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Tutor");
         reference.child(tutor).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Tutor tutor = snapshot.getValue(Tutor.class);
+
+                ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(Edit_tutor_profile.this, R.array.address, android.R.layout.simple_spinner_item);
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                edit_address.setAdapter(adapter);
+
+                ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(Edit_tutor_profile.this, R.array.subject, android.R.layout.simple_spinner_item);
+                adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                edit_subject.setAdapter(adapter1);
+                
                 if (tutor != null){
                     name = firebaseUser.getDisplayName();
-                    email = tutor.getEmail();
                     phone = tutor.getPhone();
                     gender = tutor.getGender();
                     DOB = tutor.getDOB();
                     address = tutor.getAddress();
                     subject = tutor.getSubject();
-                    t_class = tutor.getT_class();
+                    intro = tutor.getIntro();
 
                     edt_name.setText(name);
-                    edt_email.setText(email);
                     edt_DOB.setText(DOB);
                     edt_phone.setText(phone);
-                    edt_address.setText(address);
-                    edt_subject.setText(subject);
-                    edt_class.setText(t_class);
+                    edit_address.setAdapter(adapter);
+                    edit_subject.setAdapter(adapter1);
+                    edt_intro.setText(intro);
 
                     if (gender.equals("Male")){
                         gender_selected = findViewById(R.id.Rbtn_male);
@@ -243,5 +253,18 @@ public class Edit_tutor_profile extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.edit, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.done) {
+            updateProfile(firebaseUser);
+            finish();
+        }
+        else {
+            Toast.makeText(this, "Something Wrong", Toast.LENGTH_SHORT).show();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
