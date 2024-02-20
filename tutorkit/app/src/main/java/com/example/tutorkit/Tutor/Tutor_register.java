@@ -62,7 +62,7 @@ public class Tutor_register extends AppCompatActivity {
     private Phonenumber.PhoneNumber swissNumberProto;
     private ImageView avatar;
     private Uri imgURI;
-    private final DatabaseReference referenceProfile = FirebaseDatabase.getInstance().getReference("Tutor");
+    private final DatabaseReference referenceProfile = FirebaseDatabase.getInstance().getReference().child("tutors");
     private final StorageReference storageReference = FirebaseStorage.getInstance().getReference();
 
     TextView login;
@@ -258,6 +258,7 @@ public class Tutor_register extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+
 
                             FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
 

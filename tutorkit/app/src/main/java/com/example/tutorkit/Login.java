@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.tutorkit.Student.Student_home;
 import com.example.tutorkit.Tutor.Tutor_home;
 import com.example.tutorkit.Tutor.Tutor_register;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -26,6 +27,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.Objects;
 
 public class Login extends AppCompatActivity {
 
@@ -101,14 +108,40 @@ public class Login extends AppCompatActivity {
                     //check if email is verified before tutor can access their profile
 
                     if (firebaseUser.isEmailVerified()) {
-                        Toast.makeText(Login.this, "Login success", Toast.LENGTH_SHORT).show();
-                        //open profile
-                        Intent intent = new Intent(Login.this, Tutor_home.class);
-                        startActivity(intent);
-                        finish();
+                        Log.e("TAG", "onComplete: "+firebaseUser.getUid());
+                        FirebaseDatabase.getInstance().getReference("tutors").child(firebaseUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                Log.e("TAG", "onDataChange: " + snapshot.getKey() );
+                                if (Objects.equals(snapshot.getKey(), firebaseUser.getUid())){
+                                    Toast.makeText(Login.this, "Login success", Toast.LENGTH_SHORT).show();
+                                    //open profile
+                                    Intent intent = new Intent(Login.this, Tutor_home.class);
+                                    startActivity(intent);
+                                    finish();
+                                }else {
+                                    Toast.makeText(Login.this, "Login success", Toast.LENGTH_SHORT).show();
+                                    //open profile
+                                    Intent intent = new Intent(Login.this, Student_home.class);
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+
+//                        Toast.makeText(Login.this, "Login success", Toast.LENGTH_SHORT).show();
+//                        //open profile
+//                        Intent intent = new Intent(Login.this, Tutor_home.class);
+//                        startActivity(intent);
+//                        finish();
                     } else {
                         firebaseUser.sendEmailVerification();
-//                        firebaseAuth.signOut();
                         showAlerDialog();
                     }
                 } else {

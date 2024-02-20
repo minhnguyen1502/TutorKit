@@ -5,6 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
+
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -15,7 +17,6 @@
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:title="Student"
         app:titleMarginStart="@dimen/_20sdp"
-        app:logo="@drawable/baseline_home_24"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"

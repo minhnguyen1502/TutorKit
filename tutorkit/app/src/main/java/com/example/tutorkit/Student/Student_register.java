@@ -54,6 +54,7 @@ public class Student_register extends AppCompatActivity {
     private RadioButton re_gender_selected;
     private RadioGroup group_re_gender;
     private Phonenumber.PhoneNumber swissNumberProto;
+    private Phonenumber.PhoneNumber swissNumberProto2;
     private ImageView avatar;
     private Uri imgURI;
     private DatabaseReference referenceProfile = FirebaseDatabase.getInstance().getReference("Student");
@@ -171,6 +172,21 @@ public class Student_register extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
+                boolean isValid2 = false;
+                try {
+                    PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance(Student_register.this);
+                    try {
+                        swissNumberProto2 = phoneUtil.parse(txt_phone_parent, Locale.getDefault().getCountry());
+                    } catch (NumberParseException e) {
+                        System.err.println("NumberParseException was thrown: " + e);
+                    }
+                    isValid2 = phoneUtil.isValidNumber(swissNumberProto2); // returns true
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+
                 if (TextUtils.isEmpty(txt_name)) {
                     Toast.makeText(Student_register.this, "Enter your name", Toast.LENGTH_SHORT).show();
                     edt_re_name.setError("Name is required");
@@ -203,7 +219,7 @@ public class Student_register extends AppCompatActivity {
                     Toast.makeText(Student_register.this, "Re-enter your phone no.", Toast.LENGTH_SHORT).show();
                     edt_re_phone.setError("Phone no. should be 10 digits");
                     edt_re_phone.requestFocus();
-                }else if (!isValid) {
+                }else if (!isValid2) {
                     Toast.makeText(Student_register.this, "re-Enter your parent phone", Toast.LENGTH_SHORT).show();
                     edt_re_parent_phone.setError("Phone no. is not valid");
                     edt_re_parent_phone.requestFocus();
