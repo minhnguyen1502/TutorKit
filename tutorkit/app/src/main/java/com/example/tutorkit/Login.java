@@ -114,15 +114,16 @@ public class Login extends AppCompatActivity {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
                                 Log.e("TAG", "onDataChange: " + snapshot.getKey() );
-                                if (Objects.equals(snapshot.getKey(), firebaseUser.getUid())){
+                                if (snapshot.getValue() != null){
                                     Toast.makeText(Login.this, "Login success", Toast.LENGTH_SHORT).show();
-                                    //open profile
+                                    //open home
                                     Intent intent = new Intent(Login.this, Tutor_home.class);
                                     startActivity(intent);
                                     finish();
+
                                 }else {
                                     Toast.makeText(Login.this, "Login success", Toast.LENGTH_SHORT).show();
-                                    //open profile
+                                    //open home
                                     Intent intent = new Intent(Login.this, Student_home.class);
                                     startActivity(intent);
                                     finish();
@@ -136,7 +137,7 @@ public class Login extends AppCompatActivity {
                         });
 
 //                        Toast.makeText(Login.this, "Login success", Toast.LENGTH_SHORT).show();
-//                        //open profile
+//                        //open home
 //                        Intent intent = new Intent(Login.this, Tutor_home.class);
 //                        startActivity(intent);
 //                        finish();

@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.example.tutorkit.Tutor.Tutor_Profile;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
@@ -116,7 +117,6 @@ public class UpdateEmail extends AppCompatActivity {
                                     Toast.makeText(UpdateEmail.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                                 }
                             }
-
                         }
                     });
                 }
@@ -125,23 +125,14 @@ public class UpdateEmail extends AppCompatActivity {
     }
 
     private void updateEmail(FirebaseUser firebaseUser) {
-        firebaseUser.updateEmail(newEmail).addOnCompleteListener(new OnCompleteListener<Void>() {
+        firebaseUser.updateEmail(newEmail).addOnFailureListener(new OnFailureListener() {
             @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()){
-                    firebaseUser.sendEmailVerification();
-
-                    Toast.makeText(UpdateEmail.this, "updated. verify new email", Toast.LENGTH_SHORT).show();
-                    Intent i = new Intent(UpdateEmail.this, Tutor_Profile.class);
-                    startActivity(i);
-                    finish();
-                }else {
-                    try {
-                        throw task.getException();
-                    }catch (Exception e){
-                        Toast.makeText(UpdateEmail.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                }
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(UpdateEmail.this, "updated. please verify new email and Login again", Toast.LENGTH_SHORT).show();
+                firebaseUser.verifyBeforeUpdateEmail(newEmail);
+                Intent i = new Intent(UpdateEmail.this, Login.class);
+                startActivity(i);
+                finish();
             }
         });
     }

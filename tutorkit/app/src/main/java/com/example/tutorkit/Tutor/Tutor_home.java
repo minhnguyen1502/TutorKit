@@ -54,7 +54,7 @@ public class Tutor_home extends AppCompatActivity {
         String tutorID = firebaseUser.getUid();
 
         //extracting tutor reference from database for registered tutor
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Tutor");
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("tutors");
         databaseReference.child(tutorID).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

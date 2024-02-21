@@ -151,6 +151,7 @@ public class Tutor_register extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                Toast.makeText(Tutor_register.this, "please wait until success", Toast.LENGTH_SHORT).show();
                 int selectedGender = group_re_gender.getCheckedRadioButtonId();
                 re_gender_selected = findViewById(selectedGender);
 
@@ -248,7 +249,7 @@ public class Tutor_register extends AppCompatActivity {
     }
 
     // register Tutor
-    private void registerTutor(String txt_name, String txt_email, String txt_dob, String txt_phone, String txt_gender, String txt_address, String txt_subject, String txt_intro, String txt_password, Uri img) {
+    private void registerTutor(String txt_name, String txt_email, String txt_dob, String txt_gender, String txt_phone, String txt_address, String txt_subject, String txt_intro, String txt_password, Uri img) {
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
 //        final  StorageReference imgReference  =  storageReference.child(System.currentTimeMillis()+"."+getFilesExtension(img));
@@ -259,30 +260,12 @@ public class Tutor_register extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
 
-
                             FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
 
                             // display name
                             UserProfileChangeRequest profileChangeRequest = new UserProfileChangeRequest.Builder().setDisplayName(txt_name).build();
                             firebaseUser.updateProfile(profileChangeRequest);
-
-                            Tutor tutor = new Tutor(txt_address, txt_dob, txt_email, txt_gender, txt_phone, txt_subject, txt_intro, img.toString());
-
-                            referenceProfile.child(firebaseUser.getUid()).setValue(tutor).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-
-                                    if (task.isSuccessful()) {
-                                        // sent verification to mail
-                                        firebaseUser.sendEmailVerification();
-                                        Toast.makeText(Tutor_register.this, "Register success. please verify email", Toast.LENGTH_SHORT).show();
-
-                                    } else {
-                                        Toast.makeText(Tutor_register.this, "Register Failed. ", Toast.LENGTH_SHORT).show();
-
-                                    }
-                                }
-                            });
+                            updateImageAndCreateUser(firebaseUser, img);
 
                         } else {
                             try {
@@ -304,14 +287,47 @@ public class Tutor_register extends AppCompatActivity {
                                 Toast.makeText(Tutor_register.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         }
+
+                    }
+
+                    private void updateImageAndCreateUser(FirebaseUser firebaseUser, Uri img) {
+                        StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+                        StorageReference riversRef = storageRef.child("images/" + img.getLastPathSegment());
+                        riversRef.putFile(img).continueWithTask(task -> {
+                            if (!task.isSuccessful()) {
+                                throw task.getException();
+                            }
+                            return riversRef.getDownloadUrl();
+                        }).addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                Uri downloadUri = task.getResult();
+                                Log.e("TAG", "updateImage: " + downloadUri);
+                                createUser(firebaseUser, downloadUri.toString());
+                            } else {
+                                Toast.makeText(Tutor_register.this, "fail", Toast.LENGTH_SHORT).show();                            }
+                        });
+                    }
+                    private void createUser(FirebaseUser firebaseUser, String urlImage) {
+                        Tutor tutor = new Tutor(txt_dob,txt_address, txt_phone,  txt_gender, txt_subject, txt_intro, urlImage);
+
+                        referenceProfile.child(firebaseUser.getUid()).setValue(tutor).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+
+                                if (task.isSuccessful()) {
+                                    // sent verification to mail
+                                    firebaseUser.sendEmailVerification();
+                                    Toast.makeText(Tutor_register.this, "Register success. please verify email", Toast.LENGTH_SHORT).show();
+
+                                } else {
+                                    Toast.makeText(Tutor_register.this, "Register Failed. ", Toast.LENGTH_SHORT).show();
+
+                                }
+                            }
+                        });
                     }
                 });
     }
 
-//    private String getFilesExtension(Uri img) {
-//        ContentResolver contentResolver = getContentResolver();
-//        MimeTypeMap mime = MimeTypeMap.getSingleton();
-//        return mime.getExtensionFromMimeType(contentResolver.getType(img));
-//    }
 
 }

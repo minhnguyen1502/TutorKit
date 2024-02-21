@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.tutorkit.Models.Tutor;
 import com.example.tutorkit.R;
 import com.example.tutorkit.UpdateEmail;
@@ -32,7 +33,6 @@ public class Tutor_Profile extends AppCompatActivity {
     private TextView txt_name, txt_email, txt_phone, txt_gender, txt_DOB, txt_address, txt_subject, txt_intro;
     private String name, email, phone, gender, DOB, address, subject, intro;
     private ImageView avatar;
-    Uri imguri;
     private FirebaseAuth firebaseAuth;
 
     @Override
@@ -100,7 +100,7 @@ public class Tutor_Profile extends AppCompatActivity {
         String tutorID = firebaseUser.getUid();
 
         //extracting tutor reference from database for registered tutor
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Tutor");
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("tutors");
         databaseReference.child(tutorID).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -108,7 +108,12 @@ public class Tutor_Profile extends AppCompatActivity {
                 if (tutor != null) {
                     name = firebaseUser.getDisplayName();
                     email = firebaseUser.getEmail();
-//                    imguri = tutor.getImg();
+                    Glide
+                            .with(Tutor_Profile.this)
+                            .load(tutor.getImg())
+                            .centerCrop()
+                            .into(avatar);
+
                     phone = tutor.getPhone();
                     gender = tutor.getGender();
                     DOB = tutor.getDOB();
@@ -155,8 +160,11 @@ public class Tutor_Profile extends AppCompatActivity {
             Intent i = new Intent(Tutor_Profile.this, UpdatePassword.class);
             startActivity(i);
             finish();
-        }
-        else {
+        } else if (id == R.id.home) {
+            Intent i = new Intent(Tutor_Profile.this, Tutor_home.class);
+            startActivity(i);
+            finish();
+        } else {
             Toast.makeText(this, "Something Wrong", Toast.LENGTH_SHORT).show();
         }
             return super.onOptionsItemSelected(item);

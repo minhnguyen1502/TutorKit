@@ -48,5 +48,6 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.squareup.picasso:picasso:2.5.2'
     implementation 'com.lionscribe.open.libphonenumber:libphonenumber:8.12.18.1'
+    implementation 'com.github.bumptech.glide:glide:4.16.0'
 
 }

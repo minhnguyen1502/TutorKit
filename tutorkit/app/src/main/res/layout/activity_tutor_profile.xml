@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="#33CCFF"
+    android:background="#C9D7DD"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -13,14 +13,22 @@
         android:background="#33CCFF"
         android:elevation="@dimen/_2sdp"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        app:title="Student"
         app:titleMarginStart="@dimen/_20sdp"
-        app:logo="@drawable/baseline_home_24"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:titleTextColor="@android:color/white"></androidx.appcompat.widget.Toolbar>
+        app:titleTextColor="@android:color/white">
+
+        <ImageView
+            android:id="@+id/home"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_home_24"/>
+
+
+    </androidx.appcompat.widget.Toolbar>
+
+
 
     <TextView
         android:id="@+id/name"

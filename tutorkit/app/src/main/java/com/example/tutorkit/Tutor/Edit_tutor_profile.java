@@ -1,11 +1,17 @@
 package com.example.tutorkit.Tutor;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -15,11 +21,13 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.tutorkit.Models.Tutor;
 import com.example.tutorkit.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -36,13 +44,14 @@ import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
 
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Locale;
 
 public class Edit_tutor_profile extends AppCompatActivity {
 
 
-    private EditText edt_name, edt_email, edt_DOB, edt_phone,
+    private EditText edt_name, edt_DOB, edt_phone,
             edt_intro;
     private Spinner edit_subject, edit_address;
     private RadioButton gender_selected;
@@ -50,6 +59,8 @@ public class Edit_tutor_profile extends AppCompatActivity {
     private String name, phone, gender, DOB, address, subject, intro;
     private FirebaseAuth firebaseAuth;
     private FirebaseUser firebaseUser;
+    private ImageView avatar;
+    private Uri imgURI;
     private Phonenumber.PhoneNumber swissNumberProto;
 
 
@@ -68,19 +79,35 @@ public class Edit_tutor_profile extends AppCompatActivity {
         edt_phone = findViewById(R.id.edt_phone);
         edit_subject = findViewById(R.id.subject);
         edt_intro = findViewById(R.id.edt_intro);
+        avatar = findViewById(R.id.avatar);
 
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
 
         // show profile
         showProfile(firebaseUser);
-
-        // update profile
-        Button done = findViewById(R.id.done);
-        done.setOnClickListener(new View.OnClickListener() {
+        // upload avatar
+        ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        if (result.getResultCode() == Activity.RESULT_OK) {
+                            Intent data = result.getData();
+                            imgURI = data.getData();
+                            avatar.setImageURI(imgURI);
+                        } else {
+                            Toast.makeText(Edit_tutor_profile.this, "no image", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+        avatar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                updateProfile(firebaseUser);
+                Intent photo = new Intent();
+                photo.setAction(Intent.ACTION_GET_CONTENT);
+                photo.setType("image/*");
+                activityResultLauncher.launch(photo);
             }
         });
         // pick date
@@ -107,11 +134,10 @@ public class Edit_tutor_profile extends AppCompatActivity {
             }
         });
     }
-
-
     private void updateProfile(FirebaseUser firebaseUser) {
         int selectedGenderID = group_gender.getCheckedRadioButtonId();
         gender_selected = findViewById(selectedGenderID);
+
 
         boolean isValid = false;
         try {
@@ -126,6 +152,16 @@ public class Edit_tutor_profile extends AppCompatActivity {
         }catch (Exception e){
             e.printStackTrace();
         }
+
+
+        gender = gender_selected.getText().toString();
+        name = edt_name.getText().toString();
+        DOB = edt_DOB.getText().toString();
+        phone = edt_phone.getText().toString();
+        address = edit_address.getSelectedItem().toString();
+        subject = edit_subject.getSelectedItem().toString();
+        intro = edt_intro.getText().toString();
+
         if (TextUtils.isEmpty(name)) {
             Toast.makeText(Edit_tutor_profile.this, "Enter your name", Toast.LENGTH_SHORT).show();
             edt_name.setError("Name is required");
@@ -147,7 +183,7 @@ public class Edit_tutor_profile extends AppCompatActivity {
             edt_phone.setError("Phone no. should be 10 digits");
             edt_phone.requestFocus();
         } else if (TextUtils.isEmpty(intro)) {
-            Toast.makeText(Edit_tutor_profile.this, "Enter your class", Toast.LENGTH_SHORT).show();
+            Toast.makeText(Edit_tutor_profile.this, "Enter your introduction", Toast.LENGTH_SHORT).show();
             edt_intro.setError("class is required");
             edt_intro.requestFocus();
         } else if (TextUtils.isEmpty(gender_selected.getText())) {
@@ -155,18 +191,12 @@ public class Edit_tutor_profile extends AppCompatActivity {
             gender_selected.setError("gender is required");
             gender_selected.requestFocus();
         }else {
-            gender = gender_selected.getText().toString();
-            name = edt_name.getText().toString();
-            DOB = edt_DOB.getText().toString();
-            phone = edt_phone.getText().toString();
-            address = edit_address.getSelectedItem().toString();
-            subject = edit_subject.getSelectedItem().toString();
-            intro = edt_intro.getText().toString();
+
         // enter data into firebase
 
             Tutor tutor = new Tutor(DOB, address,phone, gender, subject, intro);
             // extract tutor reference from Database for register tutor
-            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Tutor");
+            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("tutors");
 
             String tutorID = firebaseUser.getUid();
 
@@ -174,6 +204,8 @@ public class Edit_tutor_profile extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     if (task.isSuccessful()){
+
+
                         // new display name
                         UserProfileChangeRequest userProfileChangeRequest = new UserProfileChangeRequest.Builder().setDisplayName(name).build();
                         firebaseUser.updateProfile(userProfileChangeRequest);
@@ -201,7 +233,7 @@ public class Edit_tutor_profile extends AppCompatActivity {
 
     private void showProfile(FirebaseUser firebaseUser) {
         String tutor = firebaseUser.getUid();
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Tutor");
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("tutors");
         reference.child(tutor).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -220,6 +252,11 @@ public class Edit_tutor_profile extends AppCompatActivity {
                     phone = tutor.getPhone();
                     gender = tutor.getGender();
                     DOB = tutor.getDOB();
+                    Glide
+                            .with(Edit_tutor_profile.this)
+                            .load(tutor.getImg())
+                            .centerCrop()
+                            .into(avatar);
                     address = tutor.getAddress();
                     subject = tutor.getSubject();
                     intro = tutor.getIntro();
@@ -230,6 +267,12 @@ public class Edit_tutor_profile extends AppCompatActivity {
                     edit_address.setAdapter(adapter);
                     edit_subject.setAdapter(adapter1);
                     edt_intro.setText(intro);
+
+                    String[] arrSubject = getResources().getStringArray(R.array.subject);
+                    String[] arrAddress = getResources().getStringArray(R.array.address);
+
+                    edit_subject.setSelection(Arrays.asList(arrSubject).indexOf(subject));
+                    edit_address.setSelection(Arrays.asList(arrAddress).indexOf(address));
 
                     if (gender.equals("Male")){
                         gender_selected = findViewById(R.id.Rbtn_male);
@@ -249,6 +292,7 @@ public class Edit_tutor_profile extends AppCompatActivity {
         });
     }
 
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.edit, menu);
@@ -258,6 +302,7 @@ public class Edit_tutor_profile extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
+        // update profile
         if (id == R.id.done) {
             updateProfile(firebaseUser);
             finish();
