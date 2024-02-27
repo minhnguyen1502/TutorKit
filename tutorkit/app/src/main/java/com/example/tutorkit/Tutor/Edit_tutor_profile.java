@@ -14,11 +14,11 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -40,6 +40,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
@@ -61,7 +63,10 @@ public class Edit_tutor_profile extends AppCompatActivity {
     private FirebaseUser firebaseUser;
     private ImageView avatar;
     private Uri imgURI;
+    private String img;
     private Phonenumber.PhoneNumber swissNumberProto;
+    DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("tutors");
+
 
 
     @Override
@@ -192,42 +197,43 @@ public class Edit_tutor_profile extends AppCompatActivity {
             gender_selected.requestFocus();
         }else {
 
-        // enter data into firebase
+//        // enter data into firebase
+//
+//            Tutor tutor = new Tutor(DOB, address,phone, gender, subject, intro, imgURI);
+//            // extract tutor reference from Database for register tutor
+//            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("tutors");
+//
+//            String tutorID = firebaseUser.getUid();
+//
+//            databaseReference.child(tutorID).setValue(tutor).addOnCompleteListener(new OnCompleteListener<Void>() {
+//                @Override
+//                public void onComplete(@NonNull Task<Void> task) {
+//                    if (task.isSuccessful()){
+//
+//                        // new display name
+//                        UserProfileChangeRequest userProfileChangeRequest = new UserProfileChangeRequest.Builder().setDisplayName(name).build();
+//                        firebaseUser.updateProfile(userProfileChangeRequest);
+//
+//                        Toast.makeText(Edit_tutor_profile.this, "Update success", Toast.LENGTH_SHORT).show();
+//
+//                        Intent i = new Intent(Edit_tutor_profile.this, Tutor_profile.class);
+//                        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|
+//                                Intent.FLAG_ACTIVITY_CLEAR_TASK|
+//                                Intent.FLAG_ACTIVITY_NEW_TASK);
+//                        startActivity(i);
+//                        finish();
+//                    }else {
+//                        try {
+//                            throw task.getException();
+//
+//                        }catch (Exception e){
+//                            Toast.makeText(Edit_tutor_profile.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+//                        }
+//                    }
+//                }
+//            });
+            updateTutor(firebaseUser, imgURI);
 
-            Tutor tutor = new Tutor(DOB, address,phone, gender, subject, intro);
-            // extract tutor reference from Database for register tutor
-            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("tutors");
-
-            String tutorID = firebaseUser.getUid();
-
-            databaseReference.child(tutorID).setValue(tutor).addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    if (task.isSuccessful()){
-
-
-                        // new display name
-                        UserProfileChangeRequest userProfileChangeRequest = new UserProfileChangeRequest.Builder().setDisplayName(name).build();
-                        firebaseUser.updateProfile(userProfileChangeRequest);
-
-                        Toast.makeText(Edit_tutor_profile.this, "Update success", Toast.LENGTH_SHORT).show();
-
-                        Intent i = new Intent(Edit_tutor_profile.this, Tutor_Profile.class);
-                        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|
-                                Intent.FLAG_ACTIVITY_CLEAR_TASK|
-                                Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(i);
-                        finish();
-                    }else {
-                        try {
-                            throw task.getException();
-
-                        }catch (Exception e){
-                            Toast.makeText(Edit_tutor_profile.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                }
-            });
         }
     }
 
@@ -291,6 +297,55 @@ public class Edit_tutor_profile extends AppCompatActivity {
             }
         });
     }
+    private void updateTutor(FirebaseUser firebaseUser, Uri img) {
+        StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+        StorageReference riversRef = storageRef.child("images/" + img.getLastPathSegment());
+        riversRef.putFile(img).continueWithTask(task -> {
+            if (!task.isSuccessful()) {
+                throw task.getException();
+            }
+            return riversRef.getDownloadUrl();
+        }).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                Uri downloadUri = task.getResult();
+                Log.e("TAG", "updateImage: " + downloadUri);
+//                createUser(firebaseUser, downloadUri.toString());
+                Tutor tutor = new Tutor(DOB, address,phone, gender, subject, intro, downloadUri.toString());
+
+                databaseReference.child(firebaseUser.getUid()).setValue(tutor).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+
+                        if (task.isSuccessful()){
+
+                        // new display name
+                        UserProfileChangeRequest userProfileChangeRequest = new UserProfileChangeRequest.Builder().setDisplayName(name).build();
+                        firebaseUser.updateProfile(userProfileChangeRequest);
+
+                        Toast.makeText(Edit_tutor_profile.this, "Update success", Toast.LENGTH_SHORT).show();
+
+                        Intent i = new Intent(Edit_tutor_profile.this, Tutor_profile.class);
+                        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|
+                                Intent.FLAG_ACTIVITY_CLEAR_TASK|
+                                Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(i);
+//                        finish();
+                    }else {
+                        try {
+                            throw task.getException();
+
+                        }catch (Exception e){
+                            Toast.makeText(Edit_tutor_profile.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }
+                });
+            } else {
+                Toast.makeText(Edit_tutor_profile.this, "fail", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
 
 
     @Override
@@ -305,7 +360,7 @@ public class Edit_tutor_profile extends AppCompatActivity {
         // update profile
         if (id == R.id.done) {
             updateProfile(firebaseUser);
-            finish();
+//            finish();
         }
         else {
             Toast.makeText(this, "Something Wrong", Toast.LENGTH_SHORT).show();

@@ -7,7 +7,6 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,7 +27,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class Tutor_Profile extends AppCompatActivity {
+public class Tutor_profile extends AppCompatActivity {
 
     private TextView txt_name, txt_email, txt_phone, txt_gender, txt_DOB, txt_address, txt_subject, txt_intro;
     private String name, email, phone, gender, DOB, address, subject, intro;
@@ -57,13 +56,11 @@ public class Tutor_Profile extends AppCompatActivity {
         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
 
         if (firebaseUser == null) {
-            Toast.makeText(Tutor_Profile.this, "Somthing wrong", Toast.LENGTH_SHORT).show();
+            Toast.makeText(Tutor_profile.this, "Somthing wrong", Toast.LENGTH_SHORT).show();
         } else {
             checkIfEmailVerified(firebaseUser);
             showProfile(firebaseUser);
         }
-
-
     }
 
     private void checkIfEmailVerified(FirebaseUser firebaseUser) {
@@ -73,7 +70,7 @@ public class Tutor_Profile extends AppCompatActivity {
     }
 
     private void showAlertDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(Tutor_Profile.this);
+        AlertDialog.Builder builder = new AlertDialog.Builder(Tutor_profile.this);
         builder.setTitle("Email not verified");
         builder.setMessage("Can not login without email  verification");
 
@@ -101,7 +98,7 @@ public class Tutor_Profile extends AppCompatActivity {
 
         //extracting tutor reference from database for registered tutor
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("tutors");
-        databaseReference.child(tutorID).addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseReference.child(tutorID).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Tutor tutor = snapshot.getValue(Tutor.class);
@@ -109,7 +106,7 @@ public class Tutor_Profile extends AppCompatActivity {
                     name = firebaseUser.getDisplayName();
                     email = firebaseUser.getEmail();
                     Glide
-                            .with(Tutor_Profile.this)
+                            .with(Tutor_profile.this)
                             .load(tutor.getImg())
                             .centerCrop()
                             .into(avatar);
@@ -134,7 +131,7 @@ public class Tutor_Profile extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(Tutor_Profile.this, "something wrong", Toast.LENGTH_SHORT).show();
+                Toast.makeText(Tutor_profile.this, "something wrong", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -149,19 +146,19 @@ public class Tutor_Profile extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.update_profile) {
-            Intent i = new Intent(Tutor_Profile.this, Edit_tutor_profile.class);
+            Intent i = new Intent(Tutor_profile.this, Edit_tutor_profile.class);
             startActivity(i);
             finish();
         } else if (id == R.id.update_email) {
-            Intent i = new Intent(Tutor_Profile.this, UpdateEmail.class);
+            Intent i = new Intent(Tutor_profile.this, UpdateEmail.class);
             startActivity(i);
             finish();
         } else if (id == R.id.update_password) {
-            Intent i = new Intent(Tutor_Profile.this, UpdatePassword.class);
+            Intent i = new Intent(Tutor_profile.this, UpdatePassword.class);
             startActivity(i);
             finish();
         } else if (id == R.id.home) {
-            Intent i = new Intent(Tutor_Profile.this, Tutor_home.class);
+            Intent i = new Intent(Tutor_profile.this, Tutor_home.class);
             startActivity(i);
             finish();
         } else {

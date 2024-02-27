@@ -13,7 +13,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.tutorkit.Tutor.Tutor_Profile;
+import com.example.tutorkit.Tutor.Tutor_profile;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -50,7 +50,7 @@ public class UpdatePassword extends AppCompatActivity {
 
         if (firebaseUser.equals("")){
             Toast.makeText(this, "Something wrong", Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(UpdatePassword.this, Tutor_Profile.class));
+            startActivity(new Intent(UpdatePassword.this, Tutor_profile.class));
             finish();
         } else {
             reAuthenticate(firebaseUser);
@@ -138,7 +138,7 @@ public class UpdatePassword extends AppCompatActivity {
                 public void onComplete(@NonNull Task<Void> task) {
                     if (task.isSuccessful()){
                         Toast.makeText(UpdatePassword.this, "updated password", Toast.LENGTH_SHORT).show();
-                        Intent i = new Intent(UpdatePassword.this, Tutor_Profile.class);
+                        Intent i = new Intent(UpdatePassword.this, Tutor_profile.class);
                         startActivity(i);
                         finish();
                     }else {

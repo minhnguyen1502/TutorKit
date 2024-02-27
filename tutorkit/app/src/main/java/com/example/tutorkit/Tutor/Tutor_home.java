@@ -7,13 +7,14 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.tutorkit.Login;
 import com.example.tutorkit.Models.Tutor;
 import com.example.tutorkit.R;
-import com.example.tutorkit.Student.Student;
 import com.example.tutorkit.Support;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -29,6 +30,7 @@ public class Tutor_home extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
     String name;
     TextView tv_name;
+    ImageView avatar;
 
 
 
@@ -38,6 +40,7 @@ public class Tutor_home extends AppCompatActivity {
         setContentView(R.layout.activity_tutor_home);
 
         tv_name = findViewById(R.id.tv_name);
+        avatar = findViewById(R.id.avatar);
 
         student = (ConstraintLayout) findViewById(R.id.student);
         calendar = (ConstraintLayout) findViewById(R.id.calendar);
@@ -55,13 +58,19 @@ public class Tutor_home extends AppCompatActivity {
 
         //extracting tutor reference from database for registered tutor
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("tutors");
-        databaseReference.child(tutorID).addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseReference.child(tutorID).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Tutor tutor = snapshot.getValue(Tutor.class);
                 if (tutor != null) {
                     name = firebaseUser.getDisplayName();
                     tv_name.setText(name);
+
+                    Glide
+                            .with(Tutor_home.this)
+                            .load(tutor.getImg())
+                            .centerCrop()
+                            .into(avatar);
 
                 }
             }
@@ -75,7 +84,7 @@ public class Tutor_home extends AppCompatActivity {
         student.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), Student.class);
+                Intent intent = new Intent(getApplicationContext(), Student_list.class);
                 startActivity(intent);
 
             }
@@ -120,7 +129,7 @@ public class Tutor_home extends AppCompatActivity {
         profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), Tutor_Profile.class);
+                Intent intent = new Intent(getApplicationContext(), Tutor_profile.class);
                 startActivity(intent);
 
             }

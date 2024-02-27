@@ -72,7 +72,7 @@ public class Tutor_register extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tutor_register);
 
-        login = (TextView) findViewById(R.id.txt_login);
+        login = findViewById(R.id.txt_login);
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -250,12 +250,12 @@ public class Tutor_register extends AppCompatActivity {
 
     // register Tutor
     private void registerTutor(String txt_name, String txt_email, String txt_dob, String txt_gender, String txt_phone, String txt_address, String txt_subject, String txt_intro, String txt_password, Uri img) {
-        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+            FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
 //        final  StorageReference imgReference  =  storageReference.child(System.currentTimeMillis()+"."+getFilesExtension(img));
-        // create profile
-        firebaseAuth.createUserWithEmailAndPassword(txt_email, txt_password).addOnCompleteListener(Tutor_register.this,
-                new OnCompleteListener<AuthResult>() {
+            // create profile
+            firebaseAuth.createUserWithEmailAndPassword(txt_email, txt_password).addOnCompleteListener(Tutor_register.this,
+                    new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
@@ -304,11 +304,13 @@ public class Tutor_register extends AppCompatActivity {
                                 Log.e("TAG", "updateImage: " + downloadUri);
                                 createUser(firebaseUser, downloadUri.toString());
                             } else {
-                                Toast.makeText(Tutor_register.this, "fail", Toast.LENGTH_SHORT).show();                            }
+                                Toast.makeText(Tutor_register.this, "fail", Toast.LENGTH_SHORT).show();
+                            }
                         });
                     }
+
                     private void createUser(FirebaseUser firebaseUser, String urlImage) {
-                        Tutor tutor = new Tutor(txt_dob,txt_address, txt_phone,  txt_gender, txt_subject, txt_intro, urlImage);
+                        Tutor tutor = new Tutor(txt_dob, txt_address, txt_phone, txt_gender, txt_subject, txt_intro, urlImage);
 
                         referenceProfile.child(firebaseUser.getUid()).setValue(tutor).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override

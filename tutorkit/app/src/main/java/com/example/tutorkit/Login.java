@@ -17,9 +17,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.tutorkit.Student.Student_home;
 import com.example.tutorkit.Tutor.Tutor_home;
-import com.example.tutorkit.Tutor.Tutor_register;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -31,8 +29,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import java.util.Objects;
 
 public class Login extends AppCompatActivity {
 
@@ -124,7 +120,7 @@ public class Login extends AppCompatActivity {
                                 }else {
                                     Toast.makeText(Login.this, "Login success", Toast.LENGTH_SHORT).show();
                                     //open home
-                                    Intent intent = new Intent(Login.this, Student_home.class);
+                                    Intent intent = new Intent(Login.this, com.example.tutorkit.Student.Student_home.class);
                                     startActivity(intent);
                                     finish();
                                 }

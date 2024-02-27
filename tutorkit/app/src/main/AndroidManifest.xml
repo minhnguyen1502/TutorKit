@@ -28,13 +28,16 @@
             android:name=".Student.Edit_student_profile"
             android:exported="false" />
         <activity
+            android:name=".Student.Student_profile"
+            android:exported="false" />
+        <activity
             android:name=".Tutor.Tutor_register"
             android:exported="false" />
         <activity
             android:name=".Tutor.Edit_tutor_profile"
             android:exported="false" />
         <activity
-            android:name=".Student.Student"
+            android:name=".Tutor.Student_list"
             android:exported="false" />
         <activity
             android:name=".Tutor.Tutor_home"
@@ -43,7 +46,7 @@
             android:name=".Support"
             android:exported="false" />
         <activity
-            android:name=".Tutor.Tutor_Profile"
+            android:name=".Tutor.Tutor_profile"
             android:exported="false" />
         <activity
             android:name=".Tutor.Assignment"

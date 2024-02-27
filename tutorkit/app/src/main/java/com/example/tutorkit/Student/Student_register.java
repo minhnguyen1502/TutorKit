@@ -28,7 +28,9 @@ import android.widget.Toast;
 
 import com.example.tutorkit.Login;
 import com.example.tutorkit.Models.Student;
+import com.example.tutorkit.Models.Tutor;
 import com.example.tutorkit.R;
+import com.example.tutorkit.Tutor.Tutor_register;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -40,6 +42,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
@@ -81,7 +85,6 @@ public class Student_register extends AppCompatActivity {
         edt_re_DOB = findViewById(R.id.edt_DOB);
         edt_re_phone = findViewById(R.id.edt_phone);
         edt_re_parent_phone = findViewById(R.id.edt_parent_phone);
-        avatar = findViewById(R.id.avatar);
         edt_re_password = findViewById(R.id.edt_password);
         edt_re_confirm_password = findViewById(R.id.edt_confirm_password);
 
@@ -112,31 +115,31 @@ public class Student_register extends AppCompatActivity {
             }
         });
 
-//        // upload avatar
-//        ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
-//                new ActivityResultContracts.StartActivityForResult(),
-//                new ActivityResultCallback<ActivityResult>() {
-//                    @Override
-//                    public void onActivityResult(ActivityResult result) {
-//                        if (result.getResultCode() == Activity.RESULT_OK) {
-//                            Intent data = result.getData();
-//                            imgURI = data.getData();
-//                            avatar.setImageURI(imgURI);
-//                        } else {
-//                            Toast.makeText(Student_register.this, "no image", Toast.LENGTH_SHORT).show();
-//                        }
-//                    }
-//                });
-//
-//        avatar.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent photo = new Intent();
-//                photo.setAction(Intent.ACTION_GET_CONTENT);
-//                photo.setType("image/*");
-//                activityResultLauncher.launch(photo);
-//            }
-//        });
+        // upload avatar
+        ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        if (result.getResultCode() == Activity.RESULT_OK) {
+                            Intent data = result.getData();
+                            imgURI = data.getData();
+                            avatar.setImageURI(imgURI);
+                        } else {
+                            Toast.makeText(Student_register.this, "no image", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+        avatar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent photo = new Intent();
+                photo.setAction(Intent.ACTION_GET_CONTENT);
+                photo.setType("image/*");
+                activityResultLauncher.launch(photo);
+            }
+        });
 
         Button register = findViewById(R.id.btn_register);
         register.setOnClickListener(new View.OnClickListener() {
@@ -191,10 +194,9 @@ public class Student_register extends AppCompatActivity {
                     Toast.makeText(Student_register.this, "Enter your name", Toast.LENGTH_SHORT).show();
                     edt_re_name.setError("Name is required");
                     edt_re_name.requestFocus();
+                }else if (imgURI == null) {
+                    Toast.makeText(Student_register.this, "No avatar", Toast.LENGTH_SHORT).show();
                 }
-//                else if (imgURI == null) {
-//                    Toast.makeText(Student_register.this, "No avatar", Toast.LENGTH_SHORT).show();
-//                }
                 else if (TextUtils.isEmpty(txt_email)) {
                     Toast.makeText(Student_register.this, "Enter your email", Toast.LENGTH_SHORT).show();
                     edt_re_email.setError("email is required");
@@ -256,14 +258,14 @@ public class Student_register extends AppCompatActivity {
                     edt_re_confirm_password.clearComposingText();
                 } else {
                     txt_gender = re_gender_selected.getText().toString();
-                    registerStudent(txt_name, txt_email, txt_DOB, txt_gender, txt_phone, txt_address, txt_phone_parent, txt_password);
+                    registerStudent(txt_name, txt_email, txt_DOB, txt_gender, txt_phone, txt_address, txt_phone_parent, txt_password,imgURI);
                 }
 
             }
         });
     }
 
-    private void registerStudent(String txt_name, String txt_email, String txt_dob, String txt_gender, String txt_phone, String txt_address, String txt_phone_parent, String txt_password) {
+    private void registerStudent(String txt_name, String txt_email, String txt_dob, String txt_gender, String txt_phone, String txt_address, String txt_phone_parent, String txt_password, Uri img) {
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
 //        final  StorageReference imgReference  =  storageReference.child(System.currentTimeMillis()+"."+getFilesExtension(img));
@@ -277,27 +279,9 @@ public class Student_register extends AppCompatActivity {
                             FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
 
                             // display name
-//                            UserProfileChangeRequest profileChangeRequest = new UserProfileChangeRequest.Builder().setDisplayName(txt_name).build();
-//                            firebaseUser.updateProfile(profileChangeRequest);
-
-                            Student student = new Student(txt_name, txt_address, txt_dob, txt_email, txt_gender, txt_phone, txt_phone_parent);
-
-                            referenceProfile.child(firebaseUser.getUid()).setValue(student).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-
-                                    if (task.isSuccessful()) {
-                                        // sent verification to mail
-                                        firebaseUser.sendEmailVerification();
-                                        Toast.makeText(Student_register.this, "Register success. please verify email", Toast.LENGTH_SHORT).show();
-
-                                    } else {
-                                        Toast.makeText(Student_register.this, "Register Failed. ", Toast.LENGTH_SHORT).show();
-
-                                    }
-                                }
-                            });
-
+                            UserProfileChangeRequest profileChangeRequest = new UserProfileChangeRequest.Builder().setDisplayName(txt_name).build();
+                            firebaseUser.updateProfile(profileChangeRequest);
+                            updateImageAndCreateStudent(firebaseUser, img);
                         } else {
                             try {
                                 throw task.getException();
@@ -319,6 +303,45 @@ public class Student_register extends AppCompatActivity {
                             }
                         }
                     }
+                    private void updateImageAndCreateStudent(FirebaseUser firebaseUser, Uri img) {
+                        StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+                        StorageReference riversRef = storageRef.child("images/" + img.getLastPathSegment());
+                        riversRef.putFile(img).continueWithTask(task -> {
+                            if (!task.isSuccessful()) {
+                                throw task.getException();
+                            }
+                            return riversRef.getDownloadUrl();
+                        }).addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                Uri downloadUri = task.getResult();
+                                Log.e("TAG", "updateImage: " + downloadUri);
+                                createUser(firebaseUser, downloadUri.toString());
+                            } else {
+                                Toast.makeText(Student_register.this, "fail", Toast.LENGTH_SHORT).show();                            }
+                        });
+                    }
+
+                    private void createUser(FirebaseUser firebaseUser, String urlImage) {
+                        Student student = new Student(txt_name,txt_dob, txt_gender,txt_address, txt_phone, txt_phone_parent, urlImage);
+
+                        referenceProfile.child(firebaseUser.getUid()).setValue(student).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+
+                                if (task.isSuccessful()) {
+                                    // sent verification to mail
+                                    firebaseUser.sendEmailVerification();
+                                    Toast.makeText(Student_register.this, "Register success. please verify email", Toast.LENGTH_SHORT).show();
+
+                                } else {
+                                    Toast.makeText(Student_register.this, "Register Failed. ", Toast.LENGTH_SHORT).show();
+
+                                }
+                            }
+                        });
+                    }
                 });
     }
+
+
 }

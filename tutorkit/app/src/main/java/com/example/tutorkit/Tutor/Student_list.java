@@ -1,21 +1,15 @@
-package com.example.tutorkit.Student;
+package com.example.tutorkit.Tutor;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
-import android.media.tv.TvContract;
 import android.os.Bundle;
-import androidx.appcompat.widget.SearchView;
+
 import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.example.tutorkit.R;
 
-public class Student extends AppCompatActivity {
+public class Student_list extends AppCompatActivity {
 
 
 
