@@ -67,7 +67,7 @@ public class Tutor_list extends AppCompatActivity {
     }
 
     private void showListTutors() {
-        databaseReference.child("tutors").addValueEventListener(new ValueEventListener() {
+        databaseReference.child("tutors").addListenerForSingleValueEvent(new ValueEventListener() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

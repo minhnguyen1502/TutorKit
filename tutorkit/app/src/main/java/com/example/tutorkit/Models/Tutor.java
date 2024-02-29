@@ -1,36 +1,17 @@
 package com.example.tutorkit.Models;
 
+import java.util.ArrayList;
+
 public class Tutor {
-    private String name, DOB, address, phone, gender, subject, introduction, img;
+    private String id, name, DOB, address, phone, gender, subject, introduction, img;
     private Boolean pick = true;
+    private ArrayList<String> listIdStudent;
 
     public Tutor() {
     }
 
-
-    public Tutor(String name, String DOB, String address, String phone, String gender, String subject, String introduction) {
-        this.name = name;
-        this.DOB = DOB;
-        this.address = address;
-        this.phone = phone;
-        this.gender = gender;
-        this.subject = subject;
-        this.introduction = introduction;
-    }
-
-    public Tutor(String name,String DOB, String address, String phone, String gender, String subject, String introduction, String img) {
-        this.name = name;
-        this.DOB = DOB;
-        this.address = address;
-        this.phone = phone;
-        this.gender = gender;
-        this.subject = subject;
-        this.introduction = introduction;
-        this.img = img;
-    }
-
-
-    public Tutor(String name, String DOB, String address, String phone, String gender, String subject, String introduction, String img, Boolean pick) {
+    public Tutor(String id, String name, String DOB, String address, String phone, String gender, String subject, String introduction, String img, Boolean pick, ArrayList<String> listIdStudent) {
+        this.id = id;
         this.name = name;
         this.DOB = DOB;
         this.address = address;
@@ -40,6 +21,47 @@ public class Tutor {
         this.introduction = introduction;
         this.img = img;
         this.pick = pick;
+        this.listIdStudent = listIdStudent;
+    }
+
+    public Tutor(String id, String name, String DOB, String address, String phone, String gender, String subject, String introduction, String img, Boolean pick) {
+        this.id = id;
+        this.name = name;
+        this.DOB = DOB;
+        this.address = address;
+        this.phone = phone;
+        this.gender = gender;
+        this.subject = subject;
+        this.introduction = introduction;
+        this.img = img;
+        this.pick = pick;
+    }
+
+    public Tutor(String name, String DOB, String address, String phone, String gender, String subject, String introduction, String img) {
+        this.name = name;
+        this.DOB = DOB;
+        this.address = address;
+        this.phone = phone;
+        this.gender = gender;
+        this.subject = subject;
+        this.introduction = introduction;
+        this.img = img;
+    }
+
+    public ArrayList<String> getListIdStudent() {
+        return listIdStudent;
+    }
+
+    public void setListIdStudent(ArrayList<String> listIdStudent) {
+        this.listIdStudent = listIdStudent;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getIntroduction() {
@@ -114,13 +136,5 @@ public class Tutor {
 
     public void setSubject(String subject) {
         this.subject = subject;
-    }
-
-    public String getIntro() {
-        return introduction;
-    }
-
-    public void setIntro(String introduction) {
-        this.introduction = introduction;
     }
 }

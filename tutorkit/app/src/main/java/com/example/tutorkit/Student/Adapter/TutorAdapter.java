@@ -59,7 +59,12 @@ public class TutorAdapter extends RecyclerView.Adapter<TutorAdapter.ViewHolder>{
         holder.choose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               FirebaseDatabase.getInstance().getReference("tutors").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("pick").setValue(!tutors.getPick());
+               FirebaseDatabase.getInstance().getReference("tutors")
+                       .child(tutors.getId())
+                       .child("pick").setValue(!tutors.getPick());
+                FirebaseDatabase.getInstance().getReference("tutors")
+                        .child(tutors.getId())
+                        .child("listIdStudent").child(FirebaseAuth.getInstance().getUid()).setValue("");
             }
         });
     }

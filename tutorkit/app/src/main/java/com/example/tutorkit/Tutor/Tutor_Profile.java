@@ -116,7 +116,7 @@ public class Tutor_profile extends AppCompatActivity {
                     DOB = tutor.getDOB();
                     address = tutor.getAddress();
                     subject = tutor.getSubject();
-                    intro = tutor.getIntro();
+                    intro = tutor.getIntroduction();
 
                     txt_name.setText(name);
                     txt_email.setText(email);

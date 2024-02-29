@@ -265,7 +265,7 @@ public class Edit_tutor_profile extends AppCompatActivity {
                             .into(avatar);
                     address = tutor.getAddress();
                     subject = tutor.getSubject();
-                    intro = tutor.getIntro();
+                    intro = tutor.getIntroduction();
 
                     edt_name.setText(name);
                     edt_DOB.setText(DOB);
@@ -310,7 +310,7 @@ public class Edit_tutor_profile extends AppCompatActivity {
                 Uri downloadUri = task.getResult();
                 Log.e("TAG", "updateImage: " + downloadUri);
 //                createUser(firebaseUser, downloadUri.toString());
-                Tutor tutor = new Tutor(DOB, address,phone, gender, subject, intro, downloadUri.toString());
+                Tutor tutor = new Tutor(name,DOB, address,phone, gender, subject, intro, downloadUri.toString());
 
                 databaseReference.child(firebaseUser.getUid()).setValue(tutor).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
