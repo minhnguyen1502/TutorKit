@@ -20,20 +20,37 @@ import com.example.tutorkit.R;
 import com.example.tutorkit.Student.Student_home;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
 public class TutorAdapter extends RecyclerView.Adapter<TutorAdapter.ViewHolder>{
     Context context;
     ArrayList<Tutor> tutorsArrayList;
+    ArrayList<String> listIdStudent;
     DatabaseReference databaseReference;
 
     public TutorAdapter(Context context, ArrayList<Tutor> usersItemArrayList) {
         this.context = context;
         this.tutorsArrayList = usersItemArrayList;
         databaseReference = FirebaseDatabase.getInstance().getReference();
+        listIdStudent = new ArrayList<>();
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Tutor tutor = snapshot.getValue(Tutor.class);
+                listIdStudent.addAll(tutor.getListIdStudent());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     @NonNull
@@ -59,15 +76,18 @@ public class TutorAdapter extends RecyclerView.Adapter<TutorAdapter.ViewHolder>{
         holder.choose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                listIdStudent.add(FirebaseAuth.getInstance().getUid());
                FirebaseDatabase.getInstance().getReference("tutors")
                        .child(tutors.getId())
                        .child("pick").setValue(!tutors.getPick());
                 FirebaseDatabase.getInstance().getReference("tutors")
                         .child(tutors.getId())
-                        .child("listIdStudent").child(FirebaseAuth.getInstance().getUid()).setValue("");
+                        .child("listIdStudent").setValue(listIdStudent);
             }
         });
+
     }
+
 
     @Override
     public int getItemCount() {
