@@ -254,7 +254,7 @@ public class Edit_tutor_profile extends AppCompatActivity {
                 edit_subject.setAdapter(adapter1);
                 
                 if (tutor != null){
-                    name = firebaseUser.getDisplayName();
+                    name = tutor.getName();
                     phone = tutor.getPhone();
                     gender = tutor.getGender();
                     DOB = tutor.getDOB();
@@ -318,7 +318,7 @@ public class Edit_tutor_profile extends AppCompatActivity {
 
                         if (task.isSuccessful()){
 
-                        // new display name
+//                        // new display name
                         UserProfileChangeRequest userProfileChangeRequest = new UserProfileChangeRequest.Builder().setDisplayName(name).build();
                         firebaseUser.updateProfile(userProfileChangeRequest);
 

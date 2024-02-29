@@ -1,13 +1,15 @@
 package com.example.tutorkit.Models;
 
 public class Tutor {
-    private  String  DOB, address, phone, gender, subject, introduction, img;
+    private String name, DOB, address, phone, gender, subject, introduction, img;
+    private Boolean pick = true;
 
     public Tutor() {
     }
 
 
-    public Tutor(String DOB, String address, String phone, String gender, String subject, String introduction) {
+    public Tutor(String name, String DOB, String address, String phone, String gender, String subject, String introduction) {
+        this.name = name;
         this.DOB = DOB;
         this.address = address;
         this.phone = phone;
@@ -16,7 +18,8 @@ public class Tutor {
         this.introduction = introduction;
     }
 
-    public Tutor(String DOB, String address, String phone, String gender, String subject, String introduction, String img) {
+    public Tutor(String name,String DOB, String address, String phone, String gender, String subject, String introduction, String img) {
+        this.name = name;
         this.DOB = DOB;
         this.address = address;
         this.phone = phone;
@@ -25,13 +28,43 @@ public class Tutor {
         this.introduction = introduction;
         this.img = img;
     }
-    //    public String getName() {
-//        return name;
-//    }
-//
-//    public void setName(String name) {
-//        this.name = name;
-//    }
+
+
+    public Tutor(String name, String DOB, String address, String phone, String gender, String subject, String introduction, String img, Boolean pick) {
+        this.name = name;
+        this.DOB = DOB;
+        this.address = address;
+        this.phone = phone;
+        this.gender = gender;
+        this.subject = subject;
+        this.introduction = introduction;
+        this.img = img;
+        this.pick = pick;
+    }
+
+    public String getIntroduction() {
+        return introduction;
+    }
+
+    public void setIntroduction(String introduction) {
+        this.introduction = introduction;
+    }
+
+    public Boolean getPick() {
+        return pick;
+    }
+
+    public void setPick(Boolean pick) {
+        this.pick = pick;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
 
     public String getImg() {

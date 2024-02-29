@@ -58,12 +58,12 @@ public class Tutor_home extends AppCompatActivity {
 
         //extracting tutor reference from database for registered tutor
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("tutors");
-        databaseReference.child(tutorID).addValueEventListener(new ValueEventListener() {
+        databaseReference.child(tutorID).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Tutor tutor = snapshot.getValue(Tutor.class);
                 if (tutor != null) {
-                    name = firebaseUser.getDisplayName();
+                    name = tutor.getName();
                     tv_name.setText(name);
 
                     Glide

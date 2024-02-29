@@ -1,61 +1,49 @@
-package com.example.tutorkit.Tutor;
+package com.example.tutorkit.Student;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.appcompat.widget.Toolbar;
-
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.tutorkit.R;
-import com.example.tutorkit.UpdateEmail;
-import com.example.tutorkit.UpdatePassword;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
-public class Student_list extends AppCompatActivity {
-
-
+public class Your_tutor extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_student_list);
+        setContentView(R.layout.activity_your_tutor);
 
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(myToolbar);
+        TextView list_tutor = findViewById(R.id.txt_list_tutor);
 
-        FirebaseDatabase.getInstance().getReference("tutors").child("SzD4Qw7ClDRbm7HuqMTHaa5OcOB2").addValueEventListener(new ValueEventListener() {
+        list_tutor.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Log.e("TAG", "onDataChange: ");
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
+            public void onClick(View view) {
+                startActivity(new Intent(Your_tutor.this, Tutor_list
+                        .class));
             }
         });
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(myToolbar);
     }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.tool_bar, menu);
         return true;
     }
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.home) {
-            Intent i = new Intent(Student_list.this, Tutor_home.class);
+            Intent i = new Intent(Your_tutor.this, Student_home.class);
             startActivity(i);
             finish();
         } else if (id == R.id.action_search) {
@@ -67,5 +55,4 @@ public class Student_list extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
 }

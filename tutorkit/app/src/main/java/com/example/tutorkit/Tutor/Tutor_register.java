@@ -262,9 +262,6 @@ public class Tutor_register extends AppCompatActivity {
 
                             FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
 
-                            // display name
-                            UserProfileChangeRequest profileChangeRequest = new UserProfileChangeRequest.Builder().setDisplayName(txt_name).build();
-                            firebaseUser.updateProfile(profileChangeRequest);
                             updateImageAndCreateUser(firebaseUser, img);
 
                         } else {
@@ -308,9 +305,8 @@ public class Tutor_register extends AppCompatActivity {
                             }
                         });
                     }
-
                     private void createUser(FirebaseUser firebaseUser, String urlImage) {
-                        Tutor tutor = new Tutor(txt_dob, txt_address, txt_phone, txt_gender, txt_subject, txt_intro, urlImage);
+                        Tutor tutor = new Tutor(txt_name,txt_dob, txt_address, txt_phone, txt_gender, txt_subject, txt_intro, urlImage);
 
                         referenceProfile.child(firebaseUser.getUid()).setValue(tutor).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
