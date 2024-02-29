@@ -5,12 +5,12 @@ import java.util.ArrayList;
 public class Tutor {
     private String id, name, DOB, address, phone, gender, subject, introduction, img;
     private Boolean pick = true;
-    private ArrayList<String> listIdStudent;
+    private String IdStudent;
 
     public Tutor() {
     }
 
-    public Tutor(String id, String name, String DOB, String address, String phone, String gender, String subject, String introduction, String img, Boolean pick, ArrayList<String> listIdStudent) {
+    public Tutor(String id, String name, String DOB, String address, String phone, String gender, String subject, String introduction, String img, Boolean pick, String IdStudent) {
         this.id = id;
         this.name = name;
         this.DOB = DOB;
@@ -21,7 +21,7 @@ public class Tutor {
         this.introduction = introduction;
         this.img = img;
         this.pick = pick;
-        this.listIdStudent = listIdStudent;
+        this.IdStudent = IdStudent;
     }
 
     public Tutor(String id, String name, String DOB, String address, String phone, String gender, String subject, String introduction, String img, Boolean pick) {
@@ -48,12 +48,12 @@ public class Tutor {
         this.img = img;
     }
 
-    public ArrayList<String> getListIdStudent() {
-        return listIdStudent;
+    public String getIdStudent() {
+        return IdStudent;
     }
 
-    public void setListIdStudent(ArrayList<String> listIdStudent) {
-        this.listIdStudent = listIdStudent;
+    public void setIdStudent(String IdStudent) {
+        this.IdStudent = IdStudent;
     }
 
     public String getId() {

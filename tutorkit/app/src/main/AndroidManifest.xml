@@ -13,6 +13,9 @@
         android:theme="@style/Theme.Tutorkit"
         tools:targetApi="31">
         <activity
+            android:name=".Tutor.Your_Student"
+            android:exported="false" />
+        <activity
             android:name=".Student.Your_tutor"
             android:exported="false" />
         <activity
