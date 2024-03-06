@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.hardware.camera2.CameraExtensionSession;
 import android.os.Bundle;
 
 import androidx.appcompat.widget.Toolbar;
@@ -18,6 +19,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.tutorkit.Models.StatusAddTutor;
 import com.example.tutorkit.Models.Student;
 import com.example.tutorkit.Models.Tutor;
 import com.example.tutorkit.R;
@@ -61,10 +63,13 @@ public class Student_list extends AppCompatActivity {
 
         studentArrayList = new ArrayList<>();
 
+        adapter = new StudentAdapter(Student_list.this, studentArrayList);
+        recyclerView.setAdapter(adapter);
+
         your_student.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(Student_list.this, Your_tutor.class));
+                startActivity(new Intent(Student_list.this, Your_Student.class));
             }
         });
 
@@ -88,17 +93,20 @@ public class Student_list extends AppCompatActivity {
     }
 
     private void showListStudents() {
-        databaseReference.child("tutors").child(FirebaseAuth.getInstance().getUid()).child("IdStudent");
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference("tutors").child(FirebaseAuth.getInstance().getUid()).child("IdStudent").addListenerForSingleValueEvent(new ValueEventListener() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    idStudent.clear();
+                idStudent.clear();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-//                    if (!dataSnapshot.getValue(Boolean.class)){
-//                           idStudent.add(dataSnapshot.getKey());
-//                    }
-                    Log.e("TAG", "test: "+ dataSnapshot.getValue());
+                    StatusAddTutor statusAddTutor = dataSnapshot.getValue(StatusAddTutor.class);
+                    try {
+                        if (!statusAddTutor.getStatus()) {
+                            idStudent.add(statusAddTutor.getIdStudent());
+                        }
+                    }catch (Exception e){
+                        Log.e("TAG", "onDataChange: "+e.getMessage() );
+                    }
                 }
                 if (idStudent.size()>0){
                     for (int i =0; i<idStudent.size();i++){
@@ -106,6 +114,7 @@ public class Student_list extends AppCompatActivity {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
                                 studentArrayList.add(snapshot.getValue(Student.class));
+                                adapter.notifyDataSetChanged();
                             }
 
                             @Override
@@ -115,11 +124,8 @@ public class Student_list extends AppCompatActivity {
                         });
                     }
 
+                }else {
                 }
-                adapter = new StudentAdapter(Student_list.this, studentArrayList);
-                recyclerView.setAdapter(adapter);
-                adapter.notifyDataSetChanged();
-
             }
 
             @Override

@@ -6,29 +6,29 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.tutorkit.Models.StatusAddTutor;
 import com.example.tutorkit.Models.Student;
 import com.example.tutorkit.Models.Tutor;
 import com.example.tutorkit.R;
 import com.example.tutorkit.Student.Adapter.TutorAdapter;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
-public class StudentAdapter  extends RecyclerView.Adapter<StudentAdapter.ViewHolder>{
+public class Your_StudentAdpter extends RecyclerView.Adapter<Your_StudentAdpter.ViewHolder> {
+
     Context context;
     ArrayList<Student> studentArrayList;
     DatabaseReference databaseReference;
 
-    public StudentAdapter(Context context, ArrayList<Student> studentArrayList) {
+    public Your_StudentAdpter(Context context, ArrayList<Student> studentArrayList) {
         this.context = context;
         this.studentArrayList = studentArrayList;
         databaseReference = FirebaseDatabase.getInstance().getReference();
@@ -36,14 +36,14 @@ public class StudentAdapter  extends RecyclerView.Adapter<StudentAdapter.ViewHol
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public Your_StudentAdpter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(context);
-        View view = layoutInflater.inflate(R.layout.student, parent, false);
-        return new ViewHolder(view);
+        View view = layoutInflater.inflate(R.layout.your_student, parent, false);
+        return new Your_StudentAdpter.ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull Your_StudentAdpter.ViewHolder holder, int position) {
         Student students = studentArrayList.get(position);
 
 //         Glide
@@ -52,46 +52,30 @@ public class StudentAdapter  extends RecyclerView.Adapter<StudentAdapter.ViewHol
 //                .centerCrop()
 //                .into(holder.avatar);
         holder.txtName.setText(students.getName());
-
-        holder.confirm.setOnClickListener(new View.OnClickListener() {
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FirebaseDatabase.getInstance().getReference("tutors")
-                        .child("IdStudent").child(FirebaseAuth.getInstance().getUid())
-                        .setValue(new StatusAddTutor(FirebaseAuth.getInstance().getUid(), true));
-                Toast.makeText(context, "ok", Toast.LENGTH_SHORT).show();
-
+                Toast.makeText(context, "I clicked this student", Toast.LENGTH_SHORT).show();
             }
         });
-        holder.cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FirebaseDatabase.getInstance().getReference("tutors")
-                        .child("IdStudent").child(FirebaseAuth.getInstance().getUid())
-                        .setValue(new StatusAddTutor(FirebaseAuth.getInstance().getUid(), false));
-                Toast.makeText(context, "cancel", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }   
+    }
 
     @Override
     public int getItemCount() {
-        return studentArrayList.size();
+       return studentArrayList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView txtName;
         ImageView avatar;
-        Button confirm, cancel;
+        LinearLayout linearLayout;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             avatar = itemView.findViewById(R.id.avatar);
             txtName = itemView.findViewById(R.id.name);
-
-            confirm = itemView.findViewById(R.id.btn_confirm);
-            cancel = itemView.findViewById(R.id.btn_cancel);
+            linearLayout = itemView.findViewById(R.id.linear);
         }
     }
 }

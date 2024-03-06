@@ -18,9 +18,8 @@ import com.example.tutorkit.R;
 import com.example.tutorkit.Support;
 import com.example.tutorkit.Tutor.Assignment;
 import com.example.tutorkit.Tutor.Grade;
-import com.example.tutorkit.Tutor.Student_list;
 import com.example.tutorkit.Tutor.Time_table;
-import com.example.tutorkit.Tutor.Tuition;
+import com.example.tutorkit.Tutor.Tuition_page;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -121,7 +120,7 @@ public class Student_home extends AppCompatActivity {
         tuition.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), Tuition.class);
+                Intent intent = new Intent(getApplicationContext(), Tuition_page.class);
                 startActivity(intent);
 
             }

@@ -29,6 +29,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.tutorkit.Login;
+import com.example.tutorkit.Models.StatusAddTutor;
 import com.example.tutorkit.Models.Tutor;
 import com.example.tutorkit.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -306,8 +307,7 @@ public class Tutor_register extends AppCompatActivity {
                         });
                     }
                     private void createUser(FirebaseUser firebaseUser, String urlImage) {
-                        Tutor tutor = new Tutor(firebaseUser.getUid(),txt_name,txt_dob, txt_address, txt_phone, txt_gender, txt_subject, txt_intro, urlImage,true);
-
+                        Tutor tutor = new Tutor(firebaseUser.getUid(), txt_name, txt_dob, txt_address, txt_phone, txt_gender, txt_subject, txt_intro, urlImage, new StatusAddTutor());
                         referenceProfile.child(firebaseUser.getUid()).setValue(tutor).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {

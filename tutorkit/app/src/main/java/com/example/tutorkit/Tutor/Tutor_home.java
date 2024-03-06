@@ -120,7 +120,7 @@ public class Tutor_home extends AppCompatActivity {
         tuition.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), Tuition.class);
+                Intent intent = new Intent(getApplicationContext(), Tuition_page.class);
                 startActivity(intent);
 
             }

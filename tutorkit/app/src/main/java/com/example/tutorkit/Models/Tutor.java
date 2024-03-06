@@ -4,13 +4,12 @@ import java.util.ArrayList;
 
 public class Tutor {
     private String id, name, DOB, address, phone, gender, subject, introduction, img;
-    private Boolean pick = true;
-    private String IdStudent;
+    private StatusAddTutor statusAddTutor;
 
     public Tutor() {
     }
 
-    public Tutor(String id, String name, String DOB, String address, String phone, String gender, String subject, String introduction, String img, Boolean pick, String IdStudent) {
+    public Tutor(String id, String name, String DOB, String address, String phone, String gender, String subject, String introduction, String img, StatusAddTutor statusAddTutor) {
         this.id = id;
         this.name = name;
         this.DOB = DOB;
@@ -20,21 +19,7 @@ public class Tutor {
         this.subject = subject;
         this.introduction = introduction;
         this.img = img;
-        this.pick = pick;
-        this.IdStudent = IdStudent;
-    }
-
-    public Tutor(String id, String name, String DOB, String address, String phone, String gender, String subject, String introduction, String img, Boolean pick) {
-        this.id = id;
-        this.name = name;
-        this.DOB = DOB;
-        this.address = address;
-        this.phone = phone;
-        this.gender = gender;
-        this.subject = subject;
-        this.introduction = introduction;
-        this.img = img;
-        this.pick = pick;
+        this.statusAddTutor = statusAddTutor;
     }
 
     public Tutor(String name, String DOB, String address, String phone, String gender, String subject, String introduction, String img) {
@@ -48,13 +33,20 @@ public class Tutor {
         this.img = img;
     }
 
-    public String getIdStudent() {
-        return IdStudent;
+    public StatusAddTutor getStatusAddTutor() {
+        return statusAddTutor;
     }
 
-    public void setIdStudent(String IdStudent) {
-        this.IdStudent = IdStudent;
+    public void setStatusAddTutor(StatusAddTutor statusAddTutor) {
+        this.statusAddTutor = statusAddTutor;
     }
+    //    public String getIdStudent() {
+//        return IdStudent;
+//    }
+//
+//    public void setIdStudent(String IdStudent) {
+//        this.IdStudent = IdStudent;
+//    }
 
     public String getId() {
         return id;
@@ -72,13 +64,13 @@ public class Tutor {
         this.introduction = introduction;
     }
 
-    public Boolean getPick() {
-        return pick;
-    }
-
-    public void setPick(Boolean pick) {
-        this.pick = pick;
-    }
+//    public Boolean getPick() {
+//        return pick;
+//    }
+//
+//    public void setPick(Boolean pick) {
+//        this.pick = pick;
+//    }
 
     public String getName() {
         return name;

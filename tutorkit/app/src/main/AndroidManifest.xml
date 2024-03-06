@@ -61,7 +61,7 @@
             android:name=".Tutor.Assignment"
             android:exported="false" />
         <activity
-            android:name=".Tutor.Tuition"
+            android:name=".Tutor.Tuition_page"
             android:exported="false" />
         <activity
             android:name=".Tutor.Time_table"

@@ -22,6 +22,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.tutorkit.Models.Tuition;
 import com.example.tutorkit.R;
 import com.example.tutorkit.Tutor.Adapter.TuitionAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -34,7 +35,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Tuition extends AppCompatActivity {
+public class Tuition_page extends AppCompatActivity {
     DatabaseReference databaseReference;
 
     RecyclerView recyclerView;
@@ -50,7 +51,7 @@ public class Tuition extends AppCompatActivity {
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
 
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true); // work offline
+//        FirebaseDatabase.getInstance().setPersistenceEnabled(true); // work offline
 //        Objects.requireNonNull(getSupportActionBar()).hide();
 
         databaseReference = FirebaseDatabase.getInstance().getReference();
@@ -61,12 +62,12 @@ public class Tuition extends AppCompatActivity {
 
         tuitionArrayList = new ArrayList<>();
 
-        btn_add = findViewById(R.id.buttonAdd);
+        btn_add = findViewById(R.id.add);
         btn_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ViewDialogAdd viewDialogAdd = new ViewDialogAdd();
-                viewDialogAdd.showDialog(Tuition.this);
+                viewDialogAdd.showDialog(Tuition_page.this);
             }
         });
 
@@ -83,7 +84,7 @@ public class Tuition extends AppCompatActivity {
                     Tuition tuition = dataSnapshot.getValue(Tuition.class);
                     tuitionArrayList.add(tuition);
                 }
-//                adapter = new TuitionAdapter(Tuition.this, tuitionArrayList);
+                adapter = new TuitionAdapter(Tuition_page.this, tuitionArrayList);
                 recyclerView.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
             }
@@ -104,7 +105,7 @@ public class Tuition extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.home) {
-            Intent i = new Intent(Tuition.this, Tutor_home.class);
+            Intent i = new Intent(Tuition_page.this, Tutor_home.class);
             startActivity(i);
             finish();
         } else if (id == R.id.action_search) {
@@ -128,9 +129,7 @@ public class Tuition extends AppCompatActivity {
             EditText edtAmount = dialog.findViewById(R.id.edt_amount);
             EditText edtPrice = dialog.findViewById(R.id.edt_price);
             EditText edtDateline = dialog.findViewById(R.id.edt_date);
-            TextView txtTotal = dialog.findViewById(R.id.txt_total);
-
-
+            EditText txtTotal = dialog.findViewById(R.id.txt_total);
 
             Button buttonAdd = dialog.findViewById(R.id.buttonAdd);
             Button buttonCancel = dialog.findViewById(R.id.buttonCancel);
@@ -150,11 +149,11 @@ public class Tuition extends AppCompatActivity {
                     int amount = Integer.parseInt(edtAmount.getText().toString());
                     int price = Integer.parseInt(edtPrice.getText().toString());
                     String dateline = edtDateline.getText().toString();
+
                     int total = Integer.parseInt(txtTotal.getText().toString());
 
-//                    Tuition tuition = new Tuition(id, name,dateline,amount,price,total);
-
-//                        databaseReference.child("tuition").child(id).setValue(tuition);
+                        databaseReference.child("tuition").child(id)
+                                .setValue(new Tuition(id,name,dateline, amount,price,total));
                         Toast.makeText(context, "DONE!", Toast.LENGTH_SHORT).show();
                         dialog.dismiss();
                 }

@@ -35,6 +35,8 @@ public class TuitionAdapter extends RecyclerView.Adapter<TuitionAdapter.ViewHold
         databaseReference = FirebaseDatabase.getInstance().getReference();
     }
 
+
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -115,7 +117,7 @@ public class TuitionAdapter extends RecyclerView.Adapter<TuitionAdapter.ViewHold
             EditText edt_amount = dialog.findViewById(R.id.edt_amount);
             EditText edt_price = dialog.findViewById(R.id.edt_price);
             EditText edt_dateline = dialog.findViewById(R.id.edt_date);
-            TextView txt_total = dialog.findViewById(R.id.txt_total);
+            EditText txt_total = dialog.findViewById(R.id.txt_total);
 
             edt_name.setText(name);
             edt_amount.setText(amount);

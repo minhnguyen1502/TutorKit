@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.ViewTarget;
+import com.example.tutorkit.Models.StatusAddTutor;
 import com.example.tutorkit.Models.Tutor;
 import com.example.tutorkit.R;
 import com.example.tutorkit.Student.Student_home;
@@ -33,9 +34,9 @@ public class TutorAdapter extends RecyclerView.Adapter<TutorAdapter.ViewHolder>{
     ArrayList<Tutor> tutorsArrayList;
     DatabaseReference databaseReference;
 
-    public TutorAdapter(Context context, ArrayList<Tutor> usersItemArrayList) {
+    public TutorAdapter(Context context, ArrayList<Tutor> tutorsArrayList) {
         this.context = context;
-        this.tutorsArrayList = usersItemArrayList;
+        this.tutorsArrayList = tutorsArrayList;
         databaseReference = FirebaseDatabase.getInstance().getReference();
     }
 
@@ -64,12 +65,11 @@ public class TutorAdapter extends RecyclerView.Adapter<TutorAdapter.ViewHolder>{
             @Override
             public void onClick(View view) {
 //                listIdStudent.add(FirebaseAuth.getInstance().getUid());
-               FirebaseDatabase.getInstance().getReference("tutors")
-                       .child(tutors.getId())
-                       .child("pick").setValue(!tutors.getPick());
                 FirebaseDatabase.getInstance().getReference("tutors")
                         .child(tutors.getId())
-                        .child("IdStudent").child(FirebaseAuth.getInstance().getUid()).setValue(false);
+                        .child("IdStudent").child(FirebaseAuth.getInstance().getUid())
+                        .setValue(new StatusAddTutor(FirebaseAuth.getInstance().getUid(), false));
+
                 Toast.makeText(context, "I liked this tutor", Toast.LENGTH_SHORT).show();
             }
         });
