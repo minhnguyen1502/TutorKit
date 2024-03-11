@@ -1,7 +1,6 @@
 package com.example.tutorkit.Student.Adapter;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,19 +12,12 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.ViewTarget;
-import com.example.tutorkit.Models.StatusAddTutor;
+import com.example.tutorkit.Models.StatusAdd;
 import com.example.tutorkit.Models.Tutor;
 import com.example.tutorkit.R;
-import com.example.tutorkit.Student.Student_home;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -68,7 +60,7 @@ public class TutorAdapter extends RecyclerView.Adapter<TutorAdapter.ViewHolder>{
                 FirebaseDatabase.getInstance().getReference("tutors")
                         .child(tutors.getId())
                         .child("IdStudent").child(FirebaseAuth.getInstance().getUid())
-                        .setValue(new StatusAddTutor(FirebaseAuth.getInstance().getUid(), false));
+                        .setValue(new StatusAdd(FirebaseAuth.getInstance().getUid(), false));
 
                 Toast.makeText(context, "I liked this tutor", Toast.LENGTH_SHORT).show();
             }

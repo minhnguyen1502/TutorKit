@@ -1,15 +1,13 @@
 package com.example.tutorkit.Models;
 
-import java.util.ArrayList;
-
 public class Tutor {
     private String id, name, DOB, address, phone, gender, subject, introduction, img;
-    private StatusAddTutor statusAddTutor;
+    private StatusAdd statusAdd;
 
     public Tutor() {
     }
 
-    public Tutor(String id, String name, String DOB, String address, String phone, String gender, String subject, String introduction, String img, StatusAddTutor statusAddTutor) {
+    public Tutor(String id, String name, String DOB, String address, String phone, String gender, String subject, String introduction, String img, StatusAdd statusAdd) {
         this.id = id;
         this.name = name;
         this.DOB = DOB;
@@ -19,7 +17,7 @@ public class Tutor {
         this.subject = subject;
         this.introduction = introduction;
         this.img = img;
-        this.statusAddTutor = statusAddTutor;
+        this.statusAdd = statusAdd;
     }
 
     public Tutor(String name, String DOB, String address, String phone, String gender, String subject, String introduction, String img) {
@@ -33,12 +31,12 @@ public class Tutor {
         this.img = img;
     }
 
-    public StatusAddTutor getStatusAddTutor() {
-        return statusAddTutor;
+    public StatusAdd getStatusAddTutor() {
+        return statusAdd;
     }
 
-    public void setStatusAddTutor(StatusAddTutor statusAddTutor) {
-        this.statusAddTutor = statusAddTutor;
+    public void setStatusAddTutor(StatusAdd statusAdd) {
+        this.statusAdd = statusAdd;
     }
     //    public String getIdStudent() {
 //        return IdStudent;

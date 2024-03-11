@@ -1,7 +1,9 @@
 package com.example.tutorkit.Models;
 
 public class Student {
-    private String name, DOB, gender, address, phone, parent_phone, img;
+    private String id,name, DOB, gender, address, phone, parent_phone, img;
+
+    private StatusAdd statusAdd;
 
     public Student() {
     }
@@ -23,6 +25,34 @@ public class Student {
         this.phone = phone;
         this.parent_phone = parent_phone;
         this.img = img;
+    }
+
+    public Student(String id, String name, String DOB, String gender, String address, String phone, String parent_phone, String img, StatusAdd statusAdd) {
+        this.id = id;
+        this.name = name;
+        this.DOB = DOB;
+        this.gender = gender;
+        this.address = address;
+        this.phone = phone;
+        this.parent_phone = parent_phone;
+        this.img = img;
+        this.statusAdd = statusAdd;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public StatusAdd getStatusAdd() {
+        return statusAdd;
+    }
+
+    public void setStatusAdd(StatusAdd statusAdd) {
+        this.statusAdd = statusAdd;
     }
 
     public String getImg() {

@@ -27,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.tutorkit.Login;
+import com.example.tutorkit.Models.StatusAdd;
 import com.example.tutorkit.Models.Student;
 import com.example.tutorkit.Models.Tutor;
 import com.example.tutorkit.R;
@@ -322,7 +323,7 @@ public class Student_register extends AppCompatActivity {
                     }
 
                     private void createUser(FirebaseUser firebaseUser, String urlImage) {
-                        Student student = new Student(txt_name,txt_dob, txt_gender,txt_address, txt_phone, txt_phone_parent, urlImage);
+                        Student student = new Student(firebaseUser.getUid(),txt_name,txt_dob, txt_gender,txt_address, txt_phone, txt_phone_parent, urlImage,new StatusAdd());
 
                         referenceProfile.child(firebaseUser.getUid()).setValue(student).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override

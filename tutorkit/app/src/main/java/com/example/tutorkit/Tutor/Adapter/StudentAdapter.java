@@ -12,11 +12,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.tutorkit.Models.StatusAddTutor;
+import com.example.tutorkit.Models.StatusAdd;
 import com.example.tutorkit.Models.Student;
-import com.example.tutorkit.Models.Tutor;
 import com.example.tutorkit.R;
-import com.example.tutorkit.Student.Adapter.TutorAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -56,10 +54,12 @@ public class StudentAdapter  extends RecyclerView.Adapter<StudentAdapter.ViewHol
         holder.confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FirebaseDatabase.getInstance().getReference("tutors")
-                        .child("IdStudent").child(FirebaseAuth.getInstance().getUid())
-                        .setValue(new StatusAddTutor(FirebaseAuth.getInstance().getUid(), true));
-                Toast.makeText(context, "ok", Toast.LENGTH_SHORT).show();
+                FirebaseDatabase.getInstance().getReference("Student")
+                        .child(students.getId())
+                        .child("IdTutor").child(FirebaseAuth.getInstance().getUid())
+                        .setValue(new StatusAdd(FirebaseAuth.getInstance().getUid(), false));
+
+                Toast.makeText(context, "I choose this student", Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -68,7 +68,7 @@ public class StudentAdapter  extends RecyclerView.Adapter<StudentAdapter.ViewHol
             public void onClick(View view) {
                 FirebaseDatabase.getInstance().getReference("tutors")
                         .child("IdStudent").child(FirebaseAuth.getInstance().getUid())
-                        .setValue(new StatusAddTutor(FirebaseAuth.getInstance().getUid(), false));
+                        .setValue(new StatusAdd(FirebaseAuth.getInstance().getUid(), false));
                 Toast.makeText(context, "cancel", Toast.LENGTH_SHORT).show();
             }
         });

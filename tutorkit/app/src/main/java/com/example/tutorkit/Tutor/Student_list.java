@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.hardware.camera2.CameraExtensionSession;
 import android.os.Bundle;
 
 import androidx.appcompat.widget.Toolbar;
@@ -19,16 +18,10 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.tutorkit.Models.StatusAddTutor;
+import com.example.tutorkit.Models.StatusAdd;
 import com.example.tutorkit.Models.Student;
-import com.example.tutorkit.Models.Tutor;
 import com.example.tutorkit.R;
-import com.example.tutorkit.Student.Adapter.TutorAdapter;
-import com.example.tutorkit.Student.Tutor_list;
-import com.example.tutorkit.Student.Your_tutor;
 import com.example.tutorkit.Tutor.Adapter.StudentAdapter;
-import com.example.tutorkit.UpdateEmail;
-import com.example.tutorkit.UpdatePassword;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -79,30 +72,22 @@ public class Student_list extends AppCompatActivity {
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
 
-//        FirebaseDatabase.getInstance().getReference("tutors").child("SzD4Qw7ClDRbm7HuqMTHaa5OcOB2").addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                Log.e("TAG", "onDataChange: ");
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//            }
-//        });
     }
 
     private void showListStudents() {
-        FirebaseDatabase.getInstance().getReference("tutors").child(FirebaseAuth.getInstance().getUid()).child("IdStudent").addListenerForSingleValueEvent(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference("tutors")
+                .child(FirebaseAuth.getInstance().getUid())
+                .child("IdStudent")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 idStudent.clear();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    StatusAddTutor statusAddTutor = dataSnapshot.getValue(StatusAddTutor.class);
+                    StatusAdd statusAdd = dataSnapshot.getValue(StatusAdd.class);
                     try {
-                        if (!statusAddTutor.getStatus()) {
-                            idStudent.add(statusAddTutor.getIdStudent());
+                        if (!statusAdd.getStatus()) {
+                            idStudent.add(statusAdd.getIdList());
                         }
                     }catch (Exception e){
                         Log.e("TAG", "onDataChange: "+e.getMessage() );
@@ -110,7 +95,8 @@ public class Student_list extends AppCompatActivity {
                 }
                 if (idStudent.size()>0){
                     for (int i =0; i<idStudent.size();i++){
-                        databaseReference.child("Student").child(idStudent.get(i)).addListenerForSingleValueEvent(new ValueEventListener() {
+                        databaseReference.child("Student").child(idStudent.get(i))
+                                .addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
                                 studentArrayList.add(snapshot.getValue(Student.class));

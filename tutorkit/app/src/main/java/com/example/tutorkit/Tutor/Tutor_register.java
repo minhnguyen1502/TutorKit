@@ -9,7 +9,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
-import android.content.ContentResolver;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -17,7 +16,6 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
-import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -29,7 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.tutorkit.Login;
-import com.example.tutorkit.Models.StatusAddTutor;
+import com.example.tutorkit.Models.StatusAdd;
 import com.example.tutorkit.Models.Tutor;
 import com.example.tutorkit.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -40,7 +38,6 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -300,6 +297,7 @@ public class Tutor_register extends AppCompatActivity {
                             if (task.isSuccessful()) {
                                 Uri downloadUri = task.getResult();
                                 Log.e("TAG", "updateImage: " + downloadUri);
+                                //convert uri to string and save to realtime database
                                 createUser(firebaseUser, downloadUri.toString());
                             } else {
                                 Toast.makeText(Tutor_register.this, "fail", Toast.LENGTH_SHORT).show();
@@ -307,7 +305,7 @@ public class Tutor_register extends AppCompatActivity {
                         });
                     }
                     private void createUser(FirebaseUser firebaseUser, String urlImage) {
-                        Tutor tutor = new Tutor(firebaseUser.getUid(), txt_name, txt_dob, txt_address, txt_phone, txt_gender, txt_subject, txt_intro, urlImage, new StatusAddTutor());
+                        Tutor tutor = new Tutor(firebaseUser.getUid(), txt_name, txt_dob, txt_address, txt_phone, txt_gender, txt_subject, txt_intro, urlImage, new StatusAdd());
                         referenceProfile.child(firebaseUser.getUid()).setValue(tutor).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {

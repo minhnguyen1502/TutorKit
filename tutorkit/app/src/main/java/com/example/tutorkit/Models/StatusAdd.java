@@ -1,23 +1,24 @@
 package com.example.tutorkit.Models;
 
-public class StatusAddTutor {
-    private String idStudent;
+public class StatusAdd {
+    private String idList;
     private Boolean status;
 
-    public StatusAddTutor() {
+    public StatusAdd() {
     }
 
-    public StatusAddTutor(String idStudent, Boolean status) {
-        this.idStudent = idStudent;
+
+    public StatusAdd(String idList, Boolean status) {
+        this.idList = idList;
         this.status = status;
     }
 
-    public String getIdStudent() {
-        return idStudent;
+    public String getIdList() {
+        return idList;
     }
 
-    public void setIdStudent(String idStudent) {
-        this.idStudent = idStudent;
+    public void setIdList(String idList) {
+        this.idList = idList;
     }
 
     public Boolean getStatus() {

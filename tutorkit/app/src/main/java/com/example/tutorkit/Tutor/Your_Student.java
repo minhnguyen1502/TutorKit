@@ -16,10 +16,9 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.tutorkit.Models.StatusAddTutor;
+import com.example.tutorkit.Models.StatusAdd;
 import com.example.tutorkit.Models.Student;
 import com.example.tutorkit.R;
-import com.example.tutorkit.Student.Your_tutor;
 import com.example.tutorkit.Tutor.Adapter.StudentAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -76,10 +75,10 @@ public class Your_Student extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 idStudent.clear();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    StatusAddTutor statusAddTutor = dataSnapshot.getValue(StatusAddTutor.class);
+                    StatusAdd statusAdd = dataSnapshot.getValue(StatusAdd.class);
                     try {
-                        if (statusAddTutor.getStatus()) {
-                            idStudent.add(statusAddTutor.getIdStudent());
+                        if (statusAdd.getStatus()) {
+                            idStudent.add(statusAdd.getIdList());
                         }
                     }catch (Exception e){
                         Log.e("TAG", "onDataChange: "+e.getMessage() );
