@@ -107,6 +107,15 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:text="Choose this tutor"></androidx.appcompat.widget.AppCompatButton>
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:visibility="gone"
+                android:text="Cancel"></androidx.appcompat.widget.AppCompatButton>
+
+
         </LinearLayout>
     </LinearLayout>
 

@@ -7,8 +7,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-import com.example.tutorkit.Student.Student_register;
-import com.example.tutorkit.Tutor.Tutor_register;
+import com.example.tutorkit.Student.Account.Student_register;
+import com.example.tutorkit.Tutor.Account.Tutor_register;
 
 public class Register extends AppCompatActivity {
 

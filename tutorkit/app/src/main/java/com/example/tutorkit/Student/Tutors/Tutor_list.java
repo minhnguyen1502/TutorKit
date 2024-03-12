@@ -1,4 +1,4 @@
-package com.example.tutorkit.Student;
+package com.example.tutorkit.Student.Tutors;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,15 +12,13 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.tutorkit.Models.Tutor;
 import com.example.tutorkit.R;
 import com.example.tutorkit.Student.Adapter.TutorAdapter;
-import com.example.tutorkit.Tutor.Student_list;
-import com.example.tutorkit.Tutor.Tutor_home;
+import com.example.tutorkit.Student.Student_home;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;

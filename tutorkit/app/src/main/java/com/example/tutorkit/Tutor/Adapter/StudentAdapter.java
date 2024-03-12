@@ -54,11 +54,11 @@ public class StudentAdapter  extends RecyclerView.Adapter<StudentAdapter.ViewHol
         holder.confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FirebaseDatabase.getInstance().getReference("Student")
-                        .child(students.getId())
-                        .child("IdTutor").child(FirebaseAuth.getInstance().getUid())
-                        .setValue(new StatusAdd(FirebaseAuth.getInstance().getUid(), false));
-
+                FirebaseDatabase.getInstance().getReference("tutors")
+                        .child(FirebaseAuth.getInstance().getUid())
+                        .child("IdStudent").child(students.getId())
+                        .setValue(new StatusAdd(students.getId(), true));
+                
                 Toast.makeText(context, "I choose this student", Toast.LENGTH_SHORT).show();
 
             }
@@ -67,8 +67,9 @@ public class StudentAdapter  extends RecyclerView.Adapter<StudentAdapter.ViewHol
             @Override
             public void onClick(View view) {
                 FirebaseDatabase.getInstance().getReference("tutors")
-                        .child("IdStudent").child(FirebaseAuth.getInstance().getUid())
-                        .setValue(new StatusAdd(FirebaseAuth.getInstance().getUid(), false));
+                        .child(FirebaseAuth.getInstance().getUid())
+                        .child("IdStudent").child(students.getId())
+                        .removeValue();
                 Toast.makeText(context, "cancel", Toast.LENGTH_SHORT).show();
             }
         });

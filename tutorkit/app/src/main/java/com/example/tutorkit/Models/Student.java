@@ -8,15 +8,6 @@ public class Student {
     public Student() {
     }
 
-    public Student(String name, String DOB, String gender, String address, String phone, String parent_phone) {
-        this.name = name;
-        this.DOB = DOB;
-        this.gender = gender;
-        this.address = address;
-        this.phone = phone;
-        this.parent_phone = parent_phone;
-    }
-
     public Student(String name, String DOB, String gender, String address, String phone, String parent_phone, String img) {
         this.name = name;
         this.DOB = DOB;

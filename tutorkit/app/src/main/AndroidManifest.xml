@@ -13,13 +13,13 @@
         android:theme="@style/Theme.Tutorkit"
         tools:targetApi="31">
         <activity
-            android:name=".Tutor.Your_Student"
+            android:name=".Tutor.Students.Your_Student"
             android:exported="false" />
         <activity
-            android:name=".Student.Your_tutor"
+            android:name=".Student.Tutors.Your_tutor"
             android:exported="false" />
         <activity
-            android:name=".Student.Tutor_list"
+            android:name=".Student.Tutors.Tutor_list"
             android:exported="false" />
         <activity
             android:name=".Register"
@@ -34,19 +34,19 @@
             android:name=".UpdatePassword"
             android:exported="false" />
         <activity
-            android:name=".Student.Edit_student_profile"
+            android:name=".Student.Account.Edit_student_profile"
             android:exported="false" />
         <activity
-            android:name=".Student.Student_profile"
+            android:name=".Student.Account.Student_profile"
             android:exported="false" />
         <activity
-            android:name=".Tutor.Tutor_register"
+            android:name=".Tutor.Account.Tutor_register"
             android:exported="false" />
         <activity
-            android:name=".Tutor.Edit_tutor_profile"
+            android:name=".Tutor.Account.Edit_tutor_profile"
             android:exported="false" />
         <activity
-            android:name=".Tutor.Student_list"
+            android:name=".Tutor.Students.Student_list"
             android:exported="false" />
         <activity
             android:name=".Tutor.Tutor_home"
@@ -55,7 +55,7 @@
             android:name=".Support"
             android:exported="false" />
         <activity
-            android:name=".Tutor.Tutor_profile"
+            android:name=".Tutor.Account.Tutor_profile"
             android:exported="false" />
         <activity
             android:name=".Tutor.Assignment"
@@ -70,7 +70,7 @@
             android:name=".Student.Student_home"
             android:exported="false" />
         <activity
-            android:name=".Student.Student_register"
+            android:name=".Student.Account.Student_register"
             android:exported="false" />
         <activity
             android:name=".Login"

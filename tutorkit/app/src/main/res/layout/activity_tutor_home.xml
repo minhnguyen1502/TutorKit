@@ -50,7 +50,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_75sdp"
                 android:layout_marginTop="@dimen/_60sdp"
-                android:text="TextView"
+                android:text="Tutor"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 

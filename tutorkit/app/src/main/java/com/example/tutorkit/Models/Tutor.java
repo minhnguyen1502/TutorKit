@@ -38,13 +38,6 @@ public class Tutor {
     public void setStatusAddTutor(StatusAdd statusAdd) {
         this.statusAdd = statusAdd;
     }
-    //    public String getIdStudent() {
-//        return IdStudent;
-//    }
-//
-//    public void setIdStudent(String IdStudent) {
-//        this.IdStudent = IdStudent;
-//    }
 
     public String getId() {
         return id;

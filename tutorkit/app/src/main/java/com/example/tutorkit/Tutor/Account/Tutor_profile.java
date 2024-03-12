@@ -1,4 +1,4 @@
-package com.example.tutorkit.Tutor;
+package com.example.tutorkit.Tutor.Account;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.tutorkit.Models.Tutor;
 import com.example.tutorkit.R;
+import com.example.tutorkit.Tutor.Tutor_home;
 import com.example.tutorkit.UpdateEmail;
 import com.example.tutorkit.UpdatePassword;
 import com.google.firebase.auth.FirebaseAuth;

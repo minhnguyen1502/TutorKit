@@ -1,4 +1,4 @@
-package com.example.tutorkit.Student;
+package com.example.tutorkit.Student.Account;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;

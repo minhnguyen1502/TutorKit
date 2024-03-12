@@ -1,4 +1,4 @@
-package com.example.tutorkit.Tutor;
+package com.example.tutorkit.Tutor.Students;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,6 +22,7 @@ import com.example.tutorkit.Models.StatusAdd;
 import com.example.tutorkit.Models.Student;
 import com.example.tutorkit.R;
 import com.example.tutorkit.Tutor.Adapter.StudentAdapter;
+import com.example.tutorkit.Tutor.Tutor_home;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -63,6 +64,7 @@ public class Student_list extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(Student_list.this, Your_Student.class));
+                finish();
             }
         });
 

@@ -1,4 +1,4 @@
-package com.example.tutorkit.Student;
+package com.example.tutorkit.Student.Tutors;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,12 +17,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.tutorkit.Models.StatusAdd;
-import com.example.tutorkit.Models.Student;
 import com.example.tutorkit.Models.Tutor;
 import com.example.tutorkit.R;
 import com.example.tutorkit.Student.Adapter.TutorAdapter;
-import com.example.tutorkit.Tutor.Adapter.StudentAdapter;
-import com.example.tutorkit.Tutor.Student_list;
+import com.example.tutorkit.Student.Student_home;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -34,12 +32,14 @@ import java.util.ArrayList;
 
 public class Your_tutor extends AppCompatActivity {
 
+    // moi
     DatabaseReference databaseReference;
 
     RecyclerView recyclerView;
     ArrayList<Tutor> tutorArrayList;
     TutorAdapter adapter;
     ArrayList<String> idTutors;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +58,7 @@ public class Your_tutor extends AppCompatActivity {
 
         TextView list_tutor = findViewById(R.id.txt_list_tutor);
 
+        showListStudents();
         list_tutor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -81,15 +82,15 @@ public class Your_tutor extends AppCompatActivity {
                         for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                             StatusAdd statusAdd = dataSnapshot.getValue(StatusAdd.class);
                             try {
-                                if (!statusAdd.getStatus()) {
+                                if (statusAdd.getStatus()) {
                                     idTutors.add(statusAdd.getIdList());
                                 }
-                            }catch (Exception e){
-                                Log.e("TAG", "onDataChange: "+e.getMessage() );
+                            } catch (Exception e) {
+                                Log.e("TAG", "onDataChange: " + e.getMessage());
                             }
                         }
-                        if (idTutors.size()>0){
-                            for (int i =0; i<idTutors.size();i++){
+                        if (idTutors.size() > 0) {
+                            for (int i = 0; i < idTutors.size(); i++) {
                                 databaseReference.child("tutors").child(idTutors.get(i))
                                         .addListenerForSingleValueEvent(new ValueEventListener() {
                                             @Override
@@ -105,7 +106,7 @@ public class Your_tutor extends AppCompatActivity {
                                         });
                             }
 
-                        }else {
+                        } else {
                         }
                     }
 

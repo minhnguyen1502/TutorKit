@@ -56,11 +56,11 @@ public class TutorAdapter extends RecyclerView.Adapter<TutorAdapter.ViewHolder>{
         holder.choose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                listIdStudent.add(FirebaseAuth.getInstance().getUid());
                 FirebaseDatabase.getInstance().getReference("tutors")
                         .child(tutors.getId())
                         .child("IdStudent").child(FirebaseAuth.getInstance().getUid())
                         .setValue(new StatusAdd(FirebaseAuth.getInstance().getUid(), false));
+
 
                 Toast.makeText(context, "I liked this tutor", Toast.LENGTH_SHORT).show();
             }

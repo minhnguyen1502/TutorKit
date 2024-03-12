@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -42,6 +43,7 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+
         register = findViewById(R.id.txt_register);
         edt_password = findViewById(R.id.edt_password);
         edt_email = findViewById(R.id.edt_email);
@@ -69,6 +71,7 @@ public class Login extends AppCompatActivity {
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 String txt_email = edt_email.getText().toString();
                 String txt_password = edt_password.getText().toString();
 
@@ -80,10 +83,12 @@ public class Login extends AppCompatActivity {
                     Toast.makeText(Login.this, "Re-enter email", Toast.LENGTH_SHORT).show();
                     edt_email.setError("valid email is required");
                     edt_email.requestFocus();
+
                 } else if (TextUtils.isEmpty(txt_password)) {
                     Toast.makeText(Login.this, "Enter your email", Toast.LENGTH_SHORT).show();
                     edt_password.setError("Email is required");
                     edt_password.requestFocus();
+
                 } else {
                     login(txt_email, txt_password);
                 }
@@ -97,27 +102,27 @@ public class Login extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 // check tutor or student.
-                
+
                 if (task.isSuccessful()) {
                     //get instant of current tutor
                     FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
                     //check if email is verified before tutor can access their profile
 
                     if (firebaseUser.isEmailVerified()) {
-                        Log.e("TAG", "onComplete: "+firebaseUser.getUid());
+                        Log.e("TAG", "onComplete: " + firebaseUser.getUid());
                         FirebaseDatabase.getInstance().getReference("tutors").child(firebaseUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
 
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                Log.e("TAG", "onDataChange: " + snapshot.getKey() );
-                                if (snapshot.getValue() != null){
+                                Log.e("TAG", "onDataChange: " + snapshot.getKey());
+                                if (snapshot.getValue() != null) {
                                     Toast.makeText(Login.this, "Login success", Toast.LENGTH_SHORT).show();
                                     //open home
                                     Intent intent = new Intent(Login.this, Tutor_home.class);
                                     startActivity(intent);
                                     finish();
 
-                                }else {
+                                } else {
                                     Toast.makeText(Login.this, "Login success", Toast.LENGTH_SHORT).show();
                                     //open home
                                     Intent intent = new Intent(Login.this, com.example.tutorkit.Student.Student_home.class);
@@ -173,6 +178,7 @@ public class Login extends AppCompatActivity {
         }
         return available;
     }
+
     private void showAlerDialog() {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(Login.this);
@@ -185,13 +191,13 @@ public class Login extends AppCompatActivity {
             public void onClick(DialogInterface dialogInterface, int i) {
 
                 // check mobile have app email
-                if (available("com.google.android.gm") ){
+                if (available("com.google.android.gm")) {
                     Intent intent = new Intent(Intent.ACTION_MAIN);
                     intent.addCategory(Intent.CATEGORY_APP_EMAIL);
                     // to email app in new window and not within app
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
-                }else {
+                } else {
                     Toast.makeText(Login.this, "Don't have email app", Toast.LENGTH_SHORT).show();
                 }
 
