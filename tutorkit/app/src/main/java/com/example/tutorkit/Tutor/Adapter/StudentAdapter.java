@@ -45,6 +45,7 @@ public class StudentAdapter  extends RecyclerView.Adapter<StudentAdapter.ViewHol
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Student students = studentArrayList.get(position);
 
+
          Glide
                 .with(context)
                 .load(students.getImg())
@@ -55,6 +56,11 @@ public class StudentAdapter  extends RecyclerView.Adapter<StudentAdapter.ViewHol
         holder.confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                FirebaseDatabase.getInstance().getReference("Student")
+                        .child(students.getId())
+                        .child("IdTutors").child(FirebaseAuth.getInstance().getUid())
+                        .setValue(new StatusAdd(FirebaseAuth.getInstance().getUid(), true));
+
                 FirebaseDatabase.getInstance().getReference("tutors")
                         .child(FirebaseAuth.getInstance().getUid())
                         .child("IdStudent").child(students.getId())

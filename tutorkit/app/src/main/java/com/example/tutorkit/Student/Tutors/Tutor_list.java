@@ -56,8 +56,7 @@ public class Tutor_list extends AppCompatActivity {
                 startActivity(new Intent(Tutor_list.this, Your_tutor.class));
             }
         });
-
-
+        
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
         

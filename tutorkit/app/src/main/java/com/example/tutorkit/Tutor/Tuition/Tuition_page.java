@@ -37,7 +37,6 @@ import java.util.Date;
 
 public class Tuition_page extends AppCompatActivity {
     DatabaseReference databaseReference;
-
     RecyclerView recyclerView;
     ArrayList<Tuition> tuitionArrayList;
     TuitionAdapter adapter;

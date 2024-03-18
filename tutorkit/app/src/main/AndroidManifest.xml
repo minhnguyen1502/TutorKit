@@ -91,7 +91,7 @@
             android:name=".Student.Student_home"
             android:exported="false" />
         <activity
-            android:name=".Tutor.GradePage"
+            android:name=".Tutor.Grade.GradePage"
             android:exported="false" />
         <activity
             android:name=".Student.Account.Student_register"

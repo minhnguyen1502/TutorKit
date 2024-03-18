@@ -73,7 +73,7 @@ public class Your_tutor extends AppCompatActivity {
     private void showListStudents() {
         FirebaseDatabase.getInstance().getReference("Student")
                 .child(FirebaseAuth.getInstance().getUid())
-                .child("IdTutor")
+                .child("IdTutors")
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @SuppressLint("NotifyDataSetChanged")
                     @Override
