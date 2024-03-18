@@ -1,12 +1,12 @@
 package com.example.tutorkit.Models;
 
-public class Calendar {
+public class TimeTable {
     private String ID, name, time;
 
-    public Calendar() {
+    public TimeTable() {
     }
 
-    public Calendar(String ID,String name, String time) {
+    public TimeTable(String ID, String name, String time) {
         this.ID = ID;
         this.name = name;
         this.time = time;

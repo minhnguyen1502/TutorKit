@@ -54,7 +54,7 @@ public class TuitionAdapter extends RecyclerView.Adapter<TuitionAdapter.ViewHold
         holder.amount.setText("Amount : " + tuition.getAmount());
         holder.price.setText("Price : " + tuition.getPrice());
         holder.dateline.setText("Name : " + tuition.getDateline());
-        holder.total.setText(tuition.getTotal());
+        holder.total.setText(String.valueOf(tuition.getTotal()));
 
 
         holder.buttonUpdate.setOnClickListener(new View.OnClickListener() {

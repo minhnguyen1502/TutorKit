@@ -1,6 +1,7 @@
 package com.example.tutorkit.Student.Adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,6 +56,14 @@ public class TutorAdapter extends RecyclerView.Adapter<TutorAdapter.ViewHolder>{
                 .into(holder.avatar);
         holder.txtName.setText(tutors.getName());
         holder.txtSubject.setText(tutors.getSubject());
+
+        try {
+            if (tutors.getStatusAdd().getStatus()){
+                holder.choose.setVisibility(View.GONE);
+            }
+        }catch (Exception e){
+            Log.e("TAG", "onBindViewHolder: "+ e.getMessage() );
+        }
 
         holder.choose.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -54,7 +54,7 @@
             android:id="@+id/txt_total"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="300$"
+            android:text="300"
             android:layout_marginStart="@dimen/_10sdp"
             android:textSize="18sp"
             android:textStyle="italic" />

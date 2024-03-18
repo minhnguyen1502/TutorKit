@@ -31,11 +31,11 @@ public class Tutor {
         this.img = img;
     }
 
-    public StatusAdd getStatusAddTutor() {
+    public StatusAdd getStatusAdd() {
         return statusAdd;
     }
 
-    public void setStatusAddTutor(StatusAdd statusAdd) {
+    public void setStatusAdd(StatusAdd statusAdd) {
         this.statusAdd = statusAdd;
     }
 

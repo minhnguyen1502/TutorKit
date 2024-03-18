@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,11 +22,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.tutorkit.Models.StatusAdd;
+import com.example.tutorkit.Models.Student;
 import com.example.tutorkit.Models.Tuition;
 import com.example.tutorkit.R;
 import com.example.tutorkit.Tutor.Adapter.TuitionAdapter;
 import com.example.tutorkit.Tutor.Tutor_home;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -39,7 +43,9 @@ public class Tuition_page extends AppCompatActivity {
     DatabaseReference databaseReference;
     RecyclerView recyclerView;
     ArrayList<Tuition> tuitionArrayList;
+    ArrayList<Student> studentArrayList;
     TuitionAdapter adapter;
+    ArrayList<String> idStudent;
 
     FloatingActionButton btn_add;
 
@@ -60,6 +66,9 @@ public class Tuition_page extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         tuitionArrayList = new ArrayList<>();
+        studentArrayList = new ArrayList<>();
+        idStudent = new ArrayList<>();
+
 
         btn_add = findViewById(R.id.add);
         btn_add.setOnClickListener(new View.OnClickListener() {
@@ -71,6 +80,54 @@ public class Tuition_page extends AppCompatActivity {
         });
 
         readData();
+
+        showListStudents();
+    }
+    private void showListStudents() {
+        FirebaseDatabase.getInstance().getReference("tutors")
+                .child(FirebaseAuth.getInstance().getUid())
+                .child("IdStudent").addValueEventListener(new ValueEventListener() {
+                    @SuppressLint("NotifyDataSetChanged")
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        idStudent.clear();
+                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                            StatusAdd statusAdd = dataSnapshot.getValue(StatusAdd.class);
+                            try {
+                                if (statusAdd.getStatus()) {
+                                    idStudent.add(statusAdd.getIdList());
+                                }
+                            } catch (Exception e) {
+                                Log.e("TAG", "onDataChange: " + e.getMessage());
+                            }
+                        }
+                        if (idStudent.size() > 0) {
+                            for (int i = 0; i < idStudent.size(); i++) {
+                                databaseReference.child("Student")
+                                        .child(idStudent.get(i))
+                                        .addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                studentArrayList.add(snapshot.getValue(Student.class));
+                                                adapter.notifyDataSetChanged();
+                                                Log.e("TAG", "log test: " + studentArrayList);
+                                            }
+                                            @Override
+                                            public void onCancelled(@NonNull DatabaseError error) {
+
+                                            }
+                                        });
+                            }
+
+                        } else {
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
     }
 
     private void readData() {
@@ -143,7 +200,8 @@ public class Tuition_page extends AppCompatActivity {
             buttonAdd.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    String id = "tuition" + new Date().getTime();
+//                    DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+                    String id = FirebaseAuth.getInstance().getUid();
                     String name = edtName.getText().toString();
                     int amount = Integer.parseInt(edtAmount.getText().toString());
                     int price = Integer.parseInt(edtPrice.getText().toString());
@@ -151,7 +209,7 @@ public class Tuition_page extends AppCompatActivity {
 
                     int total = Integer.parseInt(txtTotal.getText().toString());
 
-                        databaseReference.child("tuition").child(id)
+                        databaseReference.child("tuition").child("tuition" + new Date().getTime())
                                 .setValue(new Tuition(id,name,dateline, amount,price,total));
                         Toast.makeText(context, "DONE!", Toast.LENGTH_SHORT).show();
                         dialog.dismiss();
