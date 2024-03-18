@@ -12,6 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.tutorkit.Models.StatusAdd;
 import com.example.tutorkit.Models.Student;
 import com.example.tutorkit.R;
@@ -44,11 +45,11 @@ public class StudentAdapter  extends RecyclerView.Adapter<StudentAdapter.ViewHol
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Student students = studentArrayList.get(position);
 
-//         Glide
-//                .with(TutorAdapter.this)
-//                .load(students.getImg())
-//                .centerCrop()
-//                .into(holder.avatar);
+         Glide
+                .with(context)
+                .load(students.getImg())
+                .centerCrop()
+                .into(holder.avatar);
         holder.txtName.setText(students.getName());
 
         holder.confirm.setOnClickListener(new View.OnClickListener() {
@@ -58,9 +59,8 @@ public class StudentAdapter  extends RecyclerView.Adapter<StudentAdapter.ViewHol
                         .child(FirebaseAuth.getInstance().getUid())
                         .child("IdStudent").child(students.getId())
                         .setValue(new StatusAdd(students.getId(), true));
-                
-                Toast.makeText(context, "I choose this student", Toast.LENGTH_SHORT).show();
 
+                Toast.makeText(context, "I choose this student", Toast.LENGTH_SHORT).show();
             }
         });
         holder.cancel.setOnClickListener(new View.OnClickListener() {
@@ -73,7 +73,7 @@ public class StudentAdapter  extends RecyclerView.Adapter<StudentAdapter.ViewHol
                 Toast.makeText(context, "cancel", Toast.LENGTH_SHORT).show();
             }
         });
-    }   
+    }
 
     @Override
     public int getItemCount() {

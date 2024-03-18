@@ -6,7 +6,7 @@ import android.os.Bundle;
 
 import com.example.tutorkit.R;
 
-public class Grade extends AppCompatActivity {
+public class GradePage extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

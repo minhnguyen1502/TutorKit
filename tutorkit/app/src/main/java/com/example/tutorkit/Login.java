@@ -69,9 +69,13 @@ public class Login extends AppCompatActivity {
 
         Button btn_login = findViewById(R.id.btn_login);
         btn_login.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
-
+//                ProgressDialog progressDialog = new ProgressDialog(Login.this);
+//                progressDialog.setMessage("Loading...");
+//                progressDialog.setCancelable(false);
+//                progressDialog.show();
                 String txt_email = edt_email.getText().toString();
                 String txt_password = edt_password.getText().toString();
 
@@ -90,6 +94,7 @@ public class Login extends AppCompatActivity {
                     edt_password.requestFocus();
 
                 } else {
+//                    progressDialog.dismiss();
                     login(txt_email, txt_password);
                 }
             }
@@ -136,12 +141,6 @@ public class Login extends AppCompatActivity {
 
                             }
                         });
-
-//                        Toast.makeText(Login.this, "Login success", Toast.LENGTH_SHORT).show();
-//                        //open home
-//                        Intent intent = new Intent(Login.this, Tutor_home.class);
-//                        startActivity(intent);
-//                        finish();
                     } else {
                         firebaseUser.sendEmailVerification();
                         showAlerDialog();

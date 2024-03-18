@@ -16,12 +16,14 @@ import com.example.tutorkit.Login;
 import com.example.tutorkit.Models.Tutor;
 import com.example.tutorkit.R;
 import com.example.tutorkit.Student.Account.Student_profile;
+import com.example.tutorkit.Student.Exam.ExamStudent;
 import com.example.tutorkit.Student.Tutors.Tutor_list;
 import com.example.tutorkit.Support;
 import com.example.tutorkit.Tutor.Assignment;
-import com.example.tutorkit.Tutor.Grade;
-import com.example.tutorkit.Tutor.Time_table;
-import com.example.tutorkit.Tutor.Tuition_page;
+import com.example.tutorkit.Tutor.Exam.Exam_Page;
+import com.example.tutorkit.Tutor.GradePage;
+import com.example.tutorkit.Tutor.Calendar.Time_table;
+import com.example.tutorkit.Tutor.Tuition.Tuition_page;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -32,7 +34,7 @@ import com.google.firebase.database.ValueEventListener;
 
 public class Student_home extends AppCompatActivity {
 
-    ConstraintLayout tutor, calendar, grade, assignment, tuition, profile, support, logout;
+    ConstraintLayout tutor, calendar, grade, assignment, tuition, profile, support, logout,exam;
     FirebaseAuth firebaseAuth;
     String name;
     TextView tv_name;
@@ -45,6 +47,7 @@ public class Student_home extends AppCompatActivity {
         avatar = findViewById(R.id.avatar);
 
         tutor = (ConstraintLayout) findViewById(R.id.page_tutor);
+        exam = findViewById(R.id.page_exam);
         calendar = (ConstraintLayout) findViewById(R.id.page_calendar);
         grade = (ConstraintLayout) findViewById(R.id.page_grade);
         assignment = (ConstraintLayout) findViewById(R.id.page_assignment);
@@ -104,7 +107,7 @@ public class Student_home extends AppCompatActivity {
         grade.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), Grade.class);
+                Intent intent = new Intent(getApplicationContext(), GradePage.class);
                 startActivity(intent);
 
             }
@@ -123,6 +126,14 @@ public class Student_home extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), Tuition_page.class);
+                startActivity(intent);
+
+            }
+        });
+        exam.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), ExamStudent.class);
                 startActivity(intent);
 
             }

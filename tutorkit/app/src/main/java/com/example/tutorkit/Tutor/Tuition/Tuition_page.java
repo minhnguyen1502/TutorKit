@@ -1,4 +1,4 @@
-package com.example.tutorkit.Tutor;
+package com.example.tutorkit.Tutor.Tuition;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,12 +19,12 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.tutorkit.Models.Tuition;
 import com.example.tutorkit.R;
 import com.example.tutorkit.Tutor.Adapter.TuitionAdapter;
+import com.example.tutorkit.Tutor.Tutor_home;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

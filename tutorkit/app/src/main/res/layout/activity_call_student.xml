@@ -15,7 +15,7 @@
         android:elevation="@dimen/_2sdp"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:title="Student"
+        app:title=" Student"
         app:titleMarginStart="@dimen/_20sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -38,23 +38,11 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <TextView
-            android:id="@+id/txt_list_student"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:alpha="0.7"
-            android:textSize="@dimen/_20sdp"
-            android:text="List Student" />
-
-        <TextView
             android:id="@+id/txt_your_student"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/_50sdp"
             android:textSize="@dimen/_20sdp"
             android:textStyle="bold"
-
-            android:layout_weight="1"
             android:text="Your Student" />
     </LinearLayout>
 

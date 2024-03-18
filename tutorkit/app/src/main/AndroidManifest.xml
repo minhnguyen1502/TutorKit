@@ -13,6 +13,27 @@
         android:theme="@style/Theme.Tutorkit"
         tools:targetApi="31">
         <activity
+            android:name=".Student.Exam.ExamStudent"
+            android:exported="false" />
+        <activity
+            android:name=".Tutor.Exam.ListQuizzes"
+            android:exported="false" />
+        <activity
+            android:name=".Tutor.Exam.Answer.Result"
+            android:exported="false" />
+        <activity
+            android:name=".Tutor.Exam.Answer.ExamList"
+            android:exported="false" />
+        <activity
+            android:name=".Tutor.Exam.ExamEditor"
+            android:exported="false" />
+        <activity
+            android:name=".Tutor.Exam.Exam_Page"
+            android:exported="false" />
+        <activity
+            android:name=".Tutor.Call.Call_Student"
+            android:exported="false" />
+        <activity
             android:name=".Tutor.Students.Your_Student"
             android:exported="false" />
         <activity
@@ -61,13 +82,16 @@
             android:name=".Tutor.Assignment"
             android:exported="false" />
         <activity
-            android:name=".Tutor.Tuition_page"
+            android:name=".Tutor.Tuition.Tuition_page"
             android:exported="false" />
         <activity
-            android:name=".Tutor.Time_table"
+            android:name=".Tutor.Calendar.Time_table"
             android:exported="false" />
         <activity
             android:name=".Student.Student_home"
+            android:exported="false" />
+        <activity
+            android:name=".Tutor.GradePage"
             android:exported="false" />
         <activity
             android:name=".Student.Account.Student_register"

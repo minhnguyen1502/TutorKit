@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,7 +18,11 @@ import com.example.tutorkit.Models.Tutor;
 import com.example.tutorkit.R;
 import com.example.tutorkit.Support;
 import com.example.tutorkit.Tutor.Account.Tutor_profile;
+import com.example.tutorkit.Tutor.Calendar.Time_table;
+import com.example.tutorkit.Tutor.Call.Call_Student;
+import com.example.tutorkit.Tutor.Exam.Exam_Page;
 import com.example.tutorkit.Tutor.Students.Student_list;
+import com.example.tutorkit.Tutor.Tuition.Tuition_page;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -28,7 +33,8 @@ import com.google.firebase.database.ValueEventListener;
 
 public class Tutor_home extends AppCompatActivity {
 
-    ConstraintLayout student, calendar, grade, assignment, tuition, profile, support, logout;
+    ConstraintLayout student, calendar, grade, assignment, tuition, profile, support, logout, exam;
+    LinearLayout call;
     FirebaseAuth firebaseAuth;
     String name;
     TextView tv_name;
@@ -44,14 +50,16 @@ public class Tutor_home extends AppCompatActivity {
         tv_name = findViewById(R.id.tv_name);
         avatar = findViewById(R.id.avatar);
 
-        student = (ConstraintLayout) findViewById(R.id.student);
-        calendar = (ConstraintLayout) findViewById(R.id.calendar);
-        grade = (ConstraintLayout) findViewById(R.id.grade);
-        assignment = (ConstraintLayout) findViewById(R.id.assignment);
-        tuition = (ConstraintLayout) findViewById(R.id.tuition);
-        profile = (ConstraintLayout) findViewById(R.id.profile);
-        support = (ConstraintLayout) findViewById(R.id.support);
-        logout = (ConstraintLayout) findViewById(R.id.logout);
+        student = findViewById(R.id.student);
+        calendar =  findViewById(R.id.calendar);
+        exam =  findViewById(R.id.exam);
+        grade =  findViewById(R.id.grade);
+        assignment = findViewById(R.id.assignment);
+        tuition =  findViewById(R.id.tuition);
+        profile = findViewById(R.id.profile);
+        support =  findViewById(R.id.support);
+        logout =  findViewById(R.id.logout);
+        call = findViewById(R.id.call);
 
         firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
@@ -83,10 +91,25 @@ public class Tutor_home extends AppCompatActivity {
             }
         });
 
+        call.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), Call_Student.class));
+            }
+        });
+
         student.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), Student_list.class);
+                startActivity(intent);
+
+            }
+        });
+        exam.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), Exam_Page.class);
                 startActivity(intent);
 
             }
@@ -104,7 +127,7 @@ public class Tutor_home extends AppCompatActivity {
         grade.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), Grade.class);
+                Intent intent = new Intent(getApplicationContext(), GradePage.class);
                 startActivity(intent);
 
             }

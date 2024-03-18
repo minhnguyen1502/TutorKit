@@ -10,11 +10,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.tutorkit.Models.StatusAdd;
 import com.example.tutorkit.Models.Tutor;
 import com.example.tutorkit.R;
+import com.example.tutorkit.UpdatePassword;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -45,11 +48,11 @@ public class TutorAdapter extends RecyclerView.Adapter<TutorAdapter.ViewHolder>{
 
         Tutor tutors = tutorsArrayList.get(position);
 
-//         Glide
-//                .with(TutorAdapter.this)
-//                .load(tutors.getImg())
-//                .centerCrop()
-//                .into(holder.avatar);
+         Glide
+                .with(context)
+                .load(tutors.getImg())
+                .centerCrop()
+                .into(holder.avatar);
         holder.txtName.setText(tutors.getName());
         holder.txtSubject.setText(tutors.getSubject());
 
@@ -61,7 +64,8 @@ public class TutorAdapter extends RecyclerView.Adapter<TutorAdapter.ViewHolder>{
                         .child("IdStudent").child(FirebaseAuth.getInstance().getUid())
                         .setValue(new StatusAdd(FirebaseAuth.getInstance().getUid(), false));
 
-
+                holder.choose.setEnabled(false);
+                holder.choose.setText("Wait....");
                 Toast.makeText(context, "I liked this tutor", Toast.LENGTH_SHORT).show();
             }
         });
