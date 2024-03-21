@@ -13,6 +13,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -45,6 +46,7 @@ public class ManageGrade extends AppCompatActivity {
     RecyclerView recyclerView;
     ArrayList<Grade> gradeArrayList;
     GradeAdapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,7 +61,7 @@ public class ManageGrade extends AppCompatActivity {
         gradeArrayList = new ArrayList<>();
 
         readData();
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar myToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
     }
 
@@ -141,13 +143,29 @@ public class ManageGrade extends AppCompatActivity {
                     int grade = Integer.parseInt(edt_grade.getText().toString());
                     String date = edt_date.getText().toString();
 
-//                    if (type.isEmpty() || title.isEmpty() || grade.isEmpty() || date.isEmpty()) {
-//                        Toast.makeText(context, "Please Enter All data...", Toast.LENGTH_SHORT).show();
-//                    } else {
-                        databaseReference.child("grades").child(id).setValue(new Grade(id, type, title, date,grade));
-                        Toast.makeText(context, "DONE!", Toast.LENGTH_SHORT).show();
-                        dialog.dismiss();
-//                    }
+                  if (TextUtils.isEmpty(title)) {
+                    Toast.makeText(ManageGrade.this, "Enter your title", Toast.LENGTH_SHORT).show();
+                    edt_title.setError("Title is required");
+                    edt_title.requestFocus();
+                } else if (grade <= 10 || grade >= 0) {
+                    Toast.makeText(ManageGrade.this, "grade must be less than 10 ", Toast.LENGTH_SHORT).show();
+                      edt_grade.setError("Title is required");
+                      edt_grade.requestFocus();
+                }
+//                  else if (TextUtils.isEmpty(grade)) {
+//                      Toast.makeText(ManageGrade.this, "Enter grade ", Toast.LENGTH_SHORT).show();
+//                      edt_grade.setError("Grade is required");
+//                      edt_grade.requestFocus();
+//                  }
+                  else if (TextUtils.isEmpty(date)) {
+                      Toast.makeText(ManageGrade.this, "Enter grade ", Toast.LENGTH_SHORT).show();
+                      edt_date.setError("Grade is required");
+                      edt_date.requestFocus();
+                  } else {
+                    databaseReference.child("grades").child(id).setValue(new Grade(id, type, title, date, grade));
+                    Toast.makeText(context, "DONE!", Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                    }
                 }
             });
 

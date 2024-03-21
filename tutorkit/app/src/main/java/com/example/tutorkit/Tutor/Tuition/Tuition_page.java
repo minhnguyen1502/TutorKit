@@ -15,6 +15,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -45,6 +46,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Objects;
 
 public class Tuition_page extends AppCompatActivity {
     DatabaseReference databaseReference;
@@ -145,7 +147,7 @@ public class Tuition_page extends AppCompatActivity {
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Tuition tuition = dataSnapshot.getValue(Tuition.class);
                     try {
-                        if (tuition.getIdTutor() == FirebaseAuth.getInstance().getUid()){
+                        if (Objects.equals(tuition.getIdTutor(), FirebaseAuth.getInstance().getUid())){
                             tuitionArrayList.add(tuition);
                         }
                     }catch (Exception e){
@@ -155,9 +157,9 @@ public class Tuition_page extends AppCompatActivity {
 //                    Log.e("TAG", "test auth: "+FirebaseAuth.getInstance().getUid() );
 //                    tuitionArrayList.add(tuition);
 
-
                 }
                 adapter = new TuitionAdapter(Tuition_page.this, tuitionArrayList);
+                adapter.setDataStudent(studentArrayList);
                 recyclerView.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
             }
@@ -272,6 +274,14 @@ public class Tuition_page extends AppCompatActivity {
                     int price = Integer.parseInt(edtPrice.getText().toString());
                     String dateline = edtDateline.getText().toString();
 
+                    if (TextUtils.isEmpty(name)){
+                        Toast.makeText(context, "choose the student", Toast.LENGTH_SHORT).show();
+                    }else if (TextUtils.isEmpty(dateline)){
+                        Toast.makeText(context, "choose the student", Toast.LENGTH_SHORT).show();
+                        edtDateline.setError("required");
+                        edtDateline.requestFocus();
+
+                    }
                         databaseReference.child("tuition").child(id)
                                 .setValue(new Tuition(id,name,dateline,student.getId(),idTutor, amount,price));
                         Toast.makeText(context, "DONE!", Toast.LENGTH_SHORT).show();

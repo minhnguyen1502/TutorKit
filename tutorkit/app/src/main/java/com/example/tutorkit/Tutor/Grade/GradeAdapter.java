@@ -19,6 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tutorkit.Models.Grade;
+import com.example.tutorkit.Models.Student;
 import com.example.tutorkit.Models.Tuition;
 import com.example.tutorkit.R;
 import com.example.tutorkit.Tutor.Account.Edit_tutor_profile;
@@ -34,6 +35,9 @@ public class GradeAdapter extends RecyclerView.Adapter<GradeAdapter.ViewHolder> 
     Context context;
     ArrayList<Grade> gradeArrayList;
     DatabaseReference databaseReference;
+
+    ArrayList<Student> studentArrayList;
+
 
     public GradeAdapter(Context context, ArrayList<Grade> gradeArrayList) {
         this.context = context;
