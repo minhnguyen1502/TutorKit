@@ -1,4 +1,4 @@
-package com.example.tutorkit.Student.Adapter;
+package com.example.tutorkit.Student.Tutors;
 
 import android.content.Context;
 import android.util.Log;
@@ -11,14 +11,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.tutorkit.Models.StatusAdd;
 import com.example.tutorkit.Models.Tutor;
 import com.example.tutorkit.R;
-import com.example.tutorkit.UpdatePassword;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;

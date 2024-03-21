@@ -35,9 +35,9 @@
         android:id="@+id/img"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_80sdp"
+        android:layout_marginStart="@dimen/_90sdp"
         android:layout_marginTop="@dimen/_100sdp"
-        android:src="@drawable/support"
+        android:src="@drawable/getsupport"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

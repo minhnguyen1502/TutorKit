@@ -19,8 +19,8 @@ import android.widget.Toast;
 import com.example.tutorkit.Models.StatusAdd;
 import com.example.tutorkit.Models.Tutor;
 import com.example.tutorkit.R;
-import com.example.tutorkit.Student.Adapter.TutorAdapter;
 import com.example.tutorkit.Student.Student_home;
+import com.example.tutorkit.Tutor.Students.Your_StudentAdpter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -34,10 +34,9 @@ public class Your_tutor extends AppCompatActivity {
 
     // moi
     DatabaseReference databaseReference;
-
     RecyclerView recyclerView;
     ArrayList<Tutor> tutorArrayList;
-    TutorAdapter adapter;
+    YourTutorAdapter adapter;
     ArrayList<String> idTutors;
 
     @Override
@@ -53,7 +52,7 @@ public class Your_tutor extends AppCompatActivity {
 
         tutorArrayList = new ArrayList<>();
 
-        adapter = new TutorAdapter(Your_tutor.this, tutorArrayList);
+        adapter = new YourTutorAdapter(Your_tutor.this, tutorArrayList);
         recyclerView.setAdapter(adapter);
 
         TextView list_tutor = findViewById(R.id.txt_list_tutor);

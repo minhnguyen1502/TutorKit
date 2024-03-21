@@ -19,7 +19,6 @@ import android.widget.Toast;
 import com.example.tutorkit.Models.StatusAdd;
 import com.example.tutorkit.Models.Student;
 import com.example.tutorkit.R;
-import com.example.tutorkit.Tutor.Adapter.StudentAdapter;
 import com.example.tutorkit.Tutor.Tutor_home;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -36,7 +35,7 @@ public class Your_Student extends AppCompatActivity {
     TextView student_list;
     RecyclerView recyclerView;
     ArrayList<Student> studentArrayList;
-    StudentAdapter adapter;
+    Your_StudentAdpter adapter;
     ArrayList<String> idStudent;
 
     @Override
@@ -53,7 +52,7 @@ public class Your_Student extends AppCompatActivity {
 
         studentArrayList = new ArrayList<>();
 
-        adapter = new StudentAdapter(Your_Student.this, studentArrayList);
+        adapter = new Your_StudentAdpter(Your_Student.this, studentArrayList);
         recyclerView.setAdapter(adapter);
 
         student_list.setOnClickListener(new View.OnClickListener() {

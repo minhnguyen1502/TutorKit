@@ -1,0 +1,6 @@
+<resources>
+    <string-array name="type">
+        <item>Assignment</item>
+        <item>Exam</item>
+    </string-array>
+</resources>

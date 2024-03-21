@@ -161,6 +161,8 @@ public class Student_profile extends AppCompatActivity {
             Intent i = new Intent(Student_profile.this, Tutor_home.class);
             startActivity(i);
             finish();
+        }else if (id == R.id.exit) {
+            finish();
         } else {
             Toast.makeText(this, "Something Wrong", Toast.LENGTH_SHORT).show();
         }

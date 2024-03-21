@@ -162,7 +162,9 @@ public class Tutor_profile extends AppCompatActivity {
             Intent i = new Intent(Tutor_profile.this, Tutor_home.class);
             startActivity(i);
             finish();
-        } else {
+        } else if (id == R.id.exit) {
+            finish();
+        }else {
             Toast.makeText(this, "Something Wrong", Toast.LENGTH_SHORT).show();
         }
             return super.onOptionsItemSelected(item);

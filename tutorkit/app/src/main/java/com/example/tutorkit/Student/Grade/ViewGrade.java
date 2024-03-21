@@ -1,4 +1,4 @@
-package com.example.tutorkit.Student.Tutors;
+package com.example.tutorkit.Student.Grade;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -7,75 +7,58 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.SearchView;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.tutorkit.Models.Tutor;
+import com.example.tutorkit.Models.Grade;
 import com.example.tutorkit.R;
-import com.example.tutorkit.Student.Student_home;
+import com.example.tutorkit.Tutor.Grade.GradeAdapter;
+import com.example.tutorkit.Tutor.Grade.ManageGrade;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
-public class Tutor_list extends AppCompatActivity {
+public class ViewGrade extends AppCompatActivity {
 
     DatabaseReference databaseReference;
-    TextView  your_tutor;
-
     RecyclerView recyclerView;
-    ArrayList<Tutor> tutorsArrayList;
-    TutorAdapter adapter;
-
+    ArrayList<Grade> gradeArrayList;
+    ViewGradeAdapter adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tutor_list);
+        setContentView(R.layout.activity_view_grade);
 
         databaseReference = FirebaseDatabase.getInstance().getReference();
 
-        your_tutor = findViewById(R.id.txt_your_tutor);
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        tutorsArrayList = new ArrayList<>();
+        gradeArrayList = new ArrayList<>();
 
-        your_tutor.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(Tutor_list.this, Your_tutor.class));
-            }
-        });
-
+        readData();
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
-        
-        showListTutors();
     }
+    private void readData() {
 
-    private void showListTutors() {
-        databaseReference.child("tutors").addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseReference.child("grades").addValueEventListener(new ValueEventListener() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                tutorsArrayList.clear();
+                gradeArrayList.clear();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    Tutor tutor = dataSnapshot.getValue(Tutor.class);
-                    tutorsArrayList.add(tutor);
+                    Grade users = dataSnapshot.getValue(Grade.class);
+                    gradeArrayList.add(users);
                 }
-                adapter = new TutorAdapter(Tutor_list.this, tutorsArrayList);
+                adapter = new ViewGradeAdapter(ViewGrade.this, gradeArrayList);
                 recyclerView.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
             }
@@ -86,10 +69,9 @@ public class Tutor_list extends AppCompatActivity {
             }
         });
     }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.tool_bar, menu);
+        getMenuInflater().inflate(R.menu.add, menu);
         return true;
     }
 
@@ -97,15 +79,14 @@ public class Tutor_list extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.home) {
-            Intent i = new Intent(Tutor_list.this, Student_home.class);
-            startActivity(i);
             finish();
-        } else if (id == R.id.action_search) {
-
+        } else if (id == R.id.add) {
+//            ManageGrade.ViewDialogAdd viewDialogAdd = new ManageGrade.ViewDialogAdd();
+//            viewDialogAdd.showDialog(ManageGrade.this);
+            Toast.makeText(this, "Can't add", Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(this, "Something Wrong", Toast.LENGTH_SHORT).show();
         }
         return super.onOptionsItemSelected(item);
     }
-
 }

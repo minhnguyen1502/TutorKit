@@ -1,10 +1,9 @@
-package com.example.tutorkit.Tutor.Adapter;
+package com.example.tutorkit.Tutor.Students;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -13,10 +12,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.tutorkit.Models.Student;
-import com.example.tutorkit.Models.Tutor;
 import com.example.tutorkit.R;
-import com.example.tutorkit.Student.Adapter.TutorAdapter;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -46,11 +44,11 @@ public class Your_StudentAdpter extends RecyclerView.Adapter<Your_StudentAdpter.
     public void onBindViewHolder(@NonNull Your_StudentAdpter.ViewHolder holder, int position) {
         Student students = studentArrayList.get(position);
 
-//         Glide
-//                .with(TutorAdapter.this)
-//                .load(students.getImg())
-//                .centerCrop()
-//                .into(holder.avatar);
+         Glide
+                .with(context)
+                .load(students.getImg())
+                .centerCrop()
+                .into(holder.avatar);
         holder.txtName.setText(students.getName());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,14 +66,12 @@ public class Your_StudentAdpter extends RecyclerView.Adapter<Your_StudentAdpter.
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView txtName;
         ImageView avatar;
-        LinearLayout linearLayout;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             avatar = itemView.findViewById(R.id.avatar);
             txtName = itemView.findViewById(R.id.name);
-            linearLayout = itemView.findViewById(R.id.linear);
         }
     }
 }

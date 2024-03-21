@@ -13,17 +13,12 @@
         android:background="#33CCFF"
         android:elevation="@dimen/_2sdp"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:title="Profile"
         app:titleMarginStart="@dimen/_20sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:titleTextColor="@android:color/white">
-
-        <ImageView
-            android:id="@+id/home"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/baseline_home_24"/>
 
 
     </androidx.appcompat.widget.Toolbar>

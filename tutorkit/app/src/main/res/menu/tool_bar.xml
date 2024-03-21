@@ -12,7 +12,7 @@
         android:id="@+id/home"
         android:icon="@drawable/baseline_home_24"
         app:showAsAction="ifRoom"
-        android:title="check" />
+        android:title="home" />
 
 
 

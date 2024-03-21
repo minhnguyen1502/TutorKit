@@ -14,9 +14,10 @@
         android:padding="10dp">
 
         <Spinner
-            android:id="@+id/spn_name"
+            android:id="@+id/spn_type"
             android:layout_width="match_parent"
             android:layout_height="40dp"
+            android:entries="@array/type"
             android:layout_gravity="center"
             android:layout_margin="3dp"
             android:gravity="center"
@@ -25,25 +26,26 @@
             android:textStyle="bold" />
 
         <EditText
-            android:id="@+id/edt_amount"
+            android:id="@+id/edt_title"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_gravity="center"
             android:layout_margin="3dp"
             android:gravity="center"
-            android:hint="Amount"
+            android:hint="Title"
             android:padding="5dp"
             android:textSize="18sp"
             android:textStyle="bold" />
 
         <EditText
-            android:id="@+id/edt_price"
+            android:id="@+id/edt_grade"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_gravity="center"
             android:layout_margin="3dp"
             android:gravity="center"
-            android:hint="Price"
+            android:inputType="number"
+            android:hint="Grade"
             android:padding="5dp"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -54,7 +56,8 @@
             android:layout_gravity="center"
             android:layout_margin="3dp"
             android:gravity="center"
-            android:hint="dateline"
+            android:focusable="false"
+            android:hint="Date"
             android:padding="5dp"
             android:textSize="18sp"
             android:textStyle="bold" />

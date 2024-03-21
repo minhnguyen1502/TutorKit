@@ -13,6 +13,18 @@
         android:theme="@style/Theme.Tutorkit"
         tools:targetApi="31">
         <activity
+            android:name=".Student.Grade.ViewGrade"
+            android:exported="false" />
+        <activity
+            android:name=".Student.Grade.Grade_Page"
+            android:exported="false" />
+        <activity
+            android:name=".Tutor.Grade.ManageGrade"
+            android:exported="false" />
+        <activity
+            android:name=".Student.Payment.Payment"
+            android:exported="false" />
+        <activity
             android:name=".Student.Exam.ExamStudent"
             android:exported="false" />
         <activity
@@ -79,7 +91,7 @@
             android:name=".Tutor.Account.Tutor_profile"
             android:exported="false" />
         <activity
-            android:name=".Tutor.Assignment"
+            android:name=".Tutor.Assignment.Assignment"
             android:exported="false" />
         <activity
             android:name=".Tutor.Tuition.Tuition_page"

@@ -1,20 +1,46 @@
 package com.example.tutorkit.Models;
 
 public class Tuition {
-    private String ID,name, dateline;
+    private String ID,name, dateline, idStudent, idTutor;
 
     private int amount, price;
-    private int total;
     public Tuition() {
     }
 
-    public Tuition(String ID, String name, String dateline, int amount, int price, int total) {
+    public Tuition(String ID, String name, String dateline, String idStudent, String idTutor, int amount, int price) {
         this.ID = ID;
         this.name = name;
         this.dateline = dateline;
+        this.idStudent = idStudent;
+        this.idTutor = idTutor;
         this.amount = amount;
         this.price = price;
-        this.total = total;
+    }
+
+//    public Tuition(String ID, String name, String dateline, String idStudent, int amount, int price) {
+//        this.ID = ID;
+//        this.name = name;
+//        this.dateline = dateline;
+//        this.idStudent = idStudent;
+//        this.amount = amount;
+//        this.price = price;
+//    }
+
+
+    public String getIdTutor() {
+        return idTutor;
+    }
+
+    public void setIdTutor(String idTutor) {
+        this.idTutor = idTutor;
+    }
+
+    public String getIdStudent() {
+        return idStudent;
+    }
+
+    public void setIdStudent(String idStudent) {
+        this.idStudent = idStudent;
     }
 
     public String getID() {
@@ -57,11 +83,4 @@ public class Tuition {
         this.price = price;
     }
 
-    public int getTotal() {
-        return total;
-    }
-
-    public void setTotal(int total) {
-        this.total = total;
-    }
 }

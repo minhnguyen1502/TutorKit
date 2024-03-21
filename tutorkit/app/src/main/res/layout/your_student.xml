@@ -9,7 +9,6 @@
     android:layout_margin="16dp">
 
     <LinearLayout
-        android:id="@+id/linear"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
 
@@ -23,8 +22,8 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/avatar"
-                android:layout_width="@dimen/_70sdp"
-                android:layout_height="@dimen/_70sdp"
+                android:layout_width="@dimen/_40sdp"
+                android:layout_height="@dimen/_40sdp"
                 android:layout_gravity="center"
                 android:src="@drawable/avata" />
 
@@ -73,8 +72,6 @@
             </LinearLayout>
 
         </LinearLayout>
-
-
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>

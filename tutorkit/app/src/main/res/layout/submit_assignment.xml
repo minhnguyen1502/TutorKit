@@ -14,22 +14,14 @@
         android:textStyle="bold"
         android:textSize="18sp"
         android:text="Student name"/>
-
     <TextView
-        android:id="@+id/txt_amount"
+        android:id="@+id/txt_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textStyle="italic"
         android:textSize="18sp"
-        android:text="Amount"/>
+        android:text="title"/>
 
-    <TextView
-        android:id="@+id/txt_price"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textStyle="italic"
-        android:textSize="18sp"
-        android:text="price"/>
     <TextView
         android:id="@+id/txt_date"
         android:layout_width="match_parent"
@@ -38,27 +30,7 @@
         android:textSize="18sp"
         android:text="dateline"/>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="total:"
-            android:textSize="18sp"
-            android:textStyle="italic" />
-
-        <TextView
-            android:id="@+id/txt_total"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="300"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:textSize="18sp"
-            android:textStyle="italic" />
-    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -83,7 +55,7 @@
             android:layout_weight="1"
             android:layout_margin="3dp"
             android:text="UPDATE"
-            android:backgroundTint="@color/green"/>
+            android:backgroundTint="@color/green_light"/>
 
     </LinearLayout>
 </LinearLayout>

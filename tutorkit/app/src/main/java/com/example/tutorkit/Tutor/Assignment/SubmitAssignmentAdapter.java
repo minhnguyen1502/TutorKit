@@ -1,4 +1,4 @@
-package com.example.tutorkit.Tutor.Adapter;
+package com.example.tutorkit.Tutor.Assignment;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -16,52 +16,48 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.tutorkit.Models.Tuition;
+import com.example.tutorkit.Models.SubmitAssignment;
 import com.example.tutorkit.R;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
-public class TuitionAdapter extends RecyclerView.Adapter<TuitionAdapter.ViewHolder> {
+public class SubmitAssignmentAdapter extends RecyclerView.Adapter<SubmitAssignmentAdapter.ViewHolder> {
 
     Context context;
-    ArrayList<Tuition> tuitionArrayList;
+    ArrayList<SubmitAssignment> submitAssignmentArrayList;
     DatabaseReference databaseReference;
 
-    public TuitionAdapter(Context context, ArrayList<Tuition> tuitionArrayList) {
+    public SubmitAssignmentAdapter(Context context, ArrayList<SubmitAssignment> submitAssignmentArrayList) {
         this.context = context;
-        this.tuitionArrayList = tuitionArrayList;
+        this.submitAssignmentArrayList = submitAssignmentArrayList;
         databaseReference = FirebaseDatabase.getInstance().getReference();
     }
 
-
-
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public SubmitAssignmentAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(context);
-        View view = layoutInflater.inflate(R.layout.tuition, parent, false);
+        View view = layoutInflater.inflate(R.layout.submit_assignment, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull SubmitAssignmentAdapter.ViewHolder holder, int position) {
 
-        Tuition tuition = tuitionArrayList.get(position);
+        SubmitAssignment submitAssignment = submitAssignmentArrayList.get(position);
 
-        holder.name.setText("Name : " + tuition.getName());
-        holder.amount.setText("Amount : " + tuition.getAmount());
-        holder.price.setText("Price : " + tuition.getPrice());
-        holder.dateline.setText("Name : " + tuition.getDateline());
-        holder.total.setText(String.valueOf(tuition.getTotal()));
+        holder.name.setText("Name : " + submitAssignment.getName());
+        holder.dateline.setText("Dateline : " + submitAssignment.getDateline());
+        holder.title.setText("Title : " + submitAssignment.getTitle());
 
 
         holder.buttonUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ViewDialogUpdate viewDialogUpdate = new ViewDialogUpdate();
-                viewDialogUpdate.showDialog(context, tuition.getID(), tuition.getName(), tuition.getDateline(), tuition.getAmount(), tuition.getPrice(), tuition.getTotal());
+//                viewDialogUpdate.showDialog(context, );
             }
         });
 
@@ -69,7 +65,7 @@ public class TuitionAdapter extends RecyclerView.Adapter<TuitionAdapter.ViewHold
             @Override
             public void onClick(View view) {
                 ViewDialogConfirmDelete viewDialogConfirmDelete = new ViewDialogConfirmDelete();
-                viewDialogConfirmDelete.showDialog(context, tuition.getID());
+                viewDialogConfirmDelete.showDialog(context, submitAssignment.getIdStudent());
             }
         });
 
@@ -77,17 +73,14 @@ public class TuitionAdapter extends RecyclerView.Adapter<TuitionAdapter.ViewHold
 
     @Override
     public int getItemCount() {
-        return tuitionArrayList.size();
+        return submitAssignmentArrayList.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView name;
-        TextView amount;
-        TextView price;
+        TextView title;
         TextView dateline;
-        TextView total;
-
         Button buttonDelete;
         Button buttonUpdate;
 
@@ -95,11 +88,8 @@ public class TuitionAdapter extends RecyclerView.Adapter<TuitionAdapter.ViewHold
             super(itemView);
 
             name = itemView.findViewById(R.id.txt_name);
-            amount = itemView.findViewById(R.id.txt_amount);
-            price = itemView.findViewById(R.id.txt_price);
+            title = itemView.findViewById(R.id.txt_title);
             dateline = itemView.findViewById(R.id.txt_date);
-            total = itemView.findViewById(R.id.txt_total);
-
 
             buttonDelete = itemView.findViewById(R.id.buttonDelete);
             buttonUpdate = itemView.findViewById(R.id.buttonUpdate);
@@ -107,7 +97,7 @@ public class TuitionAdapter extends RecyclerView.Adapter<TuitionAdapter.ViewHold
     }
 
     public class ViewDialogUpdate {
-        public void showDialog(Context context, String id, String name, String dateline, int amount, int price, int total) {
+        public void showDialog(Context context, String id, String name, String dateline, int amount, int price) {
             final Dialog dialog = new Dialog(context);
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.setCancelable(false);
@@ -117,16 +107,14 @@ public class TuitionAdapter extends RecyclerView.Adapter<TuitionAdapter.ViewHold
             EditText edt_amount = dialog.findViewById(R.id.edt_amount);
             EditText edt_price = dialog.findViewById(R.id.edt_price);
             EditText edt_dateline = dialog.findViewById(R.id.edt_date);
-            EditText txt_total = dialog.findViewById(R.id.txt_total);
 
             edt_name.setText(name);
-            edt_amount.setText(amount);
-            edt_price.setText(price);
-            edt_dateline.setText(dateline);
-            txt_total.setText(total);
-
+            edt_amount.setText(String.valueOf(amount));
+            edt_price.setText(String.valueOf(price));
+            edt_dateline.setText(String.valueOf(dateline));
 
             Button buttonUpdate = dialog.findViewById(R.id.buttonAdd);
+            buttonUpdate.setText("Update");
             Button buttonCancel = dialog.findViewById(R.id.buttonCancel);
 
             buttonCancel.setOnClickListener(new View.OnClickListener() {
@@ -139,16 +127,14 @@ public class TuitionAdapter extends RecyclerView.Adapter<TuitionAdapter.ViewHold
             buttonUpdate.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
                     String s_name = edt_name.getText().toString();
                     int s_amount = Integer.parseInt(edt_amount.getText().toString());
                     int s_price = Integer.parseInt(edt_price.getText().toString());
                     String s_dateline = edt_dateline.getText().toString();
-                    int s_total = Integer.parseInt(txt_total.getText().toString());
 
-                            databaseReference.child("tuition").child(id).setValue(new Tuition(id, s_name, s_dateline,s_amount, s_price,s_total));
-                            Toast.makeText(context, "User Updated successfully!", Toast.LENGTH_SHORT).show();
-                            dialog.dismiss();
+//                    databaseReference.child("tuition").child(id).setValue(new SubmitAssignment(id, s_name, s_dateline,"",s_amount, s_price));
+                    Toast.makeText(context, "User Updated successfully!", Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
                 }
             });
 
@@ -193,4 +179,3 @@ public class TuitionAdapter extends RecyclerView.Adapter<TuitionAdapter.ViewHold
         }
     }
 }
-

@@ -1,4 +1,4 @@
-package com.example.tutorkit.Tutor.Adapter;
+package com.example.tutorkit.Tutor.Students;
 
 import android.content.Context;
 import android.view.LayoutInflater;

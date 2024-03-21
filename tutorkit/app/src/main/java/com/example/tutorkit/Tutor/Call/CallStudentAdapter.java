@@ -1,4 +1,4 @@
-package com.example.tutorkit.Tutor.Adapter;
+package com.example.tutorkit.Tutor.Call;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,10 +14,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.tutorkit.Models.StatusAdd;
+import com.bumptech.glide.Glide;
 import com.example.tutorkit.Models.Student;
 import com.example.tutorkit.R;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -43,11 +42,12 @@ public class CallStudentAdapter extends RecyclerView.Adapter<CallStudentAdapter.
     public void onBindViewHolder(@NonNull CallStudentAdapter.ViewHolder holder, int position) {
         Student students = studentArrayList.get(position);
 
-//         Glide
-//                .with(TutorAdapter.this)
-//                .load(students.getImg())
-//                .centerCrop()
-//                .into(holder.avatar);
+         Glide
+                .with(context)
+                .load(students.getImg())
+                .centerCrop()
+                .into(holder.avatar);
+        holder.txtName.setText(students.getName());
         holder.txtName.setText(students.getName());
 
         holder.call_parent.setOnClickListener(new View.OnClickListener() {

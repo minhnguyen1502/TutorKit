@@ -17,9 +17,11 @@ import com.example.tutorkit.Models.Tutor;
 import com.example.tutorkit.R;
 import com.example.tutorkit.Student.Account.Student_profile;
 import com.example.tutorkit.Student.Exam.ExamStudent;
+import com.example.tutorkit.Student.Grade.Grade_Page;
+import com.example.tutorkit.Student.Payment.Payment;
 import com.example.tutorkit.Student.Tutors.Tutor_list;
 import com.example.tutorkit.Support;
-import com.example.tutorkit.Tutor.Assignment;
+import com.example.tutorkit.Tutor.Assignment.Assignment;
 import com.example.tutorkit.Tutor.Grade.GradePage;
 import com.example.tutorkit.Tutor.Calendar.Time_table;
 import com.example.tutorkit.Tutor.Tuition.Tuition_page;
@@ -45,15 +47,15 @@ public class Student_home extends AppCompatActivity {
         tv_name = findViewById(R.id.tv_student);
         avatar = findViewById(R.id.avatar);
 
-        tutor = (ConstraintLayout) findViewById(R.id.page_tutor);
+        tutor =  findViewById(R.id.page_tutor);
         exam = findViewById(R.id.page_exam);
-        calendar = (ConstraintLayout) findViewById(R.id.page_calendar);
-        grade = (ConstraintLayout) findViewById(R.id.page_grade);
-        assignment = (ConstraintLayout) findViewById(R.id.page_assignment);
-        tuition = (ConstraintLayout) findViewById(R.id.page_tuition);
-        profile = (ConstraintLayout) findViewById(R.id.page_profile);
-        support = (ConstraintLayout) findViewById(R.id.page_support);
-        logout = (ConstraintLayout) findViewById(R.id.logout);
+        calendar =  findViewById(R.id.page_calendar);
+        grade =  findViewById(R.id.page_grade);
+        assignment =  findViewById(R.id.page_assignment);
+        tuition = findViewById(R.id.page_tuition);
+        profile = findViewById(R.id.page_profile);
+        support = findViewById(R.id.page_support);
+        logout = findViewById(R.id.logout);
 
         firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
@@ -78,7 +80,6 @@ public class Student_home extends AppCompatActivity {
 
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Toast.makeText(Student_home.this, "something wrong", Toast.LENGTH_SHORT).show();
@@ -106,7 +107,7 @@ public class Student_home extends AppCompatActivity {
         grade.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), GradePage.class);
+                Intent intent = new Intent(getApplicationContext(), Grade_Page.class);
                 startActivity(intent);
 
             }
@@ -124,9 +125,8 @@ public class Student_home extends AppCompatActivity {
         tuition.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), Tuition_page.class);
+                Intent intent = new Intent(getApplicationContext(), Payment.class);
                 startActivity(intent);
-
             }
         });
         exam.setOnClickListener(new View.OnClickListener() {
