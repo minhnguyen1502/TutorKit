@@ -14,6 +14,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,6 +31,7 @@ import com.example.tutorkit.Models.Tuition;
 import com.example.tutorkit.R;
 import com.example.tutorkit.Tutor.Tuition.TuitionAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -39,6 +41,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Objects;
 
 public class ManageGrade extends AppCompatActivity {
 
@@ -46,6 +49,7 @@ public class ManageGrade extends AppCompatActivity {
     RecyclerView recyclerView;
     ArrayList<Grade> gradeArrayList;
     GradeAdapter adapter;
+    String idStudent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +63,7 @@ public class ManageGrade extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         gradeArrayList = new ArrayList<>();
-
+        idStudent = getIntent().getStringExtra("idStudent");
         readData();
         Toolbar myToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
@@ -73,8 +77,16 @@ public class ManageGrade extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 gradeArrayList.clear();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    Grade users = dataSnapshot.getValue(Grade.class);
-                    gradeArrayList.add(users);
+                    Grade grades = dataSnapshot.getValue(Grade.class);
+                    try {
+                        if (Objects.equals(grades.getIdStudent(), idStudent)){
+                            if (Objects.equals(grades.getIdTutor(), FirebaseAuth.getInstance().getUid())){
+                                gradeArrayList.add(grades);
+                            }
+                        }
+                    }catch (Exception e){
+                        Log.e("TAG", "onDataChange: "+e.getMessage() );
+                    }
                 }
                 adapter = new GradeAdapter(ManageGrade.this, gradeArrayList);
                 recyclerView.setAdapter(adapter);
@@ -99,6 +111,7 @@ public class ManageGrade extends AppCompatActivity {
             EditText edt_title = dialog.findViewById(R.id.edt_title);
             EditText edt_grade = dialog.findViewById(R.id.edt_grade);
             EditText edt_date = dialog.findViewById(R.id.edt_date);
+
 
             Button buttonAdd = dialog.findViewById(R.id.buttonAdd);
             Button buttonCancel = dialog.findViewById(R.id.buttonCancel);
@@ -138,31 +151,40 @@ public class ManageGrade extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     String id = "grade" + new Date().getTime();
+                    String idTutor = FirebaseAuth.getInstance().getUid();
+                    String n_idStudent = idStudent;
                     String type = spn_type.getSelectedItem().toString();
                     String title = edt_title.getText().toString();
-                    int grade = Integer.parseInt(edt_grade.getText().toString());
                     String date = edt_date.getText().toString();
+
+                    int grade =0;
+                    if (!TextUtils.isEmpty(edt_grade.getText().toString())){
+                        grade = Integer.parseInt(edt_grade.getText().toString());
+                    }
 
                   if (TextUtils.isEmpty(title)) {
                     Toast.makeText(ManageGrade.this, "Enter your title", Toast.LENGTH_SHORT).show();
                     edt_title.setError("Title is required");
                     edt_title.requestFocus();
-                } else if (grade <= 10 || grade >= 0) {
-                    Toast.makeText(ManageGrade.this, "grade must be less than 10 ", Toast.LENGTH_SHORT).show();
+                }
+                  else if (TextUtils.isEmpty(edt_grade.getText().toString())) {
+                      Toast.makeText(ManageGrade.this, "Enter grade ", Toast.LENGTH_SHORT).show();
+                      edt_grade.setError("Grade is required");
+                      edt_grade.requestFocus();
+                  }
+                  else if (grade <0 || grade > 10) {
+                      Toast.makeText(ManageGrade.this, "grade must be less than 10 and great than 0 ", Toast.LENGTH_SHORT).show();
                       edt_grade.setError("Title is required");
                       edt_grade.requestFocus();
-                }
-//                  else if (TextUtils.isEmpty(grade)) {
-//                      Toast.makeText(ManageGrade.this, "Enter grade ", Toast.LENGTH_SHORT).show();
-//                      edt_grade.setError("Grade is required");
-//                      edt_grade.requestFocus();
-//                  }
+                  }
+
+
                   else if (TextUtils.isEmpty(date)) {
-                      Toast.makeText(ManageGrade.this, "Enter grade ", Toast.LENGTH_SHORT).show();
+                      Toast.makeText(ManageGrade.this, "Enter date ", Toast.LENGTH_SHORT).show();
                       edt_date.setError("Grade is required");
                       edt_date.requestFocus();
                   } else {
-                    databaseReference.child("grades").child(id).setValue(new Grade(id, type, title, date, grade));
+                    databaseReference.child("grades").child(id).setValue(new Grade(id, type, title, date,idTutor,n_idStudent, grade));
                     Toast.makeText(context, "DONE!", Toast.LENGTH_SHORT).show();
                     dialog.dismiss();
                     }

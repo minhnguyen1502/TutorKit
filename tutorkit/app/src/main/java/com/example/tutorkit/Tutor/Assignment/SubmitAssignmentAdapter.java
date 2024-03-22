@@ -16,7 +16,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.tutorkit.Models.SubmitAssignment;
+import com.example.tutorkit.Models.SubmitAssignmentModel;
 import com.example.tutorkit.R;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -26,12 +26,12 @@ import java.util.ArrayList;
 public class SubmitAssignmentAdapter extends RecyclerView.Adapter<SubmitAssignmentAdapter.ViewHolder> {
 
     Context context;
-    ArrayList<SubmitAssignment> submitAssignmentArrayList;
+    ArrayList<SubmitAssignmentModel> submitAssignmentModelArrayList;
     DatabaseReference databaseReference;
 
-    public SubmitAssignmentAdapter(Context context, ArrayList<SubmitAssignment> submitAssignmentArrayList) {
+    public SubmitAssignmentAdapter(Context context, ArrayList<SubmitAssignmentModel> submitAssignmentModelArrayList) {
         this.context = context;
-        this.submitAssignmentArrayList = submitAssignmentArrayList;
+        this.submitAssignmentModelArrayList = submitAssignmentModelArrayList;
         databaseReference = FirebaseDatabase.getInstance().getReference();
     }
 
@@ -46,12 +46,11 @@ public class SubmitAssignmentAdapter extends RecyclerView.Adapter<SubmitAssignme
     @Override
     public void onBindViewHolder(@NonNull SubmitAssignmentAdapter.ViewHolder holder, int position) {
 
-        SubmitAssignment submitAssignment = submitAssignmentArrayList.get(position);
+        SubmitAssignmentModel submitAssignmentModel = submitAssignmentModelArrayList.get(position);
 
-        holder.name.setText("Name : " + submitAssignment.getName());
-        holder.dateline.setText("Dateline : " + submitAssignment.getDateline());
-        holder.title.setText("Title : " + submitAssignment.getTitle());
-
+        holder.name.setText("Name : " + submitAssignmentModel.getName());
+        holder.dateline.setText("Dateline : " + submitAssignmentModel.getDateline());
+        holder.title.setText("Title : " + submitAssignmentModel.getTitle());
 
         holder.buttonUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,7 +64,7 @@ public class SubmitAssignmentAdapter extends RecyclerView.Adapter<SubmitAssignme
             @Override
             public void onClick(View view) {
                 ViewDialogConfirmDelete viewDialogConfirmDelete = new ViewDialogConfirmDelete();
-                viewDialogConfirmDelete.showDialog(context, submitAssignment.getIdStudent());
+                viewDialogConfirmDelete.showDialog(context, submitAssignmentModel.getId());
             }
         });
 
@@ -73,7 +72,7 @@ public class SubmitAssignmentAdapter extends RecyclerView.Adapter<SubmitAssignme
 
     @Override
     public int getItemCount() {
-        return submitAssignmentArrayList.size();
+        return submitAssignmentModelArrayList.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -166,8 +165,8 @@ public class SubmitAssignmentAdapter extends RecyclerView.Adapter<SubmitAssignme
                 @Override
                 public void onClick(View view) {
 
-                    databaseReference.child("tuition").child(id).removeValue();
-                    Toast.makeText(context, "tuition Deleted successfully!", Toast.LENGTH_SHORT).show();
+                    databaseReference.child("submitAssignment").child(id).removeValue();
+                    Toast.makeText(context, "Deleted successfully!", Toast.LENGTH_SHORT).show();
                     dialog.dismiss();
 
                 }

@@ -1,17 +1,9 @@
-package com.example.tutorkit.Tutor.Assignment;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+package com.example.tutorkit.Student.Assignment;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
-
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -29,9 +21,16 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.tutorkit.Models.StatusAdd;
 import com.example.tutorkit.Models.Student;
-import com.example.tutorkit.Models.SubmitAssignment;
+import com.example.tutorkit.Models.SubmitAssignmentModel;
 import com.example.tutorkit.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -43,14 +42,16 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Objects;
 
 public class Assignment extends AppCompatActivity {
     DatabaseReference databaseReference;
     RecyclerView recyclerView;
-    ArrayList<SubmitAssignment> submitAssignmentArrayList;
+    ArrayList<SubmitAssignmentModel> submitAssignmentModelArrayList;
     ArrayList<Student> studentArrayList;
-    SubmitAssignmentAdapter adapter;
+    AssignmentAdapter adapter;
     ArrayList<String> idStudent;
+    String idTutor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,11 +66,12 @@ public class Assignment extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        submitAssignmentArrayList = new ArrayList<>();
+        submitAssignmentModelArrayList = new ArrayList<>();
         studentArrayList = new ArrayList<>();
         idStudent = new ArrayList<>();
         studentArrayList.add(new Student("Student Name","", "","","","",""));
 
+        idTutor = getIntent().getStringExtra("idTutor");
         readData();
         showListStudents();
     }
@@ -124,23 +126,26 @@ public class Assignment extends AppCompatActivity {
     }
 
     private void readData() {
-        databaseReference.child("tuition").addValueEventListener(new ValueEventListener() {
+        databaseReference.child("submitAssignment").addValueEventListener(new ValueEventListener() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                submitAssignmentArrayList.clear();
+                submitAssignmentModelArrayList.clear();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    SubmitAssignment submitAssignment = dataSnapshot.getValue(SubmitAssignment.class);
+                    SubmitAssignmentModel submitAssignmentModel = dataSnapshot.getValue(SubmitAssignmentModel.class);
                     try {
-                        if (submitAssignment.getIdTutor() == FirebaseAuth.getInstance().getUid()){
-                            submitAssignmentArrayList.add(submitAssignment);
+                        if (Objects.equals(submitAssignmentModel.getIdStudent(), FirebaseAuth.getInstance().getUid())){
+                            if (Objects.equals(submitAssignmentModel.getIdTutor(), idTutor)){
+                                submitAssignmentModelArrayList.add(submitAssignmentModel);
+
+                            }
                         }
                     }catch (Exception e){
                         Log.e("TAG", "onDataChange: "+e.getMessage() );
                     }
 
                 }
-                adapter = new SubmitAssignmentAdapter(Assignment.this, submitAssignmentArrayList);
+                adapter = new AssignmentAdapter(Assignment.this, submitAssignmentModelArrayList);
                 recyclerView.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
             }
@@ -161,106 +166,10 @@ public class Assignment extends AppCompatActivity {
         if (id == R.id.home) {
             finish();
         } else if (id == R.id.add) {
-            ViewDialogAdd viewDialogAdd = new ViewDialogAdd();
-            viewDialogAdd.showDialog(Assignment.this);
+            Toast.makeText(this, "Can't add new", Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(this, "Something Wrong", Toast.LENGTH_SHORT).show();
         }
         return super.onOptionsItemSelected(item);
-    }
-    private class ViewDialogAdd {
-        public void showDialog(Context context) {
-            final Dialog dialog = new Dialog(context);
-            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            dialog.setCancelable(false);
-            dialog.setContentView(R.layout.dialog_add_submit_assignment);
-
-            Spinner studentName = dialog.findViewById(R.id.spn_name);
-            EditText edtDateline = dialog.findViewById(R.id.edt_date);
-            EditText edt_title = dialog.findViewById(R.id.edt_title);
-            ArrayAdapter<Student> studentList = new ArrayAdapter<Student>(context, android.R.layout.simple_list_item_1,studentArrayList){
-                @Override
-                public boolean isEnabled(int position) {
-//                    position = 0 not select
-                    return position != 0;
-                }
-
-                @Override
-                public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-                    TextView view = (TextView) super.getDropDownView(position, convertView, parent);
-                    view.setText(studentArrayList.get(position).getName());
-                    if (position == 0) {
-                        view.setTextColor(Color.GRAY);
-                    } else {
-                        view.setTextColor(Color.BLACK);
-                    }
-                    return view;
-                }
-
-                @NonNull
-                @Override
-                public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-                    TextView view = (TextView) super.getView(position, convertView, parent);
-                    view.setText(studentArrayList.get(position).getName());
-                    return view;
-                }
-            };
-            studentName.setAdapter(studentList);
-
-            Button buttonAdd = dialog.findViewById(R.id.buttonAdd);
-            Button buttonCancel = dialog.findViewById(R.id.buttonCancel);
-
-            edtDateline.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    DatePickerDialog datePickerDialog = new DatePickerDialog(
-                            context,
-                            new DatePickerDialog.OnDateSetListener() {
-                                @Override
-                                public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                                    // Người dùng đã chọn ngày. Cập nhật trường ngày (edate).
-                                    String selectedDate = dayOfMonth + "/" + (month + 1) + "/" + year;
-                                    edtDateline.setText(selectedDate);
-                                }
-                            },
-                            // Truyền ngày hiện tại làm ngày mặc định cho DatePickerDialog.
-                            Calendar.getInstance().get(Calendar.YEAR),
-                            Calendar.getInstance().get(Calendar.MONTH),
-                            Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
-                    );
-
-                    datePickerDialog.show();
-                }
-            });
-            buttonCancel.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    dialog.dismiss();
-                }
-            });
-
-            buttonAdd.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-//                    DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-                    Student student = (Student) studentName.getSelectedItem();
-                    String idTutor = FirebaseAuth.getInstance().getUid();
-                    String id = "tuition" + new Date().getTime();
-                    String title = edt_title.getText().toString();
-                    String name = student.getName();
-                    String dateline = edtDateline.getText().toString();
-
-                    databaseReference.child("tuition").child(id)
-                            .setValue(new SubmitAssignment(id,title,dateline,idTutor,student.getId(),name));
-                    Toast.makeText(context, "DONE!", Toast.LENGTH_SHORT).show();
-                    dialog.dismiss();
-                }
-            });
-
-
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            dialog.show();
-
-        }
     }
 }

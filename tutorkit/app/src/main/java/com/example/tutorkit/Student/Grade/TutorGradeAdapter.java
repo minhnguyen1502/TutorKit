@@ -57,6 +57,7 @@ public class TutorGradeAdapter extends RecyclerView.Adapter<TutorGradeAdapter.Vi
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(context, ViewGrade.class);
+                i.putExtra("idTutor",tutors.getId());
                 context.startActivity(i);
                 Toast.makeText(context, "I clicked this tutor", Toast.LENGTH_SHORT).show();
             }

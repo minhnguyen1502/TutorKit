@@ -30,6 +30,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Payment extends AppCompatActivity {
 
@@ -69,7 +70,7 @@ public class Payment extends AppCompatActivity {
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Tuition tuition = dataSnapshot.getValue(Tuition.class);
                     try {
-                        if (tuition.getIdStudent() == FirebaseAuth.getInstance().getUid()){
+                        if (Objects.equals(tuition.getIdStudent(), FirebaseAuth.getInstance().getUid())){
                             tuitionArrayList.add(tuition);
                         }
                     }catch (Exception e){

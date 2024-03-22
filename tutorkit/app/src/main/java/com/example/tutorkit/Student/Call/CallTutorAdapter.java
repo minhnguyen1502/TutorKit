@@ -1,4 +1,4 @@
-package com.example.tutorkit.Tutor.Call;
+package com.example.tutorkit.Student.Call;
 
 import android.content.Context;
 import android.content.Intent;
@@ -16,44 +16,45 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.tutorkit.Models.Student;
+import com.example.tutorkit.Models.Tutor;
 import com.example.tutorkit.R;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
-public class CallStudentAdapter extends RecyclerView.Adapter<CallStudentAdapter.ViewHolder>{
+public class CallTutorAdapter extends RecyclerView.Adapter<CallTutorAdapter.ViewHolder>{
     Context context;
-    ArrayList<Student> studentArrayList;
+    ArrayList<Tutor> tutorArrayList;
     DatabaseReference databaseReference;
-    public CallStudentAdapter(Context context, ArrayList<Student> studentArrayList) {
+    public CallTutorAdapter(Context context, ArrayList<Tutor> tutorArrayList) {
         this.context = context;
-        this.studentArrayList = studentArrayList;
+        this.tutorArrayList = tutorArrayList;
         databaseReference = FirebaseDatabase.getInstance().getReference();
     }
     @NonNull
     @Override
-    public CallStudentAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(context);
-        View view = layoutInflater.inflate(R.layout.call_student, parent, false);
-        return new CallStudentAdapter.ViewHolder(view);    }
+        View view = layoutInflater.inflate(R.layout.call_tutor, parent, false);
+        return new ViewHolder(view);    }
 
     @Override
-    public void onBindViewHolder(@NonNull CallStudentAdapter.ViewHolder holder, int position) {
-        Student students = studentArrayList.get(position);
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        Tutor tutor = tutorArrayList.get(position);
 
          Glide
                 .with(context)
-                .load(students.getImg())
+                .load(tutor.getImg())
                 .centerCrop()
                 .into(holder.avatar);
-        holder.txtName.setText(students.getName());
+        holder.txtName.setText(tutor.getName());
 
-        holder.call_parent.setOnClickListener(new View.OnClickListener() {
+        holder.call.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(Intent.ACTION_DIAL);
-                intent.setData(Uri.parse("tel:" + students.getParent_phone()));
+                intent.setData(Uri.parse("tel:" + tutor.getPhone()));
                 if (intent.resolveActivity(context.getPackageManager()) != null) {
                     context.startActivity(intent);
                 } else {
@@ -63,39 +64,25 @@ public class CallStudentAdapter extends RecyclerView.Adapter<CallStudentAdapter.
             }
 
         });
-        holder.call_student.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_DIAL);
-                intent.setData(Uri.parse("tel:" + students.getPhone()));
-                if (intent.resolveActivity(context.getPackageManager()) != null) {
-                    context.startActivity(intent);
-                } else {
-                    // Handle the case where no activity can handle the intent
-                    Toast.makeText(context, "No app available to handle this action", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+
     }
 
     @Override
     public int getItemCount() {
-        return studentArrayList.size();
+        return tutorArrayList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView txtName;
         ImageView avatar;
-        Button call_parent, call_student;
+        ImageView call;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             avatar = itemView.findViewById(R.id.avatar);
             txtName = itemView.findViewById(R.id.name);
-
-            call_parent = itemView.findViewById(R.id.btn_parent);
-            call_student = itemView.findViewById(R.id.btn_student);
+            call = itemView.findViewById(R.id.call);
         }
     }
 }

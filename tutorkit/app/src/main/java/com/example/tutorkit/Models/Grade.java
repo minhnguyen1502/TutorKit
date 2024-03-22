@@ -1,8 +1,9 @@
 package com.example.tutorkit.Models;
 
 public class Grade {
-    private String id, type, title, date;
+    private String id, type, title, date, idTutor, idStudent;
     private int grade;
+
 
     public Grade() {
     }
@@ -13,6 +14,32 @@ public class Grade {
         this.title = title;
         this.date = date;
         this.grade = grade;
+    }
+
+    public Grade(String id, String type, String title, String date, String idTutor, String idStudent, int grade) {
+        this.id = id;
+        this.type = type;
+        this.title = title;
+        this.date = date;
+        this.idTutor = idTutor;
+        this.idStudent = idStudent;
+        this.grade = grade;
+    }
+
+    public String getIdTutor() {
+        return idTutor;
+    }
+
+    public void setIdTutor(String idTutor) {
+        this.idTutor = idTutor;
+    }
+
+    public String getIdStudent() {
+        return idStudent;
+    }
+
+    public void setIdStudent(String idStudent) {
+        this.idStudent = idStudent;
     }
 
     public String getId() {

@@ -10,9 +10,9 @@
         android:title="check" />
     <item
         android:id="@+id/home"
-        android:icon="@drawable/baseline_home_24"
+        android:icon="@drawable/back"
         app:showAsAction="ifRoom"
-        android:title="check" />
+        android:title=" " />
 
 
 

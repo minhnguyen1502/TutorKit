@@ -1,4 +1,4 @@
-package com.example.tutorkit.Tutor.Tuition;
+package com.example.tutorkit.Tutor.Assignment;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -11,7 +11,7 @@ import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
+
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -30,12 +30,11 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.tutorkit.Models.AssignmentModel;
 import com.example.tutorkit.Models.StatusAdd;
 import com.example.tutorkit.Models.Student;
-import com.example.tutorkit.Models.Tuition;
+import com.example.tutorkit.Models.SubmitAssignmentModel;
 import com.example.tutorkit.R;
-import com.example.tutorkit.Tutor.Tutor_home;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -48,20 +47,17 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 
-public class Tuition_page extends AppCompatActivity {
+public class SubmitAssignment extends AppCompatActivity {
     DatabaseReference databaseReference;
     RecyclerView recyclerView;
-    ArrayList<Tuition> tuitionArrayList;
+    ArrayList<SubmitAssignmentModel> submitAssignmentModelArrayList;
     ArrayList<Student> studentArrayList;
-    TuitionAdapter adapter;
+    SubmitAssignmentAdapter adapter;
     ArrayList<String> idStudent;
-    FloatingActionButton btn_add;
-    Student studentDefault;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_tuition);
+        setContentView(R.layout.activity_assignment);
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
@@ -72,25 +68,15 @@ public class Tuition_page extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        tuitionArrayList = new ArrayList<>();
+        submitAssignmentModelArrayList = new ArrayList<>();
         studentArrayList = new ArrayList<>();
         idStudent = new ArrayList<>();
-//        studentDefault = new Student("Student Name","", "","","","","");
-//        studentArrayList.add(studentDefault);
-
-
-        btn_add = findViewById(R.id.add);
-        btn_add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ViewDialogAdd viewDialogAdd = new ViewDialogAdd();
-                viewDialogAdd.showDialog(Tuition_page.this);
-            }
-        });
+        studentArrayList.add(new Student("Student Name","", "","","","",""));
 
         readData();
         showListStudents();
     }
+
     private void showListStudents() {
         FirebaseDatabase.getInstance().getReference("tutors")
                 .child(FirebaseAuth.getInstance().getUid())
@@ -118,8 +104,8 @@ public class Tuition_page extends AppCompatActivity {
                                             public void onDataChange(@NonNull DataSnapshot snapshot) {
 //                                                for (DataSnapshot dataSnapshot : snapshot.getChildren()){
 //                                                    Student student = new Student();
-                                                    Student student = snapshot.getValue(Student.class);
-                                                    studentArrayList.add(student);
+                                                Student student = snapshot.getValue(Student.class);
+                                                studentArrayList.add(student);
 //                                                }
                                                 Log.e("TAG", "log test: " + studentArrayList);
                                             }
@@ -141,24 +127,23 @@ public class Tuition_page extends AppCompatActivity {
     }
 
     private void readData() {
-        databaseReference.child("tuition").addValueEventListener(new ValueEventListener() {
+        databaseReference.child("submitAssignment").addValueEventListener(new ValueEventListener() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                tuitionArrayList.clear();
+                submitAssignmentModelArrayList.clear();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    Tuition tuition = dataSnapshot.getValue(Tuition.class);
+                    SubmitAssignmentModel submitAssignmentModel = dataSnapshot.getValue(SubmitAssignmentModel.class);
                     try {
-                        if (Objects.equals(tuition.getIdTutor(), FirebaseAuth.getInstance().getUid())){
-                            tuitionArrayList.add(tuition);
+                        if (Objects.equals(submitAssignmentModel.getIdTutor(), FirebaseAuth.getInstance().getUid())){
+                            submitAssignmentModelArrayList.add(submitAssignmentModel);
                         }
                     }catch (Exception e){
                         Log.e("TAG", "onDataChange: "+e.getMessage() );
                     }
 
                 }
-                adapter = new TuitionAdapter(Tuition_page.this, tuitionArrayList);
-                adapter.setDataStudent(studentArrayList);
+                adapter = new SubmitAssignmentAdapter(SubmitAssignment.this, submitAssignmentModelArrayList);
                 recyclerView.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
             }
@@ -168,10 +153,9 @@ public class Tuition_page extends AppCompatActivity {
             }
         });
     }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.tool_bar, menu);
+        getMenuInflater().inflate(R.menu.add, menu);
         return true;
     }
     @Override
@@ -179,46 +163,40 @@ public class Tuition_page extends AppCompatActivity {
         int id = item.getItemId();
         if (id == R.id.home) {
             finish();
-        } else if (id == R.id.action_search) {
-//            Intent i = new Intent(Tutor_profile.this, UpdateEmail.class);
-//            startActivity(i);
-//            finish();
+        } else if (id == R.id.add) {
+            ViewDialogAdd viewDialogAdd = new ViewDialogAdd();
+            viewDialogAdd.showDialog(SubmitAssignment.this);
         } else {
             Toast.makeText(this, "Something Wrong", Toast.LENGTH_SHORT).show();
         }
         return super.onOptionsItemSelected(item);
     }
-
     private class ViewDialogAdd {
         public void showDialog(Context context) {
             final Dialog dialog = new Dialog(context);
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.setCancelable(false);
-            dialog.setContentView(R.layout.dialog_add_tuition);
+            dialog.setContentView(R.layout.dialog_add_submit_assignment);
 
             Spinner studentName = dialog.findViewById(R.id.spn_name);
-            EditText edtAmount = dialog.findViewById(R.id.edt_amount);
-            EditText edtPrice = dialog.findViewById(R.id.edt_price);
             EditText edtDateline = dialog.findViewById(R.id.edt_date);
-//            if (studentArrayList.get(0)!=studentDefault){
-//                studentArrayList.add(0,studentDefault);
-//            }
+            EditText edt_title = dialog.findViewById(R.id.edt_title);
             ArrayAdapter<Student> studentList = new ArrayAdapter<Student>(context, android.R.layout.simple_list_item_1,studentArrayList){
-//                @Override
-//                public boolean isEnabled(int position) {
-////                    position = 0 not select
-//                    return position != 0;
-//                }
+                @Override
+                public boolean isEnabled(int position) {
+//                    position = 0 not select
+                    return position != 0;
+                }
 
                 @Override
                 public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
                     TextView view = (TextView) super.getDropDownView(position, convertView, parent);
                     view.setText(studentArrayList.get(position).getName());
-//                    if (position == 0) {
-//                        view.setTextColor(Color.GRAY);
-//                    } else {
-//                        view.setTextColor(Color.BLACK);
-//                    }
+                    if (position == 0) {
+                        view.setTextColor(Color.GRAY);
+                    } else {
+                        view.setTextColor(Color.BLACK);
+                    }
                     return view;
                 }
 
@@ -270,42 +248,27 @@ public class Tuition_page extends AppCompatActivity {
 //                    DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
                     Student student = (Student) studentName.getSelectedItem();
                     String idTutor = FirebaseAuth.getInstance().getUid();
-                    String id = "tuition" + new Date().getTime();
+                    String id = "submitAssignment" + new Date().getTime();
+                    String title = edt_title.getText().toString();
                     String name = student.getName();
-
                     String dateline = edtDateline.getText().toString();
 
-                    int amount =0;
-                    if (!TextUtils.isEmpty(edtAmount.getText().toString())){
-                        amount = Integer.parseInt(edtAmount.getText().toString());
-                    }
-                    int price =0;
-                    if (!TextUtils.isEmpty(edtPrice.getText().toString())){
-                        price = Integer.parseInt(edtPrice.getText().toString());
-                    }
-                     if (TextUtils.isEmpty(dateline)){
-                        Toast.makeText(context, "Enter dateline", Toast.LENGTH_SHORT).show();
-                        edtDateline.setError("required");
+                    if(TextUtils.isEmpty(title)) {
+                        Toast.makeText(context, "enter title", Toast.LENGTH_SHORT).show();
+                        edt_title.setError("required");
+                        edt_title.requestFocus();
+                    } else if (TextUtils.isEmpty(dateline)) {
+                        Toast.makeText(context, "pick dateline", Toast.LENGTH_SHORT).show();
                         edtDateline.requestFocus();
+                        edtDateline.setError("reuired");
 
-                    }
-                    else if (TextUtils.isEmpty(edtAmount.getText().toString())){
-                        Toast.makeText(context, "Enter amount", Toast.LENGTH_SHORT).show();
-                        edtAmount.setError("required");
-                        edtAmount.requestFocus();
-
-                    }else if (TextUtils.isEmpty(edtPrice.getText().toString())){
-                        Toast.makeText(context, "enter price", Toast.LENGTH_SHORT).show();
-                        edtPrice.setError("required");
-                        edtPrice.requestFocus();
-
-                    }
-                    else {
-                        databaseReference.child("tuition").child(id)
-                                .setValue(new Tuition(id, name, dateline, student.getId(), idTutor, amount, price));
+                    }else {
+                        databaseReference.child("submitAssignment").child(id)
+                                .setValue(new SubmitAssignmentModel(id,title,dateline,idTutor,student.getId(),name));
                         Toast.makeText(context, "DONE!", Toast.LENGTH_SHORT).show();
                         dialog.dismiss();
                     }
+
                 }
             });
 

@@ -8,23 +8,25 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.tutorkit.Login;
+import com.example.tutorkit.Models.AssignmentModel;
 import com.example.tutorkit.Models.Tutor;
 import com.example.tutorkit.R;
 import com.example.tutorkit.Student.Account.Student_profile;
+import com.example.tutorkit.Student.Assignment.Assignment;
+import com.example.tutorkit.Student.Assignment.Assignment_Page;
+import com.example.tutorkit.Student.Call.Call_Tutor;
 import com.example.tutorkit.Student.Exam.ExamStudent;
 import com.example.tutorkit.Student.Grade.Grade_Page;
 import com.example.tutorkit.Student.Payment.Payment;
 import com.example.tutorkit.Student.Tutors.Tutor_list;
 import com.example.tutorkit.Support;
-import com.example.tutorkit.Tutor.Assignment.Assignment;
-import com.example.tutorkit.Tutor.Grade.GradePage;
 import com.example.tutorkit.Tutor.Calendar.Time_table;
-import com.example.tutorkit.Tutor.Tuition.Tuition_page;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -36,6 +38,7 @@ import com.google.firebase.database.ValueEventListener;
 public class Student_home extends AppCompatActivity {
 
     ConstraintLayout tutor, calendar, grade, assignment, tuition, profile, support, logout,exam;
+    LinearLayout call;
     FirebaseAuth firebaseAuth;
     String name;
     TextView tv_name;
@@ -56,6 +59,7 @@ public class Student_home extends AppCompatActivity {
         profile = findViewById(R.id.page_profile);
         support = findViewById(R.id.page_support);
         logout = findViewById(R.id.logout);
+        call = findViewById(R.id.call);
 
         firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
@@ -94,6 +98,13 @@ public class Student_home extends AppCompatActivity {
 
             }
         });
+        call.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), Call_Tutor.class);
+                startActivity(intent);
+            }
+        });
 
         calendar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,7 +127,7 @@ public class Student_home extends AppCompatActivity {
         assignment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), Assignment.class);
+                Intent intent = new Intent(getApplicationContext(), Assignment_Page.class);
                 startActivity(intent);
 
             }

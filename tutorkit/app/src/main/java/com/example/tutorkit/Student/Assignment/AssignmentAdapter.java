@@ -1,4 +1,4 @@
-package com.example.tutorkit.Student.Payment;
+package com.example.tutorkit.Student.Assignment;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -14,64 +14,66 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.tutorkit.Models.Tuition;
+import com.example.tutorkit.Models.SubmitAssignmentModel;
 import com.example.tutorkit.R;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
-public class PaymentAdapter extends RecyclerView.Adapter<PaymentAdapter.ViewHolder> {
+public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.ViewHolder> {
 
     Context context;
-    ArrayList<Tuition> tuitionArrayList;
+    ArrayList<SubmitAssignmentModel> submitAssignmentModelArrayList;
     DatabaseReference databaseReference;
 
-    public PaymentAdapter(Context context, ArrayList<Tuition> tuitionArrayList) {
+    public AssignmentAdapter(Context context, ArrayList<SubmitAssignmentModel> submitAssignmentModelArrayList) {
         this.context = context;
-        this.tuitionArrayList = tuitionArrayList;
+        this.submitAssignmentModelArrayList = submitAssignmentModelArrayList;
         databaseReference = FirebaseDatabase.getInstance().getReference();
     }
 
     @NonNull
     @Override
-    public PaymentAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(context);
-        View view = layoutInflater.inflate(R.layout.tuition, parent, false);
+        View view = layoutInflater.inflate(R.layout.submit_assignment, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull PaymentAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        Tuition tuition = tuitionArrayList.get(position);
+        SubmitAssignmentModel submitAssignmentModel = submitAssignmentModelArrayList.get(position);
 
-        holder.name.setText("Name : " + tuition.getName());
-        holder.amount.setText("Amount : " + tuition.getAmount());
-        holder.price.setText("Price : " + tuition.getPrice());
-        holder.dateline.setText("Dateline : " + tuition.getDateline());
-        holder.total.setText(String.valueOf(tuition.getPrice()*tuition.getAmount()));
+        holder.dateline.setText("Dateline : " + submitAssignmentModel.getDateline());
+        holder.title.setText("Title : " + submitAssignmentModel.getTitle());
+
+        holder.name.setVisibility(View.GONE);
+        holder.buttonUpdate.setText("Submit");
+        holder.buttonUpdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(context, "I submit now", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         holder.buttonDelete.setVisibility(View.GONE);
-
-        holder.buttonUpdate.setText("Payment");
 
     }
 
     @Override
     public int getItemCount() {
-        return tuitionArrayList.size();
+        return submitAssignmentModelArrayList.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
+
         TextView name;
-        TextView amount;
-        TextView price;
+        TextView title;
         TextView dateline;
-        TextView total;
         Button buttonDelete;
         Button buttonUpdate;
 
@@ -79,10 +81,8 @@ public class PaymentAdapter extends RecyclerView.Adapter<PaymentAdapter.ViewHold
             super(itemView);
 
             name = itemView.findViewById(R.id.txt_name);
-            amount = itemView.findViewById(R.id.txt_amount);
-            price = itemView.findViewById(R.id.txt_price);
+            title = itemView.findViewById(R.id.txt_title);
             dateline = itemView.findViewById(R.id.txt_date);
-            total = itemView.findViewById(R.id.txt_total);
 
             buttonDelete = itemView.findViewById(R.id.buttonDelete);
             buttonUpdate = itemView.findViewById(R.id.buttonUpdate);

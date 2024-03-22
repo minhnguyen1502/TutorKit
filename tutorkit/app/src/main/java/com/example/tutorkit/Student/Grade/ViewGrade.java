@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -16,6 +17,7 @@ import com.example.tutorkit.Models.Grade;
 import com.example.tutorkit.R;
 import com.example.tutorkit.Tutor.Grade.GradeAdapter;
 import com.example.tutorkit.Tutor.Grade.ManageGrade;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -23,6 +25,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class ViewGrade extends AppCompatActivity {
 
@@ -30,6 +33,8 @@ public class ViewGrade extends AppCompatActivity {
     RecyclerView recyclerView;
     ArrayList<Grade> gradeArrayList;
     ViewGradeAdapter adapter;
+    String idTutor;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +45,7 @@ public class ViewGrade extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        idTutor = getIntent().getStringExtra("idTutor");
 
         gradeArrayList = new ArrayList<>();
 
@@ -55,8 +61,16 @@ public class ViewGrade extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 gradeArrayList.clear();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                    Grade users = dataSnapshot.getValue(Grade.class);
-                    gradeArrayList.add(users);
+                    Grade grade = dataSnapshot.getValue(Grade.class);
+                    try {
+                        if (Objects.equals(grade.getIdTutor(), idTutor)){
+                            if (Objects.equals(grade.getIdStudent(), FirebaseAuth.getInstance().getUid())){
+                                gradeArrayList.add(grade);
+                            }
+                        }
+                    }catch (Exception e){
+                        Log.e("TAG", "onDataChange: "+e.getMessage() );
+                    }
                 }
                 adapter = new ViewGradeAdapter(ViewGrade.this, gradeArrayList);
                 recyclerView.setAdapter(adapter);

@@ -1,14 +1,14 @@
 package com.example.tutorkit.Models;
 
-public class Assignment {
+public class AssignmentModel {
     String name, img;
 
-    public Assignment(String name, String img) {
+    public AssignmentModel(String name, String img) {
         this.name = name;
         this.img = img;
     }
 
-    public Assignment() {
+    public AssignmentModel() {
     }
 
     public String getName() {

@@ -15,7 +15,7 @@
         android:elevation="@dimen/_2sdp"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:title=" Student"
+        app:title="Call"
         app:titleMarginStart="@dimen/_20sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

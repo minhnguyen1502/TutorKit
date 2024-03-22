@@ -40,6 +40,7 @@
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_gravity="center"
+            android:focusable="false"
             android:layout_margin="3dp"
             android:gravity="center"
             android:hint="dateline"

@@ -23,17 +23,20 @@ import com.example.tutorkit.R;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
-public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.ViewHolder> {
+public class TimeTableAdapter extends RecyclerView.Adapter<TimeTableAdapter.ViewHolder> {
     Context context;
     ArrayList<TimeTable> timeTables;
     DatabaseReference databaseReference;
     int hour, minute;
+    SimpleDateFormat formatter = new SimpleDateFormat("dd-mm-yyyy");
 
-    public CalendarAdapter(Context context, ArrayList<TimeTable> timeTables) {
+
+    public TimeTableAdapter(Context context, ArrayList<TimeTable> timeTables) {
         this.context = context;
         this.timeTables = timeTables;
         databaseReference = FirebaseDatabase.getInstance().getReference();
@@ -54,6 +57,8 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.ViewHo
 
         holder.name.setText("Name : " + timeTable.getName());
         holder.time.setText("Time : " + timeTable.getTime());
+        holder.date.setText("Date : " + formatter.format(timeTable.getDate()));
+
 
         holder.buttonUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,6 +85,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.ViewHo
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView name;
         TextView time;
+        TextView date;
         Button buttonDelete;
         Button buttonUpdate;
 
@@ -88,6 +94,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.ViewHo
 
             name = itemView.findViewById(R.id.txt_name);
             time = itemView.findViewById(R.id.txt_time);
+            date = itemView.findViewById(R.id.txt_date);
 
             buttonDelete = itemView.findViewById(R.id.buttonDelete);
             buttonUpdate = itemView.findViewById(R.id.buttonUpdate);
@@ -130,7 +137,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.ViewHo
                     String s_name = edt_name.getText().toString();
                     String s_time = edt_time.getText().toString();
 
-                    databaseReference.child("tuition").child(id).setValue(new TimeTable(id, s_name, s_time));
+//                    databaseReference.child("tuition").child(id).setValue(new TimeTable(id, s_name, s_time));
                     Toast.makeText(context, "User Updated successfully!", Toast.LENGTH_SHORT).show();
                     dialog.dismiss();
                 }

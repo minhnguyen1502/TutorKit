@@ -5,12 +5,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,7 +25,11 @@ import android.widget.Toast;
 
 import com.example.tutorkit.Models.TimeTable;
 import com.example.tutorkit.R;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -33,38 +39,61 @@ public class Time_table extends AppCompatActivity {
 
     DatabaseReference databaseReference;
     RecyclerView recyclerView;
-    ArrayList<TimeTable> timeTables;
-    CalendarAdapter adapter;
+    ArrayList<TimeTable> timeTableArrayList;
+    TimeTableAdapter timeTableAdapter;
     private CalendarView calendarView;
-    private String stringDateSelected;
+    Calendar calendar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_time_table);
 
+        timeTableArrayList = new ArrayList<>();
         calendarView = findViewById(R.id.calendarView);
+        calendar = Calendar.getInstance();
+        recyclerView = findViewById(R.id.recyclerView);
+
+        databaseReference = FirebaseDatabase.getInstance().getReference();
 
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView calendarView, int i, int i1, int i2) {
-                stringDateSelected = Integer.toString(i) + Integer.toString(i1+1) + Integer.toString(i2);
+                calendar.set(Calendar.DAY_OF_MONTH,i2);
+                calendar.set(Calendar.MONTH,(i1+1) );
+                calendar.set(Calendar.YEAR,i);
+                Log.e("TAG", "onSelectedDayChange: "+i+i1+i2 );
 //                calendarClicked();
             }
         });
+
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
+
+        readData();
+
     }
-//    private void calendarClicked(){
-////        databaseReference.child(stringDateSelected).addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//
-//            }
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//            }
-//        });
-//    }
+
+    private void readData() {
+        databaseReference.child("calendar").addValueEventListener(new ValueEventListener() {
+            @SuppressLint("NotifyDataSetChanged")
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                timeTableArrayList.clear();
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    TimeTable time_table = dataSnapshot.getValue(TimeTable.class);
+                    timeTableArrayList.add(time_table);
+                    Log.e("TAG", "displayData: " );
+                }
+                timeTableAdapter = new TimeTableAdapter(Time_table.this, timeTableArrayList);
+                recyclerView.setAdapter(timeTableAdapter);
+                timeTableAdapter.notifyDataSetChanged();
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.add, menu);
@@ -98,10 +127,8 @@ public class Time_table extends AppCompatActivity {
             EditText edtName = dialog.findViewById(R.id.edt_name);
             EditText edtTime = dialog.findViewById(R.id.edt_time);
 
-
             Button buttonAdd = dialog.findViewById(R.id.buttonAdd);
             Button buttonCancel = dialog.findViewById(R.id.buttonCancel);
-
             edtTime.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -141,10 +168,11 @@ public class Time_table extends AppCompatActivity {
                     String id = "tuition" + new Date().getTime();
                     String name = edtName.getText().toString();
                     String time = edtTime.getText().toString();
+                    long date = calendar.getTimeInMillis();
 
 
                     databaseReference.child("calendar").child(id)
-                            .setValue(new TimeTable(id,name,time));
+                            .setValue(new TimeTable(id,name,time,date));
                     Toast.makeText(context, "DONE!", Toast.LENGTH_SHORT).show();
                     dialog.dismiss();
                 }

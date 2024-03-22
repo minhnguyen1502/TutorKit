@@ -1,12 +1,12 @@
 package com.example.tutorkit.Models;
 
-public class SubmitAssignment {
+public class SubmitAssignmentModel {
     private String id,title, dateline,idTutor, idStudent, name;
 
-    public SubmitAssignment() {
+    public SubmitAssignmentModel() {
     }
 
-    public SubmitAssignment(String id, String title, String dateline, String idTutor, String idStudent, String name) {
+    public SubmitAssignmentModel(String id, String title, String dateline, String idTutor, String idStudent, String name) {
         this.id = id;
         this.title = title;
         this.dateline = dateline;
