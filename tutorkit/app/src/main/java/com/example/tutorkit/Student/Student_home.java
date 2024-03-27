@@ -14,13 +14,12 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.tutorkit.Login;
-import com.example.tutorkit.Models.AssignmentModel;
 import com.example.tutorkit.Models.Tutor;
 import com.example.tutorkit.R;
 import com.example.tutorkit.Student.Account.Student_profile;
 import com.example.tutorkit.Student.Assignment.Assignment;
-import com.example.tutorkit.Student.Assignment.Assignment_Page;
 import com.example.tutorkit.Student.Call.Call_Tutor;
+import com.example.tutorkit.Student.Chat.ChatWithTutor;
 import com.example.tutorkit.Student.Exam.ExamStudent;
 import com.example.tutorkit.Student.Grade.Grade_Page;
 import com.example.tutorkit.Student.Payment.Payment;
@@ -38,7 +37,7 @@ import com.google.firebase.database.ValueEventListener;
 public class Student_home extends AppCompatActivity {
 
     ConstraintLayout tutor, calendar, grade, assignment, tuition, profile, support, logout,exam;
-    LinearLayout call;
+    LinearLayout call,chat;
     FirebaseAuth firebaseAuth;
     String name;
     TextView tv_name;
@@ -60,6 +59,7 @@ public class Student_home extends AppCompatActivity {
         support = findViewById(R.id.page_support);
         logout = findViewById(R.id.logout);
         call = findViewById(R.id.call);
+        chat = findViewById(R.id.chat);
 
         firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
@@ -105,6 +105,13 @@ public class Student_home extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        chat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), ChatWithTutor.class);
+                startActivity(intent);
+            }
+        });
 
         calendar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -127,7 +134,7 @@ public class Student_home extends AppCompatActivity {
         assignment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), Assignment_Page.class);
+                Intent intent = new Intent(getApplicationContext(), Assignment.class);
                 startActivity(intent);
 
             }

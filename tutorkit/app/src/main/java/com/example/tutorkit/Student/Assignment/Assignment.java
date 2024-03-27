@@ -51,7 +51,7 @@ public class Assignment extends AppCompatActivity {
     ArrayList<Student> studentArrayList;
     AssignmentAdapter adapter;
     ArrayList<String> idStudent;
-    String idTutor;
+//    String idTutor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,61 +69,61 @@ public class Assignment extends AppCompatActivity {
         submitAssignmentModelArrayList = new ArrayList<>();
         studentArrayList = new ArrayList<>();
         idStudent = new ArrayList<>();
-        studentArrayList.add(new Student("Student Name","", "","","","",""));
+//        studentArrayList.add(new Student("Student Name","", "","","","",""));
 
-        idTutor = getIntent().getStringExtra("idTutor");
+//        idTutor = getIntent().getStringExtra("idTutor");
         readData();
-        showListStudents();
+//        showListStudents();
     }
 
-    private void showListStudents() {
-        FirebaseDatabase.getInstance().getReference("tutors")
-                .child(FirebaseAuth.getInstance().getUid())
-                .child("IdStudent").addValueEventListener(new ValueEventListener() {
-                    @SuppressLint("NotifyDataSetChanged")
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        idStudent.clear();
-                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                            StatusAdd statusAdd = dataSnapshot.getValue(StatusAdd.class);
-                            try {
-                                if (statusAdd.getStatus()) {
-                                    idStudent.add(statusAdd.getIdList());
-                                }
-                            } catch (Exception e) {
-                                Log.e("TAG", "onDataChange: " + e.getMessage());
-                            }
-                        }
-                        if (idStudent.size() > 0) {
-                            for (int i = 0; i < idStudent.size(); i++) {
-                                databaseReference.child("Student")
-                                        .child(idStudent.get(i))
-                                        .addListenerForSingleValueEvent(new ValueEventListener() {
-                                            @Override
-                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                                                for (DataSnapshot dataSnapshot : snapshot.getChildren()){
-//                                                    Student student = new Student();
-                                                Student student = snapshot.getValue(Student.class);
-                                                studentArrayList.add(student);
-//                                                }
-                                                Log.e("TAG", "log test: " + studentArrayList);
-                                            }
-                                            @Override
-                                            public void onCancelled(@NonNull DatabaseError error) {
-                                            }
-                                        });
-                            }
-
-                        } else {
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
-    }
+//    private void showListStudents() {
+//        FirebaseDatabase.getInstance().getReference("tutors")
+//                .child(FirebaseAuth.getInstance().getUid())
+//                .child("IdStudent").addValueEventListener(new ValueEventListener() {
+//                    @SuppressLint("NotifyDataSetChanged")
+//                    @Override
+//                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                        idStudent.clear();
+//                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+//                            StatusAdd statusAdd = dataSnapshot.getValue(StatusAdd.class);
+//                            try {
+//                                if (statusAdd.getStatus()) {
+//                                    idStudent.add(statusAdd.getIdList());
+//                                }
+//                            } catch (Exception e) {
+//                                Log.e("TAG", "onDataChange: " + e.getMessage());
+//                            }
+//                        }
+//                        if (idStudent.size() > 0) {
+//                            for (int i = 0; i < idStudent.size(); i++) {
+//                                databaseReference.child("Student")
+//                                        .child(idStudent.get(i))
+//                                        .addListenerForSingleValueEvent(new ValueEventListener() {
+//                                            @Override
+//                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+////                                                for (DataSnapshot dataSnapshot : snapshot.getChildren()){
+////                                                    Student student = new Student();
+//                                                Student student = snapshot.getValue(Student.class);
+//                                                studentArrayList.add(student);
+////                                                }
+//                                                Log.e("TAG", "log test: " + studentArrayList);
+//                                            }
+//                                            @Override
+//                                            public void onCancelled(@NonNull DatabaseError error) {
+//                                            }
+//                                        });
+//                            }
+//
+//                        } else {
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(@NonNull DatabaseError error) {
+//
+//                    }
+//                });
+//    }
 
     private void readData() {
         databaseReference.child("submitAssignment").addValueEventListener(new ValueEventListener() {
@@ -135,10 +135,8 @@ public class Assignment extends AppCompatActivity {
                     SubmitAssignmentModel submitAssignmentModel = dataSnapshot.getValue(SubmitAssignmentModel.class);
                     try {
                         if (Objects.equals(submitAssignmentModel.getIdStudent(), FirebaseAuth.getInstance().getUid())){
-                            if (Objects.equals(submitAssignmentModel.getIdTutor(), idTutor)){
                                 submitAssignmentModelArrayList.add(submitAssignmentModel);
 
-                            }
                         }
                     }catch (Exception e){
                         Log.e("TAG", "onDataChange: "+e.getMessage() );

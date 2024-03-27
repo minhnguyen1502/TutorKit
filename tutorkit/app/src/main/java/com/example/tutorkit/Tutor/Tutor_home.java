@@ -21,6 +21,7 @@ import com.example.tutorkit.Tutor.Account.Tutor_profile;
 import com.example.tutorkit.Tutor.Assignment.SubmitAssignment;
 import com.example.tutorkit.Tutor.Calendar.Time_table;
 import com.example.tutorkit.Tutor.Call.Call_Student;
+import com.example.tutorkit.Tutor.Chat.ChatWithStudent;
 import com.example.tutorkit.Tutor.Exam.Exam_Page;
 import com.example.tutorkit.Tutor.Grade.GradePage;
 import com.example.tutorkit.Tutor.Students.Student_list;
@@ -36,13 +37,11 @@ import com.google.firebase.database.ValueEventListener;
 public class Tutor_home extends AppCompatActivity {
 
     ConstraintLayout student, calendar, grade, assignment, tuition, profile, support, logout, exam;
-    LinearLayout call;
+    LinearLayout call, chat;
     FirebaseAuth firebaseAuth;
     String name;
     TextView tv_name;
     ImageView avatar;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +61,7 @@ public class Tutor_home extends AppCompatActivity {
         support =  findViewById(R.id.support);
         logout =  findViewById(R.id.logout);
         call = findViewById(R.id.call);
+        chat = findViewById(R.id.chat);
 
         firebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
@@ -97,6 +97,12 @@ public class Tutor_home extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getApplicationContext(), Call_Student.class));
+            }
+        });
+        chat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), ChatWithStudent.class));
             }
         });
 

@@ -42,6 +42,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -263,10 +265,32 @@ public class SubmitAssignment extends AppCompatActivity {
                         edtDateline.setError("reuired");
 
                     }else {
-                        databaseReference.child("submitAssignment").child(id)
-                                .setValue(new SubmitAssignmentModel(id,title,dateline,idTutor,student.getId(),name));
-                        Toast.makeText(context, "DONE!", Toast.LENGTH_SHORT).show();
-                        dialog.dismiss();
+                        // Check if the selected date is in the future
+                        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                        try {
+                            Date selectedDate = sdf.parse(dateline);
+                            Date currentDate = new Date();
+
+                            if (selectedDate != null && selectedDate.after(currentDate)) {
+                                // The selected date is in the future, proceed to add the assignment
+                                databaseReference.child("submitAssignment").child(id)
+                                        .setValue(new SubmitAssignmentModel(id, title, dateline, idTutor, student.getId(), name));
+                                Toast.makeText(context, "DONE!", Toast.LENGTH_SHORT).show();
+                                dialog.dismiss();
+                            } else {
+                                // The selected date is not in the future
+                                Toast.makeText(context, "Please select a future date", Toast.LENGTH_SHORT).show();
+                                edtDateline.requestFocus();
+                                edtDateline.setError("Invalid date");
+                            }
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                            // Handle parsing exception if needed
+                        }
+//                        databaseReference.child("submitAssignment").child(id)
+//                                .setValue(new SubmitAssignmentModel(id,title,dateline,idTutor,student.getId(),name));
+//                        Toast.makeText(context, "DONE!", Toast.LENGTH_SHORT).show();
+//                        dialog.dismiss();
                     }
 
                 }

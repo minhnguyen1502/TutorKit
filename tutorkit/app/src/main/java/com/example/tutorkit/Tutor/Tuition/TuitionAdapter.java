@@ -161,9 +161,6 @@ public class TuitionAdapter extends RecyclerView.Adapter<TuitionAdapter.ViewHold
             edt_price.setText(String.valueOf(price));
             edt_dateline.setText(dateline);
 
-//            String[] arrSubject = context.getResources().getStringArray(studentArrayList);
-//            spn_name.setSelection(Arrays.asList(arrSubject).indexOf(name));
-
             Button buttonUpdate = dialog.findViewById(R.id.buttonAdd);
             buttonUpdate.setText("Update");
             Button buttonCancel = dialog.findViewById(R.id.buttonCancel);

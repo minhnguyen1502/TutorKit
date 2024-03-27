@@ -2,8 +2,10 @@ package com.example.tutorkit.Student.Payment;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,8 +21,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tutorkit.Models.Tuition;
 import com.example.tutorkit.R;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -49,15 +54,43 @@ public class PaymentAdapter extends RecyclerView.Adapter<PaymentAdapter.ViewHold
 
         Tuition tuition = tuitionArrayList.get(position);
 
-        holder.name.setText("Name : " + tuition.getName());
+        DatabaseReference tutorRef = FirebaseDatabase.getInstance().getReference("tutors")
+                .child(tuition.getIdTutor());
+        tutorRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    String tutorName = dataSnapshot.child("name").getValue(String.class);
+                    if (tutorName != null) {
+                        holder.name.setText("Tutor: " + tutorName);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Handle database read error
+                Log.e("AssignmentAdapter", "Failed to read tutor data", databaseError.toException());
+            }
+        });
         holder.amount.setText("Amount : " + tuition.getAmount());
         holder.price.setText("Price : " + tuition.getPrice());
         holder.dateline.setText("Dateline : " + tuition.getDateline());
-        holder.total.setText(String.valueOf(tuition.getPrice()*tuition.getAmount()));
+        int n_total = tuition.getPrice()*tuition.getAmount();
+        holder.total.setText(String.valueOf(n_total));
 
         holder.buttonDelete.setVisibility(View.GONE);
 
         holder.buttonUpdate.setText("Payment");
+        holder.buttonUpdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(context, PayPalPaymentActivity.class);
+                i.putExtra("total", n_total);
+                context.startActivity(i);
+
+            }
+        });
 
     }
 

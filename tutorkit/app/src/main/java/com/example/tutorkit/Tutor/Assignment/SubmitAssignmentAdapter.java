@@ -2,6 +2,7 @@ package com.example.tutorkit.Tutor.Assignment;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
@@ -18,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tutorkit.Models.SubmitAssignmentModel;
 import com.example.tutorkit.R;
+import com.example.tutorkit.Student.Assignment.Submit;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -60,6 +62,15 @@ public class SubmitAssignmentAdapter extends RecyclerView.Adapter<SubmitAssignme
             }
         });
 
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(context, ViewSubmit.class);
+                i.putExtra("idSubmit", submitAssignmentModel.getId());
+                context.startActivity(i);
+
+            }
+        });
         holder.buttonDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -122,6 +133,8 @@ public class SubmitAssignmentAdapter extends RecyclerView.Adapter<SubmitAssignme
                     dialog.dismiss();
                 }
             });
+
+
 
             buttonUpdate.setOnClickListener(new View.OnClickListener() {
                 @Override

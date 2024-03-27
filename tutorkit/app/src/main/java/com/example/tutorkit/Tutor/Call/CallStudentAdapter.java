@@ -33,13 +33,13 @@ public class CallStudentAdapter extends RecyclerView.Adapter<CallStudentAdapter.
     }
     @NonNull
     @Override
-    public CallStudentAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         View view = layoutInflater.inflate(R.layout.call_student, parent, false);
-        return new CallStudentAdapter.ViewHolder(view);    }
+        return new ViewHolder(view);    }
 
     @Override
-    public void onBindViewHolder(@NonNull CallStudentAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Student students = studentArrayList.get(position);
 
          Glide

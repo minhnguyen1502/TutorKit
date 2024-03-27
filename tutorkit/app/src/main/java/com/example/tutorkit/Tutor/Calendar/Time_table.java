@@ -88,9 +88,10 @@ public class Time_table extends AppCompatActivity {
                 recyclerView.setAdapter(timeTableAdapter);
                 timeTableAdapter.notifyDataSetChanged();
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                Log.e("TAG", "Database error: " + error.getMessage());
             }
         });
     }

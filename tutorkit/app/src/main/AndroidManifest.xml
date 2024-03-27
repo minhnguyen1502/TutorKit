@@ -13,7 +13,21 @@
         android:theme="@style/Theme.Tutorkit"
         tools:targetApi="31">
         <activity
-            android:name=".Student.Assignment.Assignment_Page"
+            android:name=".Tutor.Chat.Message.ChatActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Tutor.Chat.ChatWithStudent"
+            android:exported="false" />
+        <activity
+            android:name=".Student.Chat.ChatWithTutor"
+            android:exported="false" /><activity
+            android:name=".Student.Chat.ChatTutorActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Tutor.Assignment.ViewSubmit"
+            android:exported="false" />
+        <activity
+            android:name=".Student.Assignment.Submit"
             android:exported="false" />
         <activity
             android:name=".Student.Grade.ViewGrade"
@@ -26,6 +40,9 @@
             android:exported="false" />
         <activity
             android:name=".Student.Payment.Payment"
+            android:exported="false" />
+        <activity
+            android:name=".Student.Payment.PayPalPaymentActivity"
             android:exported="false" />
         <activity
             android:name=".Student.Exam.ExamStudent"

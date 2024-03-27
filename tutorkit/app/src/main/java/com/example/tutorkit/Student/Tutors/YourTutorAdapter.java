@@ -48,6 +48,7 @@ public class YourTutorAdapter extends RecyclerView.Adapter<YourTutorAdapter.View
                 .load(tutors.getImg())
                 .centerCrop()
                 .into(holder.avatar);
+        
         holder.txtName.setText(tutors.getName());
         holder.txtSubject.setText(tutors.getSubject());
         holder.itemView.setOnClickListener(new View.OnClickListener() {

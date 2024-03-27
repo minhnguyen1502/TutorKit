@@ -1,4 +1,4 @@
-package com.example.tutorkit.Student.Assignment;
+package com.example.tutorkit.Tutor.Chat;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -14,10 +15,11 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.tutorkit.Models.StatusAdd;
-import com.example.tutorkit.Models.Tutor;
+import com.example.tutorkit.Models.Student;
 import com.example.tutorkit.R;
-import com.example.tutorkit.Student.Grade.Grade_Page;
-import com.example.tutorkit.Student.Grade.TutorGradeAdapter;
+import com.example.tutorkit.Tutor.Call.CallStudentAdapter;
+import com.example.tutorkit.Tutor.Call.Call_Student;
+import com.example.tutorkit.Tutor.Tutor_home;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -27,61 +29,62 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class Assignment_Page extends AppCompatActivity {
-
+public class ChatWithStudent extends AppCompatActivity {
     DatabaseReference databaseReference;
     RecyclerView recyclerView;
-    ArrayList<Tutor> tutorArrayList;
-    Assignment_Page_Adapter adapter;
-    ArrayList<String> idTutors;
+    ArrayList<Student> studentArrayList;
+    ChatStudentAdapter adapter;
+    ArrayList<String> idStudent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_assignment_page);
+        setContentView(R.layout.activity_chat_with_student);
 
         databaseReference = FirebaseDatabase.getInstance().getReference();
-        idTutors = new ArrayList<>();
+        idStudent = new ArrayList<>();
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        tutorArrayList = new ArrayList<>();
+        studentArrayList = new ArrayList<>();
 
-        adapter = new Assignment_Page_Adapter(Assignment_Page.this, tutorArrayList);
+        adapter = new ChatStudentAdapter(ChatWithStudent.this, studentArrayList);
         recyclerView.setAdapter(adapter);
 
         showListStudents();
+
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
     }
 
     private void showListStudents() {
-        FirebaseDatabase.getInstance().getReference("Student")
+        FirebaseDatabase.getInstance().getReference("tutors")
                 .child(FirebaseAuth.getInstance().getUid())
-                .child("IdTutors")
-                .addListenerForSingleValueEvent(new ValueEventListener() {
+                .child("IdStudent").addValueEventListener(new ValueEventListener() {
                     @SuppressLint("NotifyDataSetChanged")
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        idTutors.clear();
+                        idStudent.clear();
                         for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                             StatusAdd statusAdd = dataSnapshot.getValue(StatusAdd.class);
                             try {
                                 if (statusAdd.getStatus()) {
-                                    idTutors.add(statusAdd.getIdList());
+                                    idStudent.add(statusAdd.getIdList());
                                 }
                             } catch (Exception e) {
                                 Log.e("TAG", "onDataChange: " + e.getMessage());
                             }
                         }
-                        if (idTutors.size() > 0) {
-                            for (int i = 0; i < idTutors.size(); i++) {
-                                databaseReference.child("tutors").child(idTutors.get(i))
+                        if (idStudent.size() > 0) {
+                            for (int i = 0; i < idStudent.size(); i++) {
+                                databaseReference.child("Student")
+                                        .child(idStudent.get(i))
                                         .addListenerForSingleValueEvent(new ValueEventListener() {
                                             @Override
                                             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                                tutorArrayList.add(snapshot.getValue(Tutor.class));
+                                                studentArrayList.add(snapshot.getValue(Student.class));
                                                 adapter.notifyDataSetChanged();
+                                                Log.e("TAG", "onDataChange: " + studentArrayList);
                                             }
 
                                             @Override
