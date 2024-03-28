@@ -12,6 +12,7 @@ import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,11 +26,13 @@ import com.example.tutorkit.Models.Tuition;
 import com.example.tutorkit.R;
 import com.example.tutorkit.Tutor.Account.Edit_tutor_profile;
 import com.example.tutorkit.Tutor.Tuition.TuitionAdapter;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 
 public class GradeAdapter extends RecyclerView.Adapter<GradeAdapter.ViewHolder> {
 
@@ -39,7 +42,7 @@ public class GradeAdapter extends RecyclerView.Adapter<GradeAdapter.ViewHolder> 
 
     ArrayList<Student> studentArrayList;
 
-
+    String idStudent;
     public GradeAdapter(Context context, ArrayList<Grade> gradeArrayList) {
         this.context = context;
         this.gradeArrayList = gradeArrayList;
@@ -64,15 +67,15 @@ public class GradeAdapter extends RecyclerView.Adapter<GradeAdapter.ViewHolder> 
         holder.grade.setText("Garde: " + grade.getGrade());
         holder.date.setText("Date : " + grade.getDate());
 
-        holder.buttonUpdate.setOnClickListener(new View.OnClickListener() {
+        holder.update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ViewDialogUpdate viewDialogUpdate = new ViewDialogUpdate();
-                viewDialogUpdate.showDialog(context, grade.getId(), grade.getType(), grade.getTitle(), grade.getGrade(), grade.getDate());
+                viewDialogUpdate.showDialog(context, grade.getId(), grade.getType(), grade.getTitle(), grade.getGrade(), grade.getDate(),grade.getIdStudent(),grade.getIdTutor());
             }
         });
 
-        holder.buttonDelete.setOnClickListener(new View.OnClickListener() {
+        holder.delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ViewDialogConfirmDelete viewDialogConfirmDelete = new ViewDialogConfirmDelete();
@@ -93,8 +96,8 @@ public class GradeAdapter extends RecyclerView.Adapter<GradeAdapter.ViewHolder> 
         TextView title;
         TextView grade;
         TextView date;
-        Button buttonDelete;
-        Button buttonUpdate;
+        ImageView delete;
+        ImageView update;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -104,13 +107,13 @@ public class GradeAdapter extends RecyclerView.Adapter<GradeAdapter.ViewHolder> 
             grade = itemView.findViewById(R.id.txt_grade);
             date = itemView.findViewById(R.id.txt_date);
 
-            buttonDelete = itemView.findViewById(R.id.buttonDelete);
-            buttonUpdate = itemView.findViewById(R.id.buttonUpdate);
+            delete = itemView.findViewById(R.id.delete);
+            update = itemView.findViewById(R.id.update);
         }
     }
 
     public class ViewDialogUpdate {
-        public void showDialog(Context context, String id, String type, String title, int grade, String date) {
+        public void showDialog(Context context, String id, String type, String title, int grade, String date, String id_tutor, String id_student) {
             final Dialog dialog = new Dialog(context);
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.setCancelable(false);
@@ -135,11 +138,12 @@ public class GradeAdapter extends RecyclerView.Adapter<GradeAdapter.ViewHolder> 
 
 
             Button buttonUpdate = dialog.findViewById(R.id.buttonAdd);
-            Button buttonCancel = dialog.findViewById(R.id.buttonCancel);
 
             buttonUpdate.setText("UPDATE");
 
-            buttonCancel.setOnClickListener(new View.OnClickListener() {
+            ImageView cancel = dialog.findViewById(R.id.cancel);
+
+            cancel.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     dialog.dismiss();
@@ -149,14 +153,13 @@ public class GradeAdapter extends RecyclerView.Adapter<GradeAdapter.ViewHolder> 
             buttonUpdate.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
                     String newType = spn_type.getSelectedItem().toString();
                     String newTitle = edt_title.getText().toString();
                     String newDate = edt_date.getText().toString();
 
-                    int grade =0;
+                    int ngrade =0;
                     if (!TextUtils.isEmpty(edt_grade.getText().toString())){
-                        grade = Integer.parseInt(edt_grade.getText().toString());
+                        ngrade = Integer.parseInt(edt_grade.getText().toString());
                     }
 
                     if (TextUtils.isEmpty(newTitle)) {
@@ -179,8 +182,8 @@ public class GradeAdapter extends RecyclerView.Adapter<GradeAdapter.ViewHolder> 
                         edt_date.setError("Grade is required");
                         edt_date.requestFocus();
                     } else {
-                            databaseReference.child("grades").child(id).setValue(new Grade(id, newType, newTitle, newDate, grade));
-                            Toast.makeText(context, "User Updated successfully!", Toast.LENGTH_SHORT).show();
+                            databaseReference.child("grades").child(id).setValue(new Grade(id, newType, newTitle, newDate,id_tutor,id_student, ngrade));
+                            Toast.makeText(context, "Updated successfully!", Toast.LENGTH_SHORT).show();
                             dialog.dismiss();
                         }
                 }

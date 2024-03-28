@@ -4,59 +4,95 @@
     android:padding="4sp"
     android:layout_margin="4sp"
     android:orientation="vertical"
-    android:background="@color/grey"
+    android:background="@drawable/grey_background"
     android:layout_height="wrap_content">
-
-    <TextView
-        android:id="@+id/txt_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:textSize="18sp"
-        android:text="Student name"/>
-
-    <TextView
-        android:id="@+id/txt_time"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textStyle="italic"
-        android:textSize="18sp"
-        android:text="time"/>
-
-    <TextView
-        android:id="@+id/txt_date"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textStyle="italic"
-        android:textSize="18sp"
-        android:text="date"/>
-
-
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:orientation="horizontal"
-        android:layout_margin="4sp"
-        android:padding="4sp"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/buttonDelete"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_weight="1"
-            android:layout_margin="3dp"
-            android:text="DELETE"
-            android:backgroundTint="@color/red_dark"/>
+        <TextView
+            android:id="@+id/txt_date"
+            android:layout_width="@dimen/_70sdp"
+            android:layout_height="match_parent"
+            android:text="date"
+            android:textSize="18sp"
+            android:textStyle="italic" />
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/buttonUpdate"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_weight="1"
-            android:layout_margin="3dp"
-            android:text="UPDATE"
-            android:backgroundTint="@color/green_dark"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4sp"
+                android:orientation="horizontal"
+                android:padding="4sp">
+
+                <TextView
+                    android:id="@+id/txt_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Student name"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="10" />
+
+                <ImageView
+                    android:id="@+id/delete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+
+                    android:layout_weight="1"
+                    android:src="@drawable/baseline_delete_24" />
+
+                <ImageView
+                    android:id="@+id/edit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+
+                    android:layout_weight="1"
+                    android:src="@drawable/baseline_edit_24" />
+
+                <!--        <androidx.appcompat.widget.AppCompatButton-->
+                <!--            android:id="@+id/buttonDelete"-->
+                <!--            android:layout_width="0dp"-->
+                <!--            android:layout_height="40dp"-->
+                <!--            android:layout_margin="3dp"-->
+                <!--            android:layout_weight="1"-->
+                <!--            android:backgroundTint="@color/red_dark"-->
+                <!--            android:text="DELETE" />-->
+
+                <!--        <androidx.appcompat.widget.AppCompatButton-->
+                <!--            android:id="@+id/buttonUpdate"-->
+                <!--            android:layout_width="0dp"-->
+                <!--            android:layout_height="40dp"-->
+                <!--            android:layout_margin="3dp"-->
+                <!--            android:layout_weight="1"-->
+                <!--            android:backgroundTint="@color/green"-->
+                <!--            android:text="UPDATE" />-->
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/txt_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="time"
+                android:textSize="18sp"
+                android:textStyle="italic" />
+
+        </LinearLayout>
     </LinearLayout>
+
+
 </LinearLayout>

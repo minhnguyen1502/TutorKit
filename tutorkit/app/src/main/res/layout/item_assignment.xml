@@ -5,7 +5,6 @@
     android:padding="4sp"
     android:layout_margin="4sp"
     android:orientation="vertical"
-    android:background="@drawable/grey_background"
     android:layout_height="wrap_content">
 
     <ImageView

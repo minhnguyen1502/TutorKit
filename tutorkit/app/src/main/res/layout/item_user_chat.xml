@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="13.00dp"
+    android:backgroundTint="@color/m_hong"
     android:background="@drawable/bordermain">
 
     <LinearLayout

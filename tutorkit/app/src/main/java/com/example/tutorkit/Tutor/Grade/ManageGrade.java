@@ -22,6 +22,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -114,7 +115,6 @@ public class ManageGrade extends AppCompatActivity {
 
 
             Button buttonAdd = dialog.findViewById(R.id.buttonAdd);
-            Button buttonCancel = dialog.findViewById(R.id.buttonCancel);
 
             edt_date.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -140,7 +140,9 @@ public class ManageGrade extends AppCompatActivity {
             });
 
             buttonAdd.setText("ADD");
-            buttonCancel.setOnClickListener(new View.OnClickListener() {
+            ImageView cancel = dialog.findViewById(R.id.cancel);
+
+            cancel.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     dialog.dismiss();
@@ -177,8 +179,6 @@ public class ManageGrade extends AppCompatActivity {
                       edt_grade.setError("Title is required");
                       edt_grade.requestFocus();
                   }
-
-
                   else if (TextUtils.isEmpty(date)) {
                       Toast.makeText(ManageGrade.this, "Enter date ", Toast.LENGTH_SHORT).show();
                       edt_date.setError("Grade is required");

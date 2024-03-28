@@ -9,13 +9,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.tutorkit.R;
-import com.example.tutorkit.Tutor.Exam.Answer.ExamList;
-import com.example.tutorkit.Tutor.Exam.ExamEditor;
-import com.example.tutorkit.Tutor.Exam.Exam_Page;
+import com.example.tutorkit.Student.Exam.Answer.ExamList;
 import com.example.tutorkit.Tutor.Exam.ListQuizzes;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

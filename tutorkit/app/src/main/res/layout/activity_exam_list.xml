@@ -7,7 +7,7 @@
     android:background="@color/main"
     android:gravity="top|center_horizontal"
     android:orientation="vertical"
-    tools:context=".Tutor.Exam.Answer.ExamList">
+    tools:context=".Student.Exam.Answer.ExamList">
 
     <TextView
         android:id="@+id/title"

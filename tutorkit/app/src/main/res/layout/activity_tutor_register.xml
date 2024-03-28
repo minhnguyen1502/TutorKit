@@ -67,6 +67,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="-20dp"
+                android:backgroundTint="@color/m_hong"
                 app:cardCornerRadius="@dimen/_20sdp">
 
                 <LinearLayout
@@ -255,6 +256,7 @@
                         android:id="@+id/btn_register"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_40sdp"
+                        android:backgroundTint="@color/m_xanh"
                         android:text="Register"
                         app:cornerRadius="@dimen/_25sdp" />
                     <TextView

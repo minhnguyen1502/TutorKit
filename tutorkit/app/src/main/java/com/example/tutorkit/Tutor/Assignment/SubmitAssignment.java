@@ -26,6 +26,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -146,6 +147,7 @@ public class SubmitAssignment extends AppCompatActivity {
 
                 }
                 adapter = new SubmitAssignmentAdapter(SubmitAssignment.this, submitAssignmentModelArrayList);
+                adapter.setDataStudent(studentArrayList);
                 recyclerView.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
             }
@@ -213,7 +215,6 @@ public class SubmitAssignment extends AppCompatActivity {
             studentName.setAdapter(studentList);
 
             Button buttonAdd = dialog.findViewById(R.id.buttonAdd);
-            Button buttonCancel = dialog.findViewById(R.id.buttonCancel);
 
             edtDateline.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -237,7 +238,9 @@ public class SubmitAssignment extends AppCompatActivity {
                     datePickerDialog.show();
                 }
             });
-            buttonCancel.setOnClickListener(new View.OnClickListener() {
+            ImageView cancel = dialog.findViewById(R.id.cancel);
+
+            cancel.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     dialog.dismiss();
@@ -287,10 +290,7 @@ public class SubmitAssignment extends AppCompatActivity {
                             e.printStackTrace();
                             // Handle parsing exception if needed
                         }
-//                        databaseReference.child("submitAssignment").child(id)
-//                                .setValue(new SubmitAssignmentModel(id,title,dateline,idTutor,student.getId(),name));
-//                        Toast.makeText(context, "DONE!", Toast.LENGTH_SHORT).show();
-//                        dialog.dismiss();
+//
                     }
 
                 }

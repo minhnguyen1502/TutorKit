@@ -40,7 +40,6 @@ public class ChatTutorActivity extends AppCompatActivity {
     public  static String reciverIImg;
     CardView sendbtn;
     EditText textmsg;
-
     String senderRoom,reciverRoom;
     RecyclerView messageAdpter;
     ArrayList<MessageModel> messagesArrayList;
@@ -81,8 +80,8 @@ public class ChatTutorActivity extends AppCompatActivity {
 
         SenderUID =  firebaseAuth.getUid();
 
-        senderRoom = SenderUID+reciverUid;
-        reciverRoom = reciverUid+SenderUID;
+        senderRoom = reciverUid+SenderUID;
+        reciverRoom = SenderUID+reciverUid;
 
         DatabaseReference reference = database.getReference().child("Student").child(firebaseAuth.getUid());
         DatabaseReference  chatreference = database.getReference().child("chats").child(senderRoom).child("messages");
@@ -126,8 +125,7 @@ public class ChatTutorActivity extends AppCompatActivity {
                     return;
                 }
                 textmsg.setText("");
-                Date date = new Date();
-                MessageModel messagess = new MessageModel(message,SenderUID,date.getTime());
+                MessageModel messagess = new MessageModel(message,SenderUID);
 
                 database=FirebaseDatabase.getInstance();
                 database.getReference().child("chats")

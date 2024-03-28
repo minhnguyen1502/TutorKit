@@ -4,7 +4,7 @@
     android:layout_width="300dp"
     android:layout_height="wrap_content"
     android:layoutDirection="ltr"
-    app:cardBackgroundColor="@android:color/white"
+    app:cardBackgroundColor="@color/m_hong"
     app:cardCornerRadius="5dp">
 
     <LinearLayout
@@ -31,7 +31,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="15sp"
-            android:background="@android:color/holo_red_light"
+            android:background="@color/m_do"
             android:text="Yes, Delete"
             android:textColor="@android:color/white"
             android:textSize="20dp"
@@ -42,7 +42,7 @@
             android:layout_width="match_parent"
             android:layout_height="50sp"
             android:layout_marginTop="5dp"
-            android:background="@android:color/holo_blue_dark"
+            android:background="@color/m_xanh"
             android:text="No, Exit"
             android:textColor="@android:color/white"
             android:textSize="20dp"

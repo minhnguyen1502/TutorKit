@@ -41,7 +41,6 @@ public class ChatActivity extends AppCompatActivity {
     public  static String reciverIImg;
     CardView sendbtn;
     EditText textmsg;
-
     String senderRoom,reciverRoom;
     RecyclerView messageAdpter;
     ArrayList<MessageModel> messagesArrayList;
@@ -128,8 +127,7 @@ public class ChatActivity extends AppCompatActivity {
                     return;
                 }
                 textmsg.setText("");
-                Date date = new Date();
-                MessageModel messagess = new MessageModel(message,SenderUID,date.getTime());
+                MessageModel messagess = new MessageModel(message,SenderUID);
 
                 database=FirebaseDatabase.getInstance();
                 database.getReference().child("chats")

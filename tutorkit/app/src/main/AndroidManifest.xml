@@ -51,10 +51,10 @@
             android:name=".Tutor.Exam.ListQuizzes"
             android:exported="false" />
         <activity
-            android:name=".Tutor.Exam.Answer.Result"
+            android:name=".Student.Exam.Answer.Result"
             android:exported="false" />
         <activity
-            android:name=".Tutor.Exam.Answer.ExamList"
+            android:name=".Student.Exam.Answer.ExamList"
             android:exported="false" />
         <activity
             android:name=".Tutor.Exam.ExamEditor"

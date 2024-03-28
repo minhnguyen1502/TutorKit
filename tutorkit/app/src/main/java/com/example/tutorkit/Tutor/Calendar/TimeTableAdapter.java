@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -60,7 +61,7 @@ public class TimeTableAdapter extends RecyclerView.Adapter<TimeTableAdapter.View
         holder.date.setText("Date : " + formatter.format(timeTable.getDate()));
 
 
-        holder.buttonUpdate.setOnClickListener(new View.OnClickListener() {
+        holder.update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ViewDialogUpdate viewDialogUpdate = new ViewDialogUpdate();
@@ -68,7 +69,7 @@ public class TimeTableAdapter extends RecyclerView.Adapter<TimeTableAdapter.View
             }
         });
 
-        holder.buttonDelete.setOnClickListener(new View.OnClickListener() {
+        holder.delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                ViewDialogConfirmDelete viewDialogConfirmDelete = new ViewDialogConfirmDelete();
@@ -86,8 +87,8 @@ public class TimeTableAdapter extends RecyclerView.Adapter<TimeTableAdapter.View
         TextView name;
         TextView time;
         TextView date;
-        Button buttonDelete;
-        Button buttonUpdate;
+        ImageView delete;
+        ImageView update;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -96,8 +97,8 @@ public class TimeTableAdapter extends RecyclerView.Adapter<TimeTableAdapter.View
             time = itemView.findViewById(R.id.txt_time);
             date = itemView.findViewById(R.id.txt_date);
 
-            buttonDelete = itemView.findViewById(R.id.buttonDelete);
-            buttonUpdate = itemView.findViewById(R.id.buttonUpdate);
+            delete = itemView.findViewById(R.id.delete);
+            update = itemView.findViewById(R.id.update);
         }
     }
 

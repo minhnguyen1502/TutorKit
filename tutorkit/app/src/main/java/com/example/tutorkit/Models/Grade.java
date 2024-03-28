@@ -8,14 +8,6 @@ public class Grade {
     public Grade() {
     }
 
-    public Grade(String id, String type, String title, String date, int grade) {
-        this.id = id;
-        this.type = type;
-        this.title = title;
-        this.date = date;
-        this.grade = grade;
-    }
-
     public Grade(String id, String type, String title, String date, String idTutor, String idStudent, int grade) {
         this.id = id;
         this.type = type;

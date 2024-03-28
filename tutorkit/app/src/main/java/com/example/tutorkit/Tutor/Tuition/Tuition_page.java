@@ -26,6 +26,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -233,7 +234,6 @@ public class Tuition_page extends AppCompatActivity {
             studentName.setAdapter(studentList);
 
             Button buttonAdd = dialog.findViewById(R.id.buttonAdd);
-            Button buttonCancel = dialog.findViewById(R.id.buttonCancel);
 
             edtDateline.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -257,7 +257,9 @@ public class Tuition_page extends AppCompatActivity {
                     datePickerDialog.show();
                 }
             });
-            buttonCancel.setOnClickListener(new View.OnClickListener() {
+            ImageView cancel = dialog.findViewById(R.id.cancel);
+
+            cancel.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     dialog.dismiss();

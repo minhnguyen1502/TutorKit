@@ -12,6 +12,7 @@ import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -67,7 +68,7 @@ public class TuitionAdapter extends RecyclerView.Adapter<TuitionAdapter.ViewHold
         holder.dateline.setText("Dateline : " + tuition.getDateline());
         holder.total.setText(String.valueOf(tuition.getPrice() * tuition.getAmount()));
 
-        holder.buttonUpdate.setOnClickListener(new View.OnClickListener() {
+        holder.update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ViewDialogUpdate viewDialogUpdate = new ViewDialogUpdate();
@@ -75,7 +76,7 @@ public class TuitionAdapter extends RecyclerView.Adapter<TuitionAdapter.ViewHold
             }
         });
 
-        holder.buttonDelete.setOnClickListener(new View.OnClickListener() {
+        holder.delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ViewDialogConfirmDelete viewDialogConfirmDelete = new ViewDialogConfirmDelete();
@@ -97,8 +98,8 @@ public class TuitionAdapter extends RecyclerView.Adapter<TuitionAdapter.ViewHold
         TextView price;
         TextView dateline;
         TextView total;
-        Button buttonDelete;
-        Button buttonUpdate;
+        ImageView delete;
+        ImageView update;
 
 
         public ViewHolder(@NonNull View itemView) {
@@ -110,8 +111,8 @@ public class TuitionAdapter extends RecyclerView.Adapter<TuitionAdapter.ViewHold
             dateline = itemView.findViewById(R.id.txt_date);
             total = itemView.findViewById(R.id.txt_total);
 
-            buttonDelete = itemView.findViewById(R.id.buttonDelete);
-            buttonUpdate = itemView.findViewById(R.id.buttonUpdate);
+            delete = itemView.findViewById(R.id.delete);
+            update = itemView.findViewById(R.id.update);
         }
     }
 
@@ -154,7 +155,6 @@ public class TuitionAdapter extends RecyclerView.Adapter<TuitionAdapter.ViewHold
                 }
             };
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            spn_name.setAdapter(adapter);
 
             spn_name.setAdapter(adapter);
             edt_amount.setText(String.valueOf(amount));
@@ -163,9 +163,10 @@ public class TuitionAdapter extends RecyclerView.Adapter<TuitionAdapter.ViewHold
 
             Button buttonUpdate = dialog.findViewById(R.id.buttonAdd);
             buttonUpdate.setText("Update");
-            Button buttonCancel = dialog.findViewById(R.id.buttonCancel);
 
-            buttonCancel.setOnClickListener(new View.OnClickListener() {
+            ImageView cancel = dialog.findViewById(R.id.cancel);
+
+            cancel.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     dialog.dismiss();
@@ -207,7 +208,7 @@ public class TuitionAdapter extends RecyclerView.Adapter<TuitionAdapter.ViewHold
                     }
                     else {
                     databaseReference.child("tuition").child(id).setValue(new Tuition(id, s_name, s_dateline, student.getId(), idTutor, s_amount, s_price));
-                    Toast.makeText(context, "User Updated successfully!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, " Updated successfully!", Toast.LENGTH_SHORT).show();
                     dialog.dismiss();
                 }
                 }

@@ -6,6 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardElevation="12dp"
     app:cardCornerRadius="16dp"
+    android:backgroundTint="@color/m_hong"
     android:layout_margin="16dp">
 
     <LinearLayout
@@ -106,6 +107,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
+                android:backgroundTint="@color/m_vang"
                 android:text="Choose this tutor"></androidx.appcompat.widget.AppCompatButton>
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_cancel"

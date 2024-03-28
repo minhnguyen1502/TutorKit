@@ -15,4 +15,10 @@
     <color name="green_dark">#227302</color>
     <color name="red_light">#F7C9C1</color>
     <color name="red_dark">#A41901</color>
+    <color name="m_do">#ED2B2B</color>
+    <color name="m_vang">#F3C913</color>
+    <color name="m_tim">#5E59C0</color>
+    <color name="m_hong">#FFE5EC</color>
+    <color name="m_den">#262626</color>
+    <color name="m_xanh">#82CAFA</color>
 </resources>

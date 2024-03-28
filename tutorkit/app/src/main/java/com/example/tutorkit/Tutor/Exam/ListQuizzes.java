@@ -3,9 +3,6 @@ package com.example.tutorkit.Tutor.Exam;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.ClipData;
-import android.content.ClipboardManager;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -18,7 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.tutorkit.R;
-import com.example.tutorkit.Tutor.Exam.Answer.Result;
+import com.example.tutorkit.Student.Exam.Answer.Result;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

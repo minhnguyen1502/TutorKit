@@ -1,10 +1,4 @@
-package com.example.tutorkit.Tutor.Calendar;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.RecyclerView;
+package com.example.tutorkit.Student.Calendar;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
@@ -30,6 +24,12 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.tutorkit.Models.StatusAdd;
 import com.example.tutorkit.Models.Student;
 import com.example.tutorkit.Models.TimeTable;
@@ -44,8 +44,9 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Objects;
 
-public class Time_table extends AppCompatActivity {
+public class Time_tableStudent extends AppCompatActivity {
 
     DatabaseReference databaseReference;
     RecyclerView recyclerView;
@@ -53,7 +54,7 @@ public class Time_table extends AppCompatActivity {
     ArrayList<Student> studentArrayList;
     ArrayList<String> idStudent;
 
-    TimeTableAdapter timeTableAdapter;
+    TimeTableStudentAdapter timeTableStudentAdapter;
     private CalendarView calendarView;
     Calendar calendar;
     @Override
@@ -144,12 +145,18 @@ public class Time_table extends AppCompatActivity {
                 timeTableArrayList.clear();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     TimeTable time_table = dataSnapshot.getValue(TimeTable.class);
-                    timeTableArrayList.add(time_table);
-                    Log.e("TAG", "displayData: " );
+                    try {
+                        if (Objects.equals(time_table.getIdStudent(), FirebaseAuth.getInstance().getUid())){
+                            timeTableArrayList.add(time_table);
+
+                        }
+                    }catch (Exception e){
+                        Log.e("TAG", "onDataChange: "+e.getMessage() );
+                    }
                 }
-                timeTableAdapter = new TimeTableAdapter(Time_table.this, timeTableArrayList);
-                recyclerView.setAdapter(timeTableAdapter);
-                timeTableAdapter.notifyDataSetChanged();
+                timeTableStudentAdapter = new TimeTableStudentAdapter(Time_tableStudent.this, timeTableArrayList);
+                recyclerView.setAdapter(timeTableStudentAdapter);
+                timeTableStudentAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -169,9 +176,9 @@ public class Time_table extends AppCompatActivity {
         int id = item.getItemId();
         // update profile
         if (id == R.id.add) {
-            ViewDialogAdd viewDialogAdd = new ViewDialogAdd();
-            viewDialogAdd.showDialog(Time_table.this);
-            Toast.makeText(this, "add new", Toast.LENGTH_SHORT).show();
+//            ViewDialogAdd viewDialogAdd = new ViewDialogAdd();
+//            viewDialogAdd.showDialog(Time_tableStudent.this);
+            Toast.makeText(this, "You can't add", Toast.LENGTH_SHORT).show();
 //            finish();
         } else if (id == R.id.home) {
             finish();
@@ -180,114 +187,5 @@ public class Time_table extends AppCompatActivity {
             Toast.makeText(this, "Something Wrong", Toast.LENGTH_SHORT).show();
         }
         return super.onOptionsItemSelected(item);
-    }
-    private class ViewDialogAdd {
-        public void showDialog(Context context) {
-            final Dialog dialog = new Dialog(context);
-            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            dialog.setCancelable(false);
-            dialog.setContentView(R.layout.dialog_add_calendar);
-
-            Spinner studentName = dialog.findViewById(R.id.spn_name);
-            EditText edtTime = dialog.findViewById(R.id.edt_time);
-
-            Button buttonAdd = dialog.findViewById(R.id.buttonAdd);
-
-            //            if (studentArrayList.get(0)!=studentDefault){
-//                studentArrayList.add(0,studentDefault);
-//            }
-            ArrayAdapter<Student> studentList = new ArrayAdapter<Student>(context, android.R.layout.simple_list_item_1,studentArrayList){
-//                @Override
-//                public boolean isEnabled(int position) {
-////                    position = 0 not select
-//                    return position != 0;
-//                }
-
-                @Override
-                public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-                    TextView view = (TextView) super.getDropDownView(position, convertView, parent);
-                    view.setText(studentArrayList.get(position).getName());
-//                    if (position == 0) {
-//                        view.setTextColor(Color.GRAY);
-//                    } else {
-//                        view.setTextColor(Color.BLACK);
-//                    }
-                    return view;
-                }
-
-                @NonNull
-                @Override
-                public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-                    TextView view = (TextView) super.getView(position, convertView, parent);
-                    view.setText(studentArrayList.get(position).getName());
-                    return view;
-                }
-            };
-            studentName.setAdapter(studentList);
-            edtTime.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    final Calendar calendar = Calendar.getInstance();
-                    int hour = calendar.get(Calendar.HOUR_OF_DAY);
-                    int minute = calendar.get(Calendar.MINUTE);
-
-                    TimePickerDialog timePickerDialog = new TimePickerDialog(
-                            Time_table.this,
-                            new TimePickerDialog.OnTimeSetListener() {
-                                @Override
-                                public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                                    // Do something with the selected time
-                                    String time = hourOfDay + ":" + minute;
-                                    edtTime.setText(time);
-                                    Toast.makeText(Time_table.this, "Selected time: " + time, Toast.LENGTH_SHORT).show();
-                                }
-                            },
-                            hour,
-                            minute,
-                            false);
-
-                    timePickerDialog.show();
-                }
-            });
-            ImageView cancel = dialog.findViewById(R.id.cancel);
-
-            cancel.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    dialog.dismiss();
-                }
-            });
-
-            buttonAdd.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Student student = (Student) studentName.getSelectedItem();
-                    String idTutor = FirebaseAuth.getInstance().getUid();
-                    String id = "tuition" + new Date().getTime();
-                    String name = student.getName();
-
-                    String time = edtTime.getText().toString();
-                    long date = calendar.getTimeInMillis();
-
-                    if (TextUtils.isEmpty(time)){
-                        Toast.makeText(context, "Enter dateline", Toast.LENGTH_SHORT).show();
-                        edtTime.setError("required");
-                        edtTime.requestFocus();
-
-                    }else {
-                        databaseReference.child("calendar").child(id)
-                                .setValue(new TimeTable(id,name,time,idTutor,student.getId(),date));
-                        Toast.makeText(context, "DONE!", Toast.LENGTH_SHORT).show();
-                        dialog.dismiss();
-                    }
-
-                }
-            });
-
-
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            dialog.show();
-
-        }
     }
 }

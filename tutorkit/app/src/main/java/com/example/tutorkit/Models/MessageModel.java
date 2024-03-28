@@ -3,15 +3,14 @@ package com.example.tutorkit.Models;
 public class MessageModel {
     String message;
     String senderid;
-    long timeStamp;
+
 
     public MessageModel() {
     }
 
-    public MessageModel(String message, String senderid, long timeStamp) {
+    public MessageModel(String message, String senderid) {
         this.message = message;
         this.senderid = senderid;
-        this.timeStamp = timeStamp;
     }
 
     public String getMessage() {
@@ -30,11 +29,4 @@ public class MessageModel {
         this.senderid = senderid;
     }
 
-    public long getTimeStamp() {
-        return timeStamp;
-    }
-
-    public void setTimeStamp(long timeStamp) {
-        this.timeStamp = timeStamp;
-    }
 }

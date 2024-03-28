@@ -1,0 +1,6 @@
+#ED2B2B đỏ
+#F3C913 vàng
+#5E59C0 tím
+#FFE5EC hồng
+#262626 đen
+#82CAFA xanh

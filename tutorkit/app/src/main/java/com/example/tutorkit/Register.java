@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.tutorkit.Student.Account.Student_register;
@@ -12,7 +13,7 @@ import com.example.tutorkit.Tutor.Account.Tutor_register;
 
 public class Register extends AppCompatActivity {
 
-    private TextView tutor, student;
+    private LinearLayout tutor, student;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
