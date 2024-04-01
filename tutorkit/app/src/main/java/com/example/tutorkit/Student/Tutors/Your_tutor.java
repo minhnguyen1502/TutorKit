@@ -57,7 +57,7 @@ public class Your_tutor extends AppCompatActivity {
 
         TextView list_tutor = findViewById(R.id.txt_list_tutor);
 
-        showListStudents();
+        showListTutors();
         list_tutor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -69,7 +69,7 @@ public class Your_tutor extends AppCompatActivity {
         setSupportActionBar(myToolbar);
     }
 
-    private void showListStudents() {
+    private void showListTutors() {
         FirebaseDatabase.getInstance().getReference("Student")
                 .child(FirebaseAuth.getInstance().getUid())
                 .child("IdTutors")
