@@ -67,7 +67,7 @@ public class ChatTutorActivity extends AppCompatActivity {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setStackFromEnd(true);
         messageAdpter.setLayoutManager(linearLayoutManager);
-        mmessagesAdpter = new MessageAdapter(ChatTutorActivity.this,messagesArrayList);
+        mmessagesAdpter = new MessageAdapter(ChatTutorActivity.this,messagesArrayList,true);
         messageAdpter.setAdapter(mmessagesAdpter);
 
 

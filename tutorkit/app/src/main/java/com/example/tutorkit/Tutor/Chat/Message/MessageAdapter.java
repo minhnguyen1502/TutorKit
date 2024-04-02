@@ -19,6 +19,10 @@ import com.bumptech.glide.Glide;
 import com.example.tutorkit.Models.MessageModel;
 import com.example.tutorkit.R;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -28,11 +32,13 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class MessageAdapter extends RecyclerView.Adapter {
     Context context;
     ArrayList<MessageModel> messageModelArrayList;
+    boolean isStudent;
     int ITEM_SEND = 1;
     int ITEM_RECIVE = 2;
 
-    public MessageAdapter(Context context, ArrayList<MessageModel> messageModelArrayList) {
+    public MessageAdapter(Context context, ArrayList<MessageModel> messageModelArrayList, boolean isStudent) {
         this.context = context;
+        this.isStudent = isStudent;
         this.messageModelArrayList = messageModelArrayList;
     }
 
@@ -72,21 +78,44 @@ public class MessageAdapter extends RecyclerView.Adapter {
                 return false;
             }
         });
+
         if (holder.getClass() == senderVierwHolder.class) {
             senderVierwHolder viewHolder = (senderVierwHolder) holder;
             viewHolder.msgtxt.setText(messages.getMessage());
+            String img;
+            if (isStudent){
+                img = FirebaseDatabase.getInstance().getReference().child("Student").child(messages.getSenderid()).orderByChild("img").toString();
+            }else {
+                FirebaseDatabase.getInstance().getReference().child("tutors").child(messages.getSenderid()).child("img").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        img = snapshot.getValue().get.toString();
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+            }
             Glide
                     .with(context)
-                    .load(senderImg)
+                    .load(img)
                     .centerCrop()
                     .into(viewHolder.circleImageView);
 
         } else {
             reciverViewHolder viewHolder = (reciverViewHolder) holder;
             viewHolder.msgtxt.setText(messages.getMessage());
+            String img2;
+            if (isStudent){
+                img2 = FirebaseDatabase.getInstance().getReference().child("Student").child(messages.getSenderid()).orderByChild("img").toString();
+            }else {
+                img2 = FirebaseDatabase.getInstance().getReference().child("tutors").child(messages.getSenderid()).orderByChild("img").toString();
+            }
             Glide
                     .with(context)
-                    .load(reciverIImg)
+                    .load(img2)
                     .centerCrop()
                     .into(viewHolder.circleImageView);
 
