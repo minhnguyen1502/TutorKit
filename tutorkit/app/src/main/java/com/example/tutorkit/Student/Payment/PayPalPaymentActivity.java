@@ -59,6 +59,7 @@ public class PayPalPaymentActivity extends AppCompatActivity {
                                         .amount(
                                                 new Amount.Builder()
                                                         .currencyCode(CurrencyCode.USD)
+//                                                        .value(String.valueOf(total))
                                                         .value("10.00")
                                                         .build()
                                         )
@@ -86,12 +87,15 @@ public class PayPalPaymentActivity extends AppCompatActivity {
                         });
                     }
                 }
+
         );
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        finish();
-    }
+//    @Override
+//    public void onBackPressed() {
+//        super.onBackPressed();
+//        finish();
+//    }
+
+
 }

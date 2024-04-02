@@ -28,6 +28,12 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.paypal.checkout.PayPalCheckout;
+import com.paypal.checkout.config.CheckoutConfig;
+import com.paypal.checkout.config.Environment;
+import com.paypal.checkout.config.SettingsConfig;
+import com.paypal.checkout.createorder.CurrencyCode;
+import com.paypal.checkout.createorder.UserAction;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -60,6 +66,21 @@ public class Payment extends AppCompatActivity {
         idStudent = new ArrayList<>();
 
         readData();
+        CheckoutConfig checkoutConfig = new CheckoutConfig(
+                getApplication(),
+                "AfE_-4IywXGDLw05aAo0rYjZIU5XFlnsk17jKOiWfrS_H1O_yWAR40h3SEVxLZMLPELUknZlJ33lZxo6",
+                Environment.SANDBOX,
+                CurrencyCode.USD,
+                UserAction.PAY_NOW,
+                null,
+                new SettingsConfig(
+                        true,
+                        false
+                ),
+                "com.example.tutorkit://paypalpay"
+        );
+
+        PayPalCheckout.setConfig(checkoutConfig);
     }
     private void readData() {
         databaseReference.child("tuition").addValueEventListener(new ValueEventListener() {

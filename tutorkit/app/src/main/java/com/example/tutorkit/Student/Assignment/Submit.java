@@ -93,7 +93,24 @@ public class Submit extends AppCompatActivity {
 
         assignmentModelArrayList = new ArrayList<>();
         readData();
-
+        activityResultLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        if (result.getResultCode() == Activity.RESULT_OK) {
+                            Intent data = result.getData();
+                            uri = data.getData();
+                            // Handle image selection
+//                            img.setImageURI(uri);
+                            Log.e("TAG", "onActivityResult: "+uri );
+                            ViewDialogAdd viewDialogAdd = new ViewDialogAdd();
+                              viewDialogAdd.showDialog(Submit.this, uri);
+                        } else {
+                            Toast.makeText(Submit.this, "No image selected", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
 
     private void readData() {
@@ -139,8 +156,11 @@ public class Submit extends AppCompatActivity {
         if (id == R.id.home) {
             finish();
         } else if (id == R.id.add) {
-            ViewDialogAdd viewDialogAdd = new ViewDialogAdd();
-            viewDialogAdd.showDialog(Submit.this);
+//
+            Intent photo = new Intent();
+            photo.setAction(Intent.ACTION_GET_CONTENT);
+            photo.setType("image/*");
+            activityResultLauncher.launch(photo);
         } else {
             Toast.makeText(this, "Something Wrong", Toast.LENGTH_SHORT).show();
         }
@@ -148,7 +168,7 @@ public class Submit extends AppCompatActivity {
     }
 
     private class ViewDialogAdd {
-        public void showDialog(Context context) {
+        public void showDialog(Context context, Uri data) {
             final Dialog dialog = new Dialog(context);
 
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -158,32 +178,9 @@ public class Submit extends AppCompatActivity {
             ImageView img = dialog.findViewById(R.id.img);
 
             Button buttonAdd = dialog.findViewById(R.id.buttonAdd);
-            Button buttonCancel = dialog.findViewById(R.id.buttonCancel);
-            activityResultLauncher = registerForActivityResult(
-                    new ActivityResultContracts.StartActivityForResult(),
-                    new ActivityResultCallback<ActivityResult>() {
-                        @Override
-                        public void onActivityResult(ActivityResult result) {
-                            if (result.getResultCode() == Activity.RESULT_OK) {
-                                Intent data = result.getData();
-                                uri = data.getData();
-                                // Handle image selection
-                                img.setImageURI(uri);
-                            } else {
-                                Toast.makeText(Submit.this, "No image selected", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
+            ImageView buttonCancel = dialog.findViewById(R.id.cancel);
 
-            img.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent photo = new Intent();
-                    photo.setAction(Intent.ACTION_GET_CONTENT);
-                    photo.setType("image/*");
-                    activityResultLauncher.launch(photo);
-                }
-            });
+            img.setImageURI(data);
 
             buttonCancel.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -197,16 +194,6 @@ public class Submit extends AppCompatActivity {
                 public void onClick(View view) {
 
                     saveData();
-
-//                    String idStudent = FirebaseAuth.getInstance().getUid();
-//                    String id = "assignment" + new Date().getTime();
-//                    String title = edt_title.getText().toString();
-//                    String n_idSubmit = idSubmit;
-//
-//                        databaseReference.child("Assignment").child(id)
-//                                .setValue(new AssignmentModel(id,title,n_idSubmit,idStudent));
-//                        Toast.makeText(context, "DONE!", Toast.LENGTH_SHORT).show();
-//                        dialog.dismiss();
                 }
 
             });
@@ -242,7 +229,6 @@ public class Submit extends AppCompatActivity {
             String id = "assignment" + new Date().getTime();
             String n_idSubmit = idSubmit;
             AssignmentModel assignmentModel = new AssignmentModel(id,imageURL,n_idSubmit,idStudent);
-//            String currentDate = DateFormat.getDateTimeInstance().format(Calendar.getInstance().getTime());
             FirebaseDatabase.getInstance().getReference("Assignment").child(id)
                     .setValue(assignmentModel).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
