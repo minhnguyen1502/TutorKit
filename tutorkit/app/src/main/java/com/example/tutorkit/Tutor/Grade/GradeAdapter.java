@@ -1,16 +1,19 @@
 package com.example.tutorkit.Tutor.Grade;
 
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -32,6 +35,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 
 public class GradeAdapter extends RecyclerView.Adapter<GradeAdapter.ViewHolder> {
@@ -71,7 +75,7 @@ public class GradeAdapter extends RecyclerView.Adapter<GradeAdapter.ViewHolder> 
             @Override
             public void onClick(View view) {
                 ViewDialogUpdate viewDialogUpdate = new ViewDialogUpdate();
-                viewDialogUpdate.showDialog(context, grade.getId(), grade.getType(), grade.getTitle(), grade.getGrade(), grade.getDate(),grade.getIdStudent(),grade.getIdTutor());
+                viewDialogUpdate.showDialog(context, grade.getId(), grade.getType(), grade.getTitle(), grade.getGrade(), grade.getDate(),grade.getIdTutor(),grade.getIdStudent());
             }
         });
 
@@ -135,6 +139,29 @@ public class GradeAdapter extends RecyclerView.Adapter<GradeAdapter.ViewHolder> 
 
             String[] arrSubject = context.getResources().getStringArray(R.array.type);
             spn_type.setSelection(Arrays.asList(arrSubject).indexOf(type));
+
+            edt_date.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    DatePickerDialog datePickerDialog = new DatePickerDialog(
+                            context,
+                            new DatePickerDialog.OnDateSetListener() {
+                                @Override
+                                public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                                    // Người dùng đã chọn ngày. Cập nhật trường ngày (edate).
+                                    String selectedDate = dayOfMonth + "/" + (month + 1) + "/" + year;
+                                    edt_date.setText(selectedDate);
+                                }
+                            },
+                            // Truyền ngày hiện tại làm ngày mặc định cho DatePickerDialog.
+                            Calendar.getInstance().get(Calendar.YEAR),
+                            Calendar.getInstance().get(Calendar.MONTH),
+                            Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
+                    );
+
+                    datePickerDialog.show();
+                }
+            });
 
 
             Button buttonUpdate = dialog.findViewById(R.id.buttonAdd);

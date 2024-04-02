@@ -157,6 +157,7 @@ public class SubmitAssignmentAdapter extends RecyclerView.Adapter<SubmitAssignme
             spn_name.setAdapter(adapter);
             edtTitle.setText(title);
             edtDateline.setText(dateline);
+
             edtDateline.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -217,7 +218,7 @@ public class SubmitAssignmentAdapter extends RecyclerView.Adapter<SubmitAssignme
                             // Check if the selected date is in the future
                             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
                             try {
-                                Date selectedDate = sdf.parse(dateline);
+                                Date selectedDate = sdf.parse(edtDateline.getText().toString());
                                 Date currentDate = new Date();
 
                                 if (selectedDate != null && selectedDate.after(currentDate)) {
