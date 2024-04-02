@@ -103,9 +103,9 @@ public class Submit extends AppCompatActivity {
                             uri = data.getData();
                             // Handle image selection
 //                            img.setImageURI(uri);
-                            Log.e("TAG", "onActivityResult: "+uri );
+                            Log.e("TAG", "onActivityResult: " + uri);
                             ViewDialogAdd viewDialogAdd = new ViewDialogAdd();
-                              viewDialogAdd.showDialog(Submit.this, uri);
+                            viewDialogAdd.showDialog(Submit.this, uri);
                         } else {
                             Toast.makeText(Submit.this, "No image selected", Toast.LENGTH_SHORT).show();
                         }
@@ -188,19 +188,15 @@ public class Submit extends AppCompatActivity {
                     dialog.dismiss();
                 }
             });
-
             buttonAdd.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
                     saveData();
                 }
-
             });
-
-
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
             dialog.show();
+
 
         }
 
@@ -228,7 +224,7 @@ public class Submit extends AppCompatActivity {
             String idStudent = FirebaseAuth.getInstance().getUid();
             String id = "assignment" + new Date().getTime();
             String n_idSubmit = idSubmit;
-            AssignmentModel assignmentModel = new AssignmentModel(id,imageURL,n_idSubmit,idStudent);
+            AssignmentModel assignmentModel = new AssignmentModel(id, imageURL, n_idSubmit, idStudent);
             FirebaseDatabase.getInstance().getReference("Assignment").child(id)
                     .setValue(assignmentModel).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
@@ -241,9 +237,10 @@ public class Submit extends AppCompatActivity {
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(Submit.this, e.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(Submit.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     });
         }
     }
+
 }
