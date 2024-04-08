@@ -124,12 +124,12 @@
                         android:layout_height="wrap_content"
                         android:alpha="0.7"
                         android:text="Phone"
-                        android:inputType="number"
                         android:textStyle="bold" />
 
                     <EditText
                         android:id="@+id/edt_phone"
                         android:hint="(+84)"
+                        android:inputType="number"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
 

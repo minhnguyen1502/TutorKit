@@ -6,6 +6,7 @@ import static com.example.tutorkit.Tutor.Chat.Message.ChatActivity.senderImg;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.tutorkit.Models.MessageModel;
+import com.example.tutorkit.Models.Student;
+import com.example.tutorkit.Models.Tutor;
 import com.example.tutorkit.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -83,13 +86,40 @@ public class MessageAdapter extends RecyclerView.Adapter {
             senderVierwHolder viewHolder = (senderVierwHolder) holder;
             viewHolder.msgtxt.setText(messages.getMessage());
             String img;
-            if (isStudent){
-                img = FirebaseDatabase.getInstance().getReference().child("Student").child(messages.getSenderid()).orderByChild("img").toString();
-            }else {
-                FirebaseDatabase.getInstance().getReference().child("tutors").child(messages.getSenderid()).child("img").addListenerForSingleValueEvent(new ValueEventListener() {
+            if (isStudent) {
+                FirebaseDatabase.getInstance().getReference().child("Student").child(messages.getSenderid()).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        img = snapshot.getValue().get.toString();
+                        Student student = snapshot.getValue(Student.class);
+                        if (student == null) {
+                            return;
+                        }                        Glide
+                                .with(context)
+                                .load(student.getImg())
+                                .centerCrop()
+                                .into(viewHolder.circleImageView);
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+            } else {
+                FirebaseDatabase.getInstance().getReference().child("tutors").child(messages.getSenderid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                        Tutor tutor = dataSnapshot.getValue(Tutor.class);
+                        if (tutor == null) {
+                            return;
+                        }                        Glide
+                                .with(context)
+                                .load(tutor.getImg())
+                                .centerCrop()
+                                .into(viewHolder.circleImageView);
+
                     }
 
                     @Override
@@ -98,26 +128,55 @@ public class MessageAdapter extends RecyclerView.Adapter {
                     }
                 });
             }
-            Glide
-                    .with(context)
-                    .load(img)
-                    .centerCrop()
-                    .into(viewHolder.circleImageView);
+
 
         } else {
             reciverViewHolder viewHolder = (reciverViewHolder) holder;
             viewHolder.msgtxt.setText(messages.getMessage());
             String img2;
-            if (isStudent){
-                img2 = FirebaseDatabase.getInstance().getReference().child("Student").child(messages.getSenderid()).orderByChild("img").toString();
-            }else {
-                img2 = FirebaseDatabase.getInstance().getReference().child("tutors").child(messages.getSenderid()).orderByChild("img").toString();
+            if (isStudent) {
+
+                FirebaseDatabase.getInstance().getReference().child("tutors").child(messages.getSenderid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                        Tutor tutor = dataSnapshot.getValue(Tutor.class);
+                        if (tutor == null) {
+                            return;
+                        }                        Glide
+                                .with(context)
+                                .load(tutor.getImg())
+                                .centerCrop()
+                                .into(viewHolder.circleImageView);
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+            } else {
+                FirebaseDatabase.getInstance().getReference().child("Student").child(messages.getSenderid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        Student student = snapshot.getValue(Student.class);
+                        if (student == null) {
+                            return;
+                        }
+                        Glide
+                                .with(context)
+                                .load(student.getImg())
+                                .centerCrop()
+                                .into(viewHolder.circleImageView);
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
             }
-            Glide
-                    .with(context)
-                    .load(img2)
-                    .centerCrop()
-                    .into(viewHolder.circleImageView);
 
         }
     }

@@ -214,7 +214,7 @@ public class SubmitAssignmentAdapter extends RecyclerView.Adapter<SubmitAssignme
                         edtTitle.setError("required");
                         edtTitle.requestFocus();
                     }else {
-                        {
+
                             // Check if the selected date is in the future
                             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
                             try {
@@ -237,7 +237,7 @@ public class SubmitAssignmentAdapter extends RecyclerView.Adapter<SubmitAssignme
                                 // Handle parsing exception if needed
                             }
 //
-                        }
+
                     }
 
                 }

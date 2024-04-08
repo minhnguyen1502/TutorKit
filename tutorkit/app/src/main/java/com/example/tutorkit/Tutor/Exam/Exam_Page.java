@@ -19,12 +19,12 @@ public class Exam_Page extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exam_page);
 
-        Button startQuiz = findViewById(R.id.startQuiz);
+//        Button startQuiz = findViewById(R.id.startQuiz);
         Button createQuiz = findViewById(R.id.createQuiz);
-        RelativeLayout solvedQuizzes = findViewById(R.id.solvedQuizzes);
+//        RelativeLayout solvedQuizzes = findViewById(R.id.solvedQuizzes);
         RelativeLayout your_quizzes = findViewById(R.id.your_quizzes);
         EditText quiz_title = findViewById(R.id.quiz_title);
-        EditText start_quiz_id = findViewById(R.id.start_quiz_id);
+//        EditText start_quiz_id = findViewById(R.id.start_quiz_id);
         ImageView signout = findViewById(R.id.signout);
 
         signout.setOnClickListener(view -> {
@@ -42,22 +42,22 @@ public class Exam_Page extends AppCompatActivity {
             startActivity(i);
         });
 
-        startQuiz.setOnClickListener(v-> {
-            if (start_quiz_id.getText().toString().equals("")) {
-                start_quiz_id.setError("Quiz title cannot be empty");
-                return;
-            }
-            Intent i = new Intent(Exam_Page.this, ExamList.class);
-            i.putExtra("Quiz ID", start_quiz_id.getText().toString());
-            start_quiz_id.setText("");
-            startActivity(i);
-        });
+//        startQuiz.setOnClickListener(v-> {
+//            if (start_quiz_id.getText().toString().equals("")) {
+//                start_quiz_id.setError("Quiz title cannot be empty");
+//                return;
+//            }
+//            Intent i = new Intent(Exam_Page.this, ExamList.class);
+//            i.putExtra("Quiz ID", start_quiz_id.getText().toString());
+//            start_quiz_id.setText("");
+//            startActivity(i);
+//        });
 
-        solvedQuizzes.setOnClickListener(v -> {
-            Intent i = new Intent(Exam_Page.this, ListQuizzes.class);
-            i.putExtra("Operation", "List Solved Quizzes");
-            startActivity(i);
-        });
+//        solvedQuizzes.setOnClickListener(v -> {
+//            Intent i = new Intent(Exam_Page.this, ListQuizzes.class);
+//            i.putExtra("Operation", "List Solved Quizzes");
+//            startActivity(i);
+//        });
 
         your_quizzes.setOnClickListener(v -> {
             Intent i = new Intent(Exam_Page.this, ListQuizzes.class);

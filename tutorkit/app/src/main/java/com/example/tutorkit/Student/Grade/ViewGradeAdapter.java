@@ -11,6 +11,7 @@ import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -74,8 +75,8 @@ public class ViewGradeAdapter extends RecyclerView.Adapter<ViewGradeAdapter.View
         TextView title;
         TextView grade;
         TextView date;
-        Button buttonDelete;
-        Button buttonUpdate;
+        ImageView buttonDelete;
+        ImageView buttonUpdate;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -85,8 +86,8 @@ public class ViewGradeAdapter extends RecyclerView.Adapter<ViewGradeAdapter.View
             grade = itemView.findViewById(R.id.txt_grade);
             date = itemView.findViewById(R.id.txt_date);
 
-            buttonDelete = itemView.findViewById(R.id.buttonDelete);
-            buttonUpdate = itemView.findViewById(R.id.buttonUpdate);
+            buttonDelete = itemView.findViewById(R.id.delete);
+            buttonUpdate = itemView.findViewById(R.id.update);
         }
     }
 

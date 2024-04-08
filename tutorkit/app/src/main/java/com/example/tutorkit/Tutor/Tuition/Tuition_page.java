@@ -33,6 +33,7 @@ import android.widget.Toast;
 
 import com.example.tutorkit.Models.StatusAdd;
 import com.example.tutorkit.Models.Student;
+import com.example.tutorkit.Models.SubmitAssignmentModel;
 import com.example.tutorkit.Models.Tuition;
 import com.example.tutorkit.R;
 import com.example.tutorkit.Tutor.Tutor_home;
@@ -44,6 +45,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -302,12 +305,31 @@ public class Tuition_page extends AppCompatActivity {
                         edtPrice.requestFocus();
 
                     }
-                    else {
-                        databaseReference.child("tuition").child(id)
-                                .setValue(new Tuition(id, name, dateline, student.getId(), idTutor, amount, price));
-                        Toast.makeText(context, "DONE!", Toast.LENGTH_SHORT).show();
-                        dialog.dismiss();
-                    }
+                    else
+                     {
+                         // Check if the selected date is in the future
+                         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                         try {
+                             Date selectedDate = sdf.parse(dateline);
+                             Date currentDate = new Date();
+
+                             if (selectedDate != null && selectedDate.after(currentDate)) {
+                                 // The selected date is in the future, proceed to add the assignment
+                                 databaseReference.child("tuition").child(id)
+                                         .setValue(new Tuition(id, name, dateline, student.getId(), idTutor, amount, price));
+                                 Toast.makeText(context, "DONE!", Toast.LENGTH_SHORT).show();
+                                 dialog.dismiss();
+                             } else {
+                                 // The selected date is not in the future
+                                 Toast.makeText(context, "Please select a future date", Toast.LENGTH_SHORT).show();
+                                 edtDateline.requestFocus();
+                                 edtDateline.setError("Invalid date");
+                             }
+                         } catch (ParseException e) {
+                             e.printStackTrace();
+                             // Handle parsing exception if needed
+                         }
+                     }
                 }
             });
 

@@ -87,6 +87,7 @@
 
                     <EditText
                         android:id="@+id/edt_name"
+                        android:hint="name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="textEmailAddress" />
@@ -102,6 +103,7 @@
                         android:id="@+id/edt_email"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:hint="student@gmail.com"
                         android:inputType="textEmailAddress" />
 
                     <TextView
@@ -116,7 +118,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:focusable="false"
-                        android:inputType="textEmailAddress" />
+                        android:hint="DD/MM/YYYY" />
 
                     <TextView
                         android:layout_width="match_parent"
@@ -167,6 +169,8 @@
 
                     <EditText
                         android:id="@+id/edt_phone"
+                        android:inputType="number"
+                        android:hint="(+84)"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
 
@@ -180,6 +184,8 @@
                     <EditText
                         android:id="@+id/edt_parent_phone"
                         android:layout_width="match_parent"
+                        android:inputType="number"
+                        android:hint="(+84)"
                         android:layout_height="wrap_content" />
 
                     <TextView

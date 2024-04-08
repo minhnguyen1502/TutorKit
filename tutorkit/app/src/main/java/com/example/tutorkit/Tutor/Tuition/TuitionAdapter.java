@@ -1,5 +1,6 @@
 package com.example.tutorkit.Tutor.Tuition;
 
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -22,13 +24,18 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tutorkit.Models.Student;
+import com.example.tutorkit.Models.SubmitAssignmentModel;
 import com.example.tutorkit.Models.Tuition;
 import com.example.tutorkit.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Objects;
 
 public class TuitionAdapter extends RecyclerView.Adapter<TuitionAdapter.ViewHolder> {
@@ -98,8 +105,8 @@ public class TuitionAdapter extends RecyclerView.Adapter<TuitionAdapter.ViewHold
         TextView price;
         TextView dateline;
         TextView total;
-        ImageView delete;
-        ImageView update;
+        Button delete;
+        Button update;
 
 
         public ViewHolder(@NonNull View itemView) {
@@ -111,8 +118,8 @@ public class TuitionAdapter extends RecyclerView.Adapter<TuitionAdapter.ViewHold
             dateline = itemView.findViewById(R.id.txt_date);
             total = itemView.findViewById(R.id.txt_total);
 
-            delete = itemView.findViewById(R.id.delete);
-            update = itemView.findViewById(R.id.update);
+            delete = itemView.findViewById(R.id.buttonDelete);
+            update = itemView.findViewById(R.id.buttonUpdate);
         }
     }
 
@@ -163,6 +170,28 @@ public class TuitionAdapter extends RecyclerView.Adapter<TuitionAdapter.ViewHold
 
             Button buttonUpdate = dialog.findViewById(R.id.buttonAdd);
             buttonUpdate.setText("Update");
+            edt_dateline.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    DatePickerDialog datePickerDialog = new DatePickerDialog(
+                            context,
+                            new DatePickerDialog.OnDateSetListener() {
+                                @Override
+                                public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                                    // Người dùng đã chọn ngày. Cập nhật trường ngày (edate).
+                                    String selectedDate = dayOfMonth + "/" + (month + 1) + "/" + year;
+                                    edt_dateline.setText(selectedDate);
+                                }
+                            },
+                            // Truyền ngày hiện tại làm ngày mặc định cho DatePickerDialog.
+                            Calendar.getInstance().get(Calendar.YEAR),
+                            Calendar.getInstance().get(Calendar.MONTH),
+                            Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
+                    );
+
+                    datePickerDialog.show();
+                }
+            });
 
             ImageView cancel = dialog.findViewById(R.id.cancel);
 
@@ -207,9 +236,32 @@ public class TuitionAdapter extends RecyclerView.Adapter<TuitionAdapter.ViewHold
 
                     }
                     else {
-                    databaseReference.child("tuition").child(id).setValue(new Tuition(id, s_name, s_dateline, student.getId(), idTutor, s_amount, s_price));
-                    Toast.makeText(context, " Updated successfully!", Toast.LENGTH_SHORT).show();
-                    dialog.dismiss();
+                        // Check if the selected date is in the future
+
+                        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                        try {
+                            Date selectedDate = sdf.parse(edt_dateline.getText().toString());
+                            Date currentDate = new Date();
+
+                            if (selectedDate != null && selectedDate.after(currentDate)) {
+                                // The selected date is in the future, proceed to add the assignment
+                                databaseReference.child("tuition").child(id).setValue(new Tuition(id, s_name, s_dateline, student.getId(), idTutor, s_amount, s_price));
+                                Toast.makeText(context, " Updated successfully!", Toast.LENGTH_SHORT).show();
+                                dialog.dismiss();
+                            } else {
+                                // The selected date is not in the future
+                                Toast.makeText(context, "Please select a future date", Toast.LENGTH_SHORT).show();
+                                edt_dateline.requestFocus();
+                                edt_dateline.setError("Invalid date");
+                            }
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                            // Handle parsing exception if needed
+                        }
+                    }
+
+                    {
+
                 }
                 }
             });

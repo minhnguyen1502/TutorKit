@@ -95,30 +95,6 @@
         </LinearLayout>
 
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btn_choose"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:backgroundTint="@color/m_vang"
-                android:text="Choose this tutor"></androidx.appcompat.widget.AppCompatButton>
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btn_cancel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:visibility="gone"
-                android:text="Cancel"></androidx.appcompat.widget.AppCompatButton>
-
-
-        </LinearLayout>
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>

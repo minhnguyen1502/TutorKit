@@ -39,6 +39,7 @@
             android:layout_gravity="center"
             android:layout_margin="3dp"
             android:gravity="center"
+            android:focusable="false"
             android:hint="Time"
             android:padding="5dp"
             android:textSize="18sp"

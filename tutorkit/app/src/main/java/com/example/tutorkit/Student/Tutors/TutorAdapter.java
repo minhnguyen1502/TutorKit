@@ -1,6 +1,7 @@
 package com.example.tutorkit.Student.Tutors;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,7 @@ import com.bumptech.glide.Glide;
 import com.example.tutorkit.Models.StatusAdd;
 import com.example.tutorkit.Models.Tutor;
 import com.example.tutorkit.R;
+import com.example.tutorkit.Student.Grade.ViewGrade;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -55,25 +57,12 @@ public class TutorAdapter extends RecyclerView.Adapter<TutorAdapter.ViewHolder>{
         holder.txtName.setText(tutors.getName());
         holder.txtSubject.setText(tutors.getSubject());
 
-        try {
-            if (tutors.getStatusAdd().getStatus()){
-                holder.choose.setVisibility(View.GONE);
-            }
-        }catch (Exception e){
-            Log.e("TAG", "onBindViewHolder: "+ e.getMessage() );
-        }
-
-        holder.choose.setOnClickListener(new View.OnClickListener() {
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FirebaseDatabase.getInstance().getReference("tutors")
-                        .child(tutors.getId())
-                        .child("IdStudent").child(FirebaseAuth.getInstance().getUid())
-                        .setValue(new StatusAdd(FirebaseAuth.getInstance().getUid(), false));
-
-                holder.choose.setEnabled(false);
-                holder.choose.setText("Wait....");
-                Toast.makeText(context, "I liked this tutor", Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(context, ViewProfileTutor.class);
+                i.putExtra("tutorId", tutors.getId());
+                context.startActivity(i);
             }
         });
 
@@ -90,7 +79,6 @@ public class TutorAdapter extends RecyclerView.Adapter<TutorAdapter.ViewHolder>{
         TextView txtName, txtSubject;
         ImageView avatar;
 
-        Button choose;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -99,7 +87,6 @@ public class TutorAdapter extends RecyclerView.Adapter<TutorAdapter.ViewHolder>{
             txtName = itemView.findViewById(R.id.name);
             txtSubject = itemView.findViewById(R.id.subject);
 
-            choose = itemView.findViewById(R.id.btn_choose);
         }
     }
 }

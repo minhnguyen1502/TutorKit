@@ -77,14 +77,12 @@ public class Time_table extends AppCompatActivity {
                 calendar.set(Calendar.MONTH,(i1+1) );
                 calendar.set(Calendar.YEAR,i);
                 Log.e("TAG", "onSelectedDayChange: "+i+i1+i2 );
-//                calendarClicked();
-            }
+                readDataForSelectedDate(calendar.getTimeInMillis());            }
         });
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
 
-        readData();
         showListStudents();
     }
     private void showListStudents() {
@@ -136,8 +134,8 @@ public class Time_table extends AppCompatActivity {
                 });
     }
 
-    private void readData() {
-        databaseReference.child("calendar").addValueEventListener(new ValueEventListener() {
+    private void readDataForSelectedDate(long selectedDate) {
+        databaseReference.child("calendar").orderByChild("date").equalTo(selectedDate).addValueEventListener(new ValueEventListener() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -145,11 +143,11 @@ public class Time_table extends AppCompatActivity {
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     TimeTable time_table = dataSnapshot.getValue(TimeTable.class);
                     timeTableArrayList.add(time_table);
-                    Log.e("TAG", "displayData: " );
                 }
-                timeTableAdapter = new TimeTableAdapter(Time_table.this, timeTableArrayList);
+                timeTableAdapter = new TimeTableAdapter(Time_table.this);
                 recyclerView.setAdapter(timeTableAdapter);
-                timeTableAdapter.notifyDataSetChanged();
+                timeTableAdapter.addData(timeTableArrayList);
+                Log.e("TAG", "onDataChange: "+timeTableArrayList );
             }
 
             @Override
@@ -193,15 +191,8 @@ public class Time_table extends AppCompatActivity {
 
             Button buttonAdd = dialog.findViewById(R.id.buttonAdd);
 
-            //            if (studentArrayList.get(0)!=studentDefault){
-//                studentArrayList.add(0,studentDefault);
-//            }
             ArrayAdapter<Student> studentList = new ArrayAdapter<Student>(context, android.R.layout.simple_list_item_1,studentArrayList){
-//                @Override
-//                public boolean isEnabled(int position) {
-////                    position = 0 not select
-//                    return position != 0;
-//                }
+
 
                 @Override
                 public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {

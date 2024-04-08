@@ -34,12 +34,16 @@ public class TimeTableAdapter extends RecyclerView.Adapter<TimeTableAdapter.View
     ArrayList<TimeTable> timeTables;
     DatabaseReference databaseReference;
     int hour, minute;
-    SimpleDateFormat formatter = new SimpleDateFormat("dd-mm-yyyy");
 
+    public void addData(ArrayList<TimeTable> timeTables){
+        this.timeTables.clear();
+        this.timeTables.addAll(timeTables);
+        notifyDataSetChanged();
 
-    public TimeTableAdapter(Context context, ArrayList<TimeTable> timeTables) {
+    }
+    public TimeTableAdapter(Context context) {
         this.context = context;
-        this.timeTables = timeTables;
+        this.timeTables = new ArrayList<>();
         databaseReference = FirebaseDatabase.getInstance().getReference();
 
     }
@@ -58,8 +62,8 @@ public class TimeTableAdapter extends RecyclerView.Adapter<TimeTableAdapter.View
 
         holder.name.setText("Name : " + timeTable.getName());
         holder.time.setText("Time : " + timeTable.getTime());
-        holder.date.setText("Date : " + formatter.format(timeTable.getDate()));
-
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+        holder.date.setText("Date: " + formatter.format(timeTable.getDate()));
 
         holder.update.setOnClickListener(new View.OnClickListener() {
             @Override
