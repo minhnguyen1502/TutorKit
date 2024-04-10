@@ -5,18 +5,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background"
     tools:context=".Student.Payment.PayPalPaymentActivity">
 
-<!--    <com.paypal.checkout.paymentbutton.PaymentButtonContainer-->
-<!--        android:id="@+id/payment_button_container"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_centerInParent="true"-->
-<!--        app:paypal_button_color="blue"-->
-<!--        app:paypal_button_enabled="true"-->
-<!--        app:paypal_button_label="pay"-->
-<!--        app:paypal_button_shape="rectangle"-->
-<!--        app:paypal_button_size="large" />-->
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_20sdp"
+        android:layout_marginTop="@dimen/_20sdp"
+        app:srcCompat="@drawable/baseline_home_24" />
+
     <com.paypal.checkout.paymentbutton.PaymentButtonContainer
         android:id="@+id/payment_button_container"
         android:layout_width="match_parent"
@@ -29,11 +28,21 @@
         app:paypal_button_size="large" />
 
     <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/_15sdp"
+        android:layout_marginStart="@dimen/_50sdp"
+        android:textStyle="bold"
+        android:layout_marginTop="@dimen/_100sdp"
+        android:text="You have to pay:" />
+
+    <TextView
         android:id="@+id/txt_total"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textSize="@dimen/_15sdp"
         android:layout_marginTop="@dimen/_100sdp"
-        android:layout_marginStart="@dimen/_140sdp"
+        android:layout_marginStart="@dimen/_170sdp"
         android:text="TextView" />
 
 </RelativeLayout>

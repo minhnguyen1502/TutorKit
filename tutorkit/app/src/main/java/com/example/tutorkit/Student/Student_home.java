@@ -18,6 +18,7 @@ import com.example.tutorkit.Models.Tutor;
 import com.example.tutorkit.R;
 import com.example.tutorkit.Student.Account.Student_profile;
 import com.example.tutorkit.Student.Assignment.Assignment;
+import com.example.tutorkit.Student.Calendar.Time_tableStudent;
 import com.example.tutorkit.Student.Call.Call_Tutor;
 import com.example.tutorkit.Student.Chat.ChatWithTutor;
 import com.example.tutorkit.Student.Exam.ExamStudent;
@@ -116,7 +117,7 @@ public class Student_home extends AppCompatActivity {
         calendar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), Time_table.class);
+                Intent intent = new Intent(getApplicationContext(), Time_tableStudent.class);
                 startActivity(intent);
 
             }

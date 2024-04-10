@@ -20,6 +20,18 @@ public class Tutor {
         this.statusAdd = statusAdd;
     }
 
+    public Tutor(String id, String name, String DOB, String address, String phone, String gender, String subject, String introduction, String img) {
+        this.id = id;
+        this.name = name;
+        this.DOB = DOB;
+        this.address = address;
+        this.phone = phone;
+        this.gender = gender;
+        this.subject = subject;
+        this.introduction = introduction;
+        this.img = img;
+    }
+
     public Tutor(String name, String DOB, String address, String phone, String gender, String subject, String introduction, String img) {
         this.name = name;
         this.DOB = DOB;

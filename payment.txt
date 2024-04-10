@@ -1,6 +1,6 @@
 client id: AfE_-4IywXGDLw05aAo0rYjZIU5XFlnsk17jKOiWfrS_H1O_yWAR40h3SEVxLZMLPELUknZlJ33lZxo6
-email: sb-eur1230101290@business.example.com
-pass: hD}lu5-#
+email: sb-lxhjm30094696@personal.example.com
+pass: FwSIZ_R3
 
 setting.gradle:
 // This private repository is required to resolve the Cardinal SDK transitive dependency.

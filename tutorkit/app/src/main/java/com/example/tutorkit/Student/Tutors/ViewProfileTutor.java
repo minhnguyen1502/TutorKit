@@ -62,37 +62,38 @@ public class ViewProfileTutor extends AppCompatActivity {
             }
         });
 
-        // Check if the tutor ID exists in the Student 
-        DatabaseReference studentRef = FirebaseDatabase.getInstance().getReference("Student").child(FirebaseAuth.getInstance().getUid());
-        studentRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Student student = dataSnapshot.getValue(Student.class);
-                if (student.getStatusAdd() != null && student.getStatusAdd().getIdList() != null && student.getStatusAdd().getIdList().equals(tutorId)) {
-                    choose.setVisibility(View.GONE);
-                } else {
-                    choose.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            FirebaseDatabase.getInstance().getReference("tutors")
-                                    .child(tutorId)
-                                    .child("IdStudent").child(FirebaseAuth.getInstance().getUid())
-                                    .setValue(new StatusAdd(FirebaseAuth.getInstance().getUid(), false));
-                            Toast.makeText(ViewProfileTutor.this, "I liked this tutor", Toast.LENGTH_SHORT).show();
-                        }
-                    });
+        try {
+            // Check if the tutor ID exists in the Student
+            DatabaseReference studentRef = FirebaseDatabase.getInstance().getReference("Student").child(FirebaseAuth.getInstance().getUid()).child("IdTutors").child(tutorId);
+            studentRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    StatusAdd statusAdd = dataSnapshot.getValue(StatusAdd.class);
+                    if (statusAdd != null) {
+                        choose.setVisibility(View.GONE);
+                    } else {
+                        choose.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                FirebaseDatabase.getInstance().getReference("tutors")
+                                        .child(tutorId)
+                                        .child("IdStudent").child(FirebaseAuth.getInstance().getUid())
+                                        .setValue(new StatusAdd(FirebaseAuth.getInstance().getUid(), false));
+                                Toast.makeText(ViewProfileTutor.this, "I liked this tutor", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
                 }
-            }
 
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(ViewProfileTutor.this, "Failed to load student status", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-
-
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    Toast.makeText(ViewProfileTutor.this, "Failed to load student status", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }catch (Exception e){
+            e.getMessage();
+        }
 
     }
 
@@ -110,7 +111,6 @@ public class ViewProfileTutor extends AppCompatActivity {
                                 .load(tutor.getImg())
                                 .centerCrop()
                                 .into(avatar);
-
                         phone = tutor.getPhone();
                         gender = tutor.getGender();
                         DOB = tutor.getDOB();

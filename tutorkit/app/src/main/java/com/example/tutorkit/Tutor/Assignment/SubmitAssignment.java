@@ -74,7 +74,6 @@ public class SubmitAssignment extends AppCompatActivity {
         submitAssignmentModelArrayList = new ArrayList<>();
         studentArrayList = new ArrayList<>();
         idStudent = new ArrayList<>();
-        studentArrayList.add(new Student("Student Name","", "","","","",""));
 
         readData();
         showListStudents();
@@ -168,8 +167,12 @@ public class SubmitAssignment extends AppCompatActivity {
         if (id == R.id.home) {
             finish();
         } else if (id == R.id.add) {
+            if (studentArrayList.isEmpty()) {
+                // There are no students available, display a message to the user
+                Toast.makeText(SubmitAssignment.this, "No students available to schedule", Toast.LENGTH_SHORT).show();
+            } else {
             ViewDialogAdd viewDialogAdd = new ViewDialogAdd();
-            viewDialogAdd.showDialog(SubmitAssignment.this);
+            viewDialogAdd.showDialog(SubmitAssignment.this);}
         } else {
             Toast.makeText(this, "Something Wrong", Toast.LENGTH_SHORT).show();
         }
@@ -186,21 +189,14 @@ public class SubmitAssignment extends AppCompatActivity {
             EditText edtDateline = dialog.findViewById(R.id.edt_date);
             EditText edt_title = dialog.findViewById(R.id.edt_title);
             ArrayAdapter<Student> studentList = new ArrayAdapter<Student>(context, android.R.layout.simple_list_item_1,studentArrayList){
-                @Override
-                public boolean isEnabled(int position) {
-//                    position = 0 not select
-                    return position != 0;
-                }
 
                 @Override
                 public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
                     TextView view = (TextView) super.getDropDownView(position, convertView, parent);
                     view.setText(studentArrayList.get(position).getName());
-                    if (position == 0) {
-                        view.setTextColor(Color.GRAY);
-                    } else {
+
                         view.setTextColor(Color.BLACK);
-                    }
+
                     return view;
                 }
 
@@ -250,7 +246,6 @@ public class SubmitAssignment extends AppCompatActivity {
             buttonAdd.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-//                    DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
                     Student student = (Student) studentName.getSelectedItem();
                     String idTutor = FirebaseAuth.getInstance().getUid();
                     String id = "submitAssignment" + new Date().getTime();

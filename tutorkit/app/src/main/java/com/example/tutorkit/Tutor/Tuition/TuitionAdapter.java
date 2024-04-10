@@ -6,6 +6,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,7 +44,8 @@ public class TuitionAdapter extends RecyclerView.Adapter<TuitionAdapter.ViewHold
     Context context;
     ArrayList<Tuition> tuitionArrayList;
     DatabaseReference databaseReference;
-    ArrayList<Student> students;
+    ArrayList<Student> students = new ArrayList<>();
+    int positionName =0;
 
     public TuitionAdapter(Context context, ArrayList<Tuition> tuitionArrayList) {
         this.context = context;
@@ -52,7 +54,6 @@ public class TuitionAdapter extends RecyclerView.Adapter<TuitionAdapter.ViewHold
     }
 
     public void setDataStudent(ArrayList<Student> studentArrayList) {
-        students = new ArrayList<>();
         students = studentArrayList;
     }
 
@@ -135,25 +136,16 @@ public class TuitionAdapter extends RecyclerView.Adapter<TuitionAdapter.ViewHold
             EditText edt_amount = dialog.findViewById(R.id.edt_amount);
             EditText edt_price = dialog.findViewById(R.id.edt_price);
             EditText edt_dateline = dialog.findViewById(R.id.edt_date);
-//            students.add(0, new Student());
-//
-//            for (int i = 0; i < students.size(); i++) {
-//                if (Objects.equals(students.get(i).getName(), name)) {
-//                    students.remove(0);
-//                    students.add(0, new Student(name, "", "", "", "", "", ""));
-//                    students.remove(i);
-//                }
-//            }
 
             ArrayAdapter<Student> adapter = new ArrayAdapter(context, android.R.layout.simple_spinner_item, students) {
-                @Override
-                public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-                    TextView view = (TextView) super.getDropDownView(position, convertView, parent);
-                    view.setText(students.get(position).getName());
-                    return view;
-                }
+                    @Override
+                    public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+                        TextView view = (TextView) super.getDropDownView(position, convertView, parent);
+                        view.setText(students.get(position).getName());
+                        return view;
+                    }
 
-                @NonNull
+                    @NonNull
                 @Override
                 public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
                     TextView view = (TextView) super.getView(position, convertView, parent);
@@ -162,8 +154,14 @@ public class TuitionAdapter extends RecyclerView.Adapter<TuitionAdapter.ViewHold
                 }
             };
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
+            for (int i =0; i< students.size();i++){
+                if (Objects.equals(students.get(i).getName(), name)){
+                    positionName =i;
+                }
+                Log.e("TAG", "showDialog: "+ students.get(i).getName() );
+            }
             spn_name.setAdapter(adapter);
+            spn_name.setSelection(positionName);
             edt_amount.setText(String.valueOf(amount));
             edt_price.setText(String.valueOf(price));
             edt_dateline.setText(dateline);

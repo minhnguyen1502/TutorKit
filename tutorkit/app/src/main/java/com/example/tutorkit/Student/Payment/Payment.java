@@ -43,7 +43,6 @@ public class Payment extends AppCompatActivity {
     DatabaseReference databaseReference;
     RecyclerView recyclerView;
     ArrayList<Tuition> tuitionArrayList;
-    ArrayList<Student> studentArrayList;
     PaymentAdapter adapter;
     ArrayList<String> idStudent;
 
@@ -62,7 +61,6 @@ public class Payment extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         tuitionArrayList = new ArrayList<>();
-        studentArrayList = new ArrayList<>();
         idStudent = new ArrayList<>();
 
         readData();

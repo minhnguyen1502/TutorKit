@@ -10,6 +10,7 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -32,8 +33,12 @@ import android.widget.Toast;
 
 import com.example.tutorkit.Models.StatusAdd;
 import com.example.tutorkit.Models.Student;
+import com.example.tutorkit.Models.SubmitAssignmentModel;
 import com.example.tutorkit.Models.TimeTable;
 import com.example.tutorkit.R;
+import com.example.tutorkit.Tutor.Tuition.TuitionAdapter;
+import com.example.tutorkit.Tutor.Tuition.Tuition_page;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -41,9 +46,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Objects;
 
 public class Time_table extends AppCompatActivity {
 
@@ -52,10 +60,11 @@ public class Time_table extends AppCompatActivity {
     ArrayList<TimeTable> timeTableArrayList;
     ArrayList<Student> studentArrayList;
     ArrayList<String> idStudent;
-
     TimeTableAdapter timeTableAdapter;
     private CalendarView calendarView;
     Calendar calendar;
+    FloatingActionButton viewAll;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +76,7 @@ public class Time_table extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerView);
         studentArrayList = new ArrayList<>();
         idStudent = new ArrayList<>();
+        viewAll = findViewById(R.id.viewAll);
 
         databaseReference = FirebaseDatabase.getInstance().getReference();
 
@@ -76,18 +86,25 @@ public class Time_table extends AppCompatActivity {
                 calendar.set(Calendar.DAY_OF_MONTH,i2);
                 calendar.set(Calendar.MONTH,(i1+1) );
                 calendar.set(Calendar.YEAR,i);
+                String date = "" +calendar.get(Calendar.DAY_OF_MONTH)+"/"+calendar.get(Calendar.MONTH)+"/"+calendar.get(Calendar.YEAR);
                 Log.e("TAG", "onSelectedDayChange: "+i+i1+i2 );
-                readDataForSelectedDate(calendar.getTimeInMillis());            }
+                readDataForSelectedDate(date);            }
+        });
+        viewAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(Time_table.this, View_All.class);
+                startActivity(i);
+            }
         });
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
-
         showListStudents();
     }
     private void showListStudents() {
         FirebaseDatabase.getInstance().getReference("tutors")
-                .child(FirebaseAuth.getInstance().getUid())
+                .child(Objects.requireNonNull(FirebaseAuth.getInstance().getUid()))
                 .child("IdStudent").addValueEventListener(new ValueEventListener() {
                     @SuppressLint("NotifyDataSetChanged")
                     @Override
@@ -96,6 +113,7 @@ public class Time_table extends AppCompatActivity {
                         for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                             StatusAdd statusAdd = dataSnapshot.getValue(StatusAdd.class);
                             try {
+                                assert statusAdd != null;
                                 if (statusAdd.getStatus()) {
                                     idStudent.add(statusAdd.getIdList());
                                 }
@@ -134,7 +152,7 @@ public class Time_table extends AppCompatActivity {
                 });
     }
 
-    private void readDataForSelectedDate(long selectedDate) {
+    private void readDataForSelectedDate(String selectedDate) {
         databaseReference.child("calendar").orderByChild("date").equalTo(selectedDate).addValueEventListener(new ValueEventListener() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
@@ -142,11 +160,19 @@ public class Time_table extends AppCompatActivity {
                 timeTableArrayList.clear();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     TimeTable time_table = dataSnapshot.getValue(TimeTable.class);
-                    timeTableArrayList.add(time_table);
+                    try {
+                        if (Objects.equals(time_table.getIdTutor(), FirebaseAuth.getInstance().getUid())){
+                            timeTableArrayList.add(time_table);
+                        }
+                    }catch (Exception e){
+                        Log.e("TAG", "onDataChange: "+e.getMessage() );
+                    }
+
                 }
-                timeTableAdapter = new TimeTableAdapter(Time_table.this);
+                timeTableAdapter = new TimeTableAdapter(Time_table.this, timeTableArrayList);
+                timeTableAdapter.setStudent(studentArrayList);
                 recyclerView.setAdapter(timeTableAdapter);
-                timeTableAdapter.addData(timeTableArrayList);
+                timeTableAdapter.notifyDataSetChanged();
                 Log.e("TAG", "onDataChange: "+timeTableArrayList );
             }
 
@@ -167,10 +193,27 @@ public class Time_table extends AppCompatActivity {
         int id = item.getItemId();
         // update profile
         if (id == R.id.add) {
-            ViewDialogAdd viewDialogAdd = new ViewDialogAdd();
-            viewDialogAdd.showDialog(Time_table.this);
-            Toast.makeText(this, "add new", Toast.LENGTH_SHORT).show();
-//            finish();
+            // Check if the selected date is in the future
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            try {
+                Date selectedDate = sdf.parse("" +(calendar.get(Calendar.DAY_OF_MONTH)+1)+"/"+calendar.get(Calendar.MONTH)+"/"+calendar.get(Calendar.YEAR));
+                Date currentDate = new Date();
+
+                if (selectedDate != null && selectedDate.after(currentDate)) {
+                    if (studentArrayList.isEmpty()) {
+                        // There are no students available, display a message to the user
+                        Toast.makeText(Time_table.this, "No students available to schedule", Toast.LENGTH_SHORT).show();
+                    } else{
+                    ViewDialogAdd viewDialogAdd = new ViewDialogAdd();
+                    viewDialogAdd.showDialog(Time_table.this);}
+                } else {
+                    // The selected date is not in the future
+                    Toast.makeText(Time_table.this, "Please select a future date", Toast.LENGTH_SHORT).show();
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+                // Handle parsing exception if needed
+            }
         } else if (id == R.id.home) {
             finish();
 
@@ -188,24 +231,14 @@ public class Time_table extends AppCompatActivity {
 
             Spinner studentName = dialog.findViewById(R.id.spn_name);
             EditText edtTime = dialog.findViewById(R.id.edt_time);
-
             Button buttonAdd = dialog.findViewById(R.id.buttonAdd);
-
             ArrayAdapter<Student> studentList = new ArrayAdapter<Student>(context, android.R.layout.simple_list_item_1,studentArrayList){
-
-
                 @Override
                 public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
                     TextView view = (TextView) super.getDropDownView(position, convertView, parent);
                     view.setText(studentArrayList.get(position).getName());
-//                    if (position == 0) {
-//                        view.setTextColor(Color.GRAY);
-//                    } else {
-//                        view.setTextColor(Color.BLACK);
-//                    }
                     return view;
                 }
-
                 @NonNull
                 @Override
                 public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -254,11 +287,10 @@ public class Time_table extends AppCompatActivity {
                 public void onClick(View view) {
                     Student student = (Student) studentName.getSelectedItem();
                     String idTutor = FirebaseAuth.getInstance().getUid();
-                    String id = "tuition" + new Date().getTime();
+                    String id = "calendar" + new Date().getTime();
                     String name = student.getName();
-
                     String time = edtTime.getText().toString();
-                    long date = calendar.getTimeInMillis();
+                    String date = "" +calendar.get(Calendar.DAY_OF_MONTH)+"/"+calendar.get(Calendar.MONTH)+"/"+calendar.get(Calendar.YEAR);
 
                     if (TextUtils.isEmpty(time)){
                         Toast.makeText(context, "Enter dateline", Toast.LENGTH_SHORT).show();
@@ -267,9 +299,10 @@ public class Time_table extends AppCompatActivity {
 
                     }else {
                         databaseReference.child("calendar").child(id)
-                                .setValue(new TimeTable(id,name,time,idTutor,student.getId(),date));
+                                .setValue(new TimeTable(id, name, time, idTutor, student.getId(), date));
                         Toast.makeText(context, "DONE!", Toast.LENGTH_SHORT).show();
                         dialog.dismiss();
+                        calendarView.setDateTextAppearance(R.style.MyCalendarDateStyle);
                     }
 
                 }

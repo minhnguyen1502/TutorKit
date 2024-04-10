@@ -33,10 +33,6 @@ public class PayPalPaymentActivity extends AppCompatActivity {
     TextView txt_total;
     int total;
 
-//    private static PayPalConfiguration config = new PayPalConfiguration()
-//            .environment(PayPalConfiguration.ENVIRONMENT_SANDBOX) // Sandbox for testing
-//            .clientId("YOUR_CLIENT_ID_HERE"); // Replace with your own client ID
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

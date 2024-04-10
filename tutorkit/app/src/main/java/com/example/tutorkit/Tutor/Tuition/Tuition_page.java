@@ -84,13 +84,18 @@ public class Tuition_page extends AppCompatActivity {
 
 
         btn_add = findViewById(R.id.add);
-        btn_add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ViewDialogAdd viewDialogAdd = new ViewDialogAdd();
-                viewDialogAdd.showDialog(Tuition_page.this);
-            }
-        });
+
+            btn_add.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (studentArrayList.isEmpty()) {
+                        // There are no students available, display a message to the user
+                        Toast.makeText(Tuition_page.this, "No students available to schedule", Toast.LENGTH_SHORT).show();
+                    } else {
+                    ViewDialogAdd viewDialogAdd = new ViewDialogAdd();
+                    viewDialogAdd.showDialog(Tuition_page.this);}
+                }
+            });
 
         readData();
         showListStudents();

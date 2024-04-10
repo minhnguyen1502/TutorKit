@@ -28,6 +28,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.tutorkit.Models.StatusAdd;
 import com.example.tutorkit.Models.Tutor;
 import com.example.tutorkit.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -46,6 +47,7 @@ import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Locale;
@@ -63,10 +65,10 @@ public class Edit_tutor_profile extends AppCompatActivity {
     private FirebaseUser firebaseUser;
     private ImageView avatar;
     private Uri imgURI;
-    private String img;
+    private String oldImg;
+    private final String id = FirebaseAuth.getInstance().getUid();
     private Phonenumber.PhoneNumber swissNumberProto;
     DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("tutors");
-
 
 
     @Override
@@ -125,7 +127,7 @@ public class Edit_tutor_profile extends AppCompatActivity {
                             @Override
                             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
                                 // Người dùng đã chọn ngày. Cập nhật trường ngày (edate).
-                                String selectedDate =dayOfMonth + "/"+ (month+1)+"/"+year;
+                                String selectedDate = dayOfMonth + "/" + (month + 1) + "/" + year;
                                 edt_DOB.setText(selectedDate);
                             }
                         },
@@ -139,10 +141,10 @@ public class Edit_tutor_profile extends AppCompatActivity {
             }
         });
     }
+
     private void updateProfile(FirebaseUser firebaseUser) {
         int selectedGenderID = group_gender.getCheckedRadioButtonId();
         gender_selected = findViewById(selectedGenderID);
-
 
         boolean isValid = false;
         try {
@@ -150,14 +152,13 @@ public class Edit_tutor_profile extends AppCompatActivity {
             try {
                 swissNumberProto = phoneUtil.parse(phone, Locale.getDefault().getCountry());
             } catch (NumberParseException e) {
-                System.err.println("NumberParseException was thrown: " + e.toString());
+                System.err.println("NumberParseException was thrown: " + e);
             }
             isValid = phoneUtil.isValidNumber(swissNumberProto); // returns true
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
-
 
         gender = gender_selected.getText().toString();
         name = edt_name.getText().toString();
@@ -195,7 +196,7 @@ public class Edit_tutor_profile extends AppCompatActivity {
             Toast.makeText(Edit_tutor_profile.this, "select your gender", Toast.LENGTH_SHORT).show();
             gender_selected.setError("gender is required");
             gender_selected.requestFocus();
-        }else {
+        } else {
             updateTutor(firebaseUser, imgURI);
 
         }
@@ -216,8 +217,8 @@ public class Edit_tutor_profile extends AppCompatActivity {
                 ArrayAdapter<CharSequence> adapter1 = ArrayAdapter.createFromResource(Edit_tutor_profile.this, R.array.subject, android.R.layout.simple_spinner_item);
                 adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 edit_subject.setAdapter(adapter1);
-                
-                if (tutor != null){
+
+                if (tutor != null) {
                     name = tutor.getName();
                     phone = tutor.getPhone();
                     gender = tutor.getGender();
@@ -227,6 +228,7 @@ public class Edit_tutor_profile extends AppCompatActivity {
                             .load(tutor.getImg())
                             .centerCrop()
                             .into(avatar);
+                    oldImg = tutor.getImg();
                     address = tutor.getAddress();
                     subject = tutor.getSubject();
                     intro = tutor.getIntroduction();
@@ -244,12 +246,13 @@ public class Edit_tutor_profile extends AppCompatActivity {
                     edit_subject.setSelection(Arrays.asList(arrSubject).indexOf(subject));
                     edit_address.setSelection(Arrays.asList(arrAddress).indexOf(address));
 
-                    if (gender.equals("Male")){
+                    if (gender.equals("Male")) {
                         gender_selected = findViewById(R.id.Rbtn_male);
-                    }else {
+                    } else {
                         gender_selected = findViewById(R.id.Rbtn_female);
-                    } gender_selected.setChecked(true);
-                }else {
+                    }
+                    gender_selected.setChecked(true);
+                } else {
                     Toast.makeText(Edit_tutor_profile.this, "Something Wrong", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -261,7 +264,13 @@ public class Edit_tutor_profile extends AppCompatActivity {
             }
         });
     }
+
+
     private void updateTutor(FirebaseUser firebaseUser, Uri img) {
+        if (img == null) {
+            create(oldImg);
+            return;
+        }
         StorageReference storageRef = FirebaseStorage.getInstance().getReference();
         StorageReference riversRef = storageRef.child("images/" + img.getLastPathSegment());
         riversRef.putFile(img).continueWithTask(task -> {
@@ -273,38 +282,44 @@ public class Edit_tutor_profile extends AppCompatActivity {
             if (task.isSuccessful()) {
                 Uri downloadUri = task.getResult();
                 Log.e("TAG", "updateImage: " + downloadUri);
-//                createUser(firebaseUser, downloadUri.toString());
-                Tutor tutor = new Tutor(name,DOB, address,phone, gender, subject, intro, downloadUri.toString());
-
-                databaseReference.child(firebaseUser.getUid()).setValue(tutor).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-
-                        if (task.isSuccessful()){
-
-                        Toast.makeText(Edit_tutor_profile.this, "Update success", Toast.LENGTH_SHORT).show();
-
-                        Intent i = new Intent(Edit_tutor_profile.this, Tutor_profile.class);
-                        i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|
-                                Intent.FLAG_ACTIVITY_CLEAR_TASK|
-                                Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(i);
-                        }else {
-                        try {
-                            throw task.getException();
-
-                        }catch (Exception e){
-                            Toast.makeText(Edit_tutor_profile.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                }
-                });
+                create(downloadUri.toString());
             } else {
                 Toast.makeText(Edit_tutor_profile.this, "fail", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
+    private void create(String data) {
+        databaseReference.child(firebaseUser.getUid()).child("address").setValue(address);
+        databaseReference.child(firebaseUser.getUid()).child("dob").setValue(DOB);
+        databaseReference.child(firebaseUser.getUid()).child("gender").setValue(gender);
+        databaseReference.child(firebaseUser.getUid()).child("img").setValue(data);
+        databaseReference.child(firebaseUser.getUid()).child("introduction").setValue(intro);
+        databaseReference.child(firebaseUser.getUid()).child("name").setValue(name);
+        databaseReference.child(firebaseUser.getUid()).child("phone").setValue(phone);
+        databaseReference.child(firebaseUser.getUid()).child("subject").setValue(subject).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+
+                    Toast.makeText(Edit_tutor_profile.this, "Update success", Toast.LENGTH_SHORT).show();
+
+                    Intent i = new Intent(Edit_tutor_profile.this, Tutor_profile.class);
+                    i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                            Intent.FLAG_ACTIVITY_CLEAR_TASK |
+                            Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(i);
+                } else {
+                    try {
+                        throw task.getException();
+
+                    } catch (Exception e) {
+                        Toast.makeText(Edit_tutor_profile.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        });
+    }
 
 
     @Override
@@ -320,8 +335,7 @@ public class Edit_tutor_profile extends AppCompatActivity {
         if (id == R.id.done) {
             updateProfile(firebaseUser);
 //            finish();
-        }
-        else {
+        } else {
             Toast.makeText(this, "Something Wrong", Toast.LENGTH_SHORT).show();
         }
         return super.onOptionsItemSelected(item);

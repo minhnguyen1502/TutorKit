@@ -2,12 +2,12 @@ package com.example.tutorkit.Models;
 
 public class TimeTable {
     private String ID, name, time,idTutor, idStudent;
-    private long date;
+    private String date;
 
     public TimeTable() {
     }
 
-    public TimeTable(String ID, String name, String time, String idTutor, String idStudent, long date) {
+    public TimeTable(String ID, String name, String time, String idTutor, String idStudent, String date) {
         this.ID = ID;
         this.name = name;
         this.time = time;
@@ -32,11 +32,11 @@ public class TimeTable {
         this.idStudent = idStudent;
     }
 
-    public long getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(long date) {
+    public void setDate(String date) {
         this.date = date;
     }
 

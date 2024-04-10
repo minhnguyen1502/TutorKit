@@ -37,13 +37,15 @@ public class Login extends AppCompatActivity {
 
     private EditText edt_email, edt_password;
     FirebaseAuth firebaseAuth;
-
+//     ProgressDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-
+//        progressDialog = new ProgressDialog(Login.this);
+//        progressDialog.setMessage("Logging in...");
+//        progressDialog.setCancelable(false);
         register = findViewById(R.id.txt_register);
         edt_password = findViewById(R.id.edt_password);
         edt_email = findViewById(R.id.edt_email);
@@ -72,10 +74,8 @@ public class Login extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
-//                ProgressDialog progressDialog = new ProgressDialog(Login.this);
-//                progressDialog.setMessage("Loading...");
-//                progressDialog.setCancelable(false);
-//                progressDialog.show();
+
+
                 String txt_email = edt_email.getText().toString();
                 String txt_password = edt_password.getText().toString();
 
@@ -96,12 +96,13 @@ public class Login extends AppCompatActivity {
                 } else {
 //                    progressDialog.dismiss();
                     login(txt_email, txt_password);
+//                    progressDialog.dismiss();
+
                 }
             }
         });
 
     }
-
     private void login(String email, String password) {
         firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
@@ -121,6 +122,7 @@ public class Login extends AppCompatActivity {
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
                                 Log.e("TAG", "onDataChange: " + snapshot.getKey());
                                 if (snapshot.getValue() != null) {
+
                                     Toast.makeText(Login.this, "Login success", Toast.LENGTH_SHORT).show();
                                     //open home
                                     Intent intent = new Intent(Login.this, Tutor_home.class);

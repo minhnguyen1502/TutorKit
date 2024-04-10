@@ -5,6 +5,7 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,10 +20,14 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.tutorkit.Models.Student;
 import com.example.tutorkit.Models.TimeTable;
 import com.example.tutorkit.R;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -33,16 +38,13 @@ public class TimeTableStudentAdapter extends RecyclerView.Adapter<TimeTableStude
     Context context;
     ArrayList<TimeTable> timeTables;
     DatabaseReference databaseReference;
-    int hour, minute;
-    SimpleDateFormat formatter = new SimpleDateFormat("dd-mm-yyyy");
-
 
     public TimeTableStudentAdapter(Context context, ArrayList<TimeTable> timeTables) {
         this.context = context;
         this.timeTables = timeTables;
         databaseReference = FirebaseDatabase.getInstance().getReference();
-
     }
+
 
     @NonNull
     @Override
@@ -55,10 +57,27 @@ public class TimeTableStudentAdapter extends RecyclerView.Adapter<TimeTableStude
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         TimeTable timeTable = timeTables.get(position);
+        DatabaseReference tutorRef = FirebaseDatabase.getInstance().getReference("tutors")
+                .child(timeTable.getIdTutor());
+        tutorRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    String tutorName = dataSnapshot.child("name").getValue(String.class);
+                    if (tutorName != null) {
+                        holder.name.setText("Tutor: " + tutorName);
+                    }
+                }
+            }
 
-        holder.name.setText("Name : " + timeTable.getName());
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Handle database read error
+                Log.e("AssignmentAdapter", "Failed to read tutor data", databaseError.toException());
+            }
+        });
         holder.time.setText("Time : " + timeTable.getTime());
-        holder.date.setText("Date : " + formatter.format(timeTable.getDate()));
+        holder.date.setText("Date : " + timeTable.getDate());
 
 
         holder.update.setVisibility(View.GONE);

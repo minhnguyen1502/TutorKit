@@ -68,6 +68,7 @@ public class Edit_student_profile extends AppCompatActivity {
     private Phonenumber.PhoneNumber swissNumberProto;
     DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Student");
 
+    private String oldImg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -201,6 +202,10 @@ public class Edit_student_profile extends AppCompatActivity {
     }
 
     private void updateStudent(FirebaseUser firebaseUser, Uri img) {
+        if (img == null) {
+            create(oldImg);
+            return;
+        }
         StorageReference storageRef = FirebaseStorage.getInstance().getReference();
         StorageReference riversRef = storageRef.child("images/" + img.getLastPathSegment());
         riversRef.putFile(img).continueWithTask(task -> {
@@ -213,31 +218,7 @@ public class Edit_student_profile extends AppCompatActivity {
                 Uri downloadUri = task.getResult();
                 Log.e("TAG", "updateImage: " + downloadUri);
 //                createUser(firebaseUser, downloadUri.toString());
-                Student student = new Student(name,DOB, gender,address, phone, phone_parent, downloadUri.toString());
 
-                databaseReference.child(firebaseUser.getUid()).setValue(student).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-
-                        if (task.isSuccessful()){
-
-                            Toast.makeText(Edit_student_profile.this, "Update success", Toast.LENGTH_SHORT).show();
-
-                            Intent i = new Intent(Edit_student_profile.this, Student_profile.class);
-                            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|
-                                    Intent.FLAG_ACTIVITY_CLEAR_TASK|
-                                    Intent.FLAG_ACTIVITY_NEW_TASK);
-                            startActivity(i);
-                        }else {
-                            try {
-                                throw task.getException();
-
-                            }catch (Exception e){
-                                Toast.makeText(Edit_student_profile.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    }
-                });
             } else {
                 Toast.makeText(Edit_student_profile .this, "fail", Toast.LENGTH_SHORT).show();
             }
@@ -266,6 +247,7 @@ public class Edit_student_profile extends AppCompatActivity {
                             .load(student.getImg())
                             .centerCrop()
                             .into(avatar);
+                    oldImg = student.getImg();
                     address = student.getAddress();
                     phone_parent = student.getParent_phone();
 
@@ -296,7 +278,37 @@ public class Edit_student_profile extends AppCompatActivity {
         });
     }
 
+private void create(String data){
+    databaseReference.child(firebaseUser.getUid()).child("address").setValue(address);
+    databaseReference.child(firebaseUser.getUid()).child("dob").setValue(DOB);
+    databaseReference.child(firebaseUser.getUid()).child("gender").setValue(gender);
+    databaseReference.child(firebaseUser.getUid()).child("img").setValue(data);
+    databaseReference.child(firebaseUser.getUid()).child("parent_phone").setValue(phone_parent);
+    databaseReference.child(firebaseUser.getUid()).child("name").setValue(name);
+    databaseReference.child(firebaseUser.getUid()).child("phone").setValue(phone).addOnCompleteListener(new OnCompleteListener<Void>() {
+        @Override
+        public void onComplete(@NonNull Task<Void> task) {
 
+            if (task.isSuccessful()){
+
+                Toast.makeText(Edit_student_profile.this, "Update success", Toast.LENGTH_SHORT).show();
+
+                Intent i = new Intent(Edit_student_profile.this, Student_profile.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|
+                        Intent.FLAG_ACTIVITY_CLEAR_TASK|
+                        Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(i);
+            }else {
+                try {
+                    throw task.getException();
+
+                }catch (Exception e){
+                    Toast.makeText(Edit_student_profile.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+    });
+}
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.edit, menu);
