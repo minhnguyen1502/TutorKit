@@ -7,13 +7,27 @@
     android:background="@drawable/grey_background"
     android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/txt_name"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:textSize="18sp"
-        android:text="Student name"/>
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/txt_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Student name"
+            android:layout_weight="1"
+            android:textSize="@dimen/_15sdp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="5"
+            android:text="Not yet" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/txt_amount"

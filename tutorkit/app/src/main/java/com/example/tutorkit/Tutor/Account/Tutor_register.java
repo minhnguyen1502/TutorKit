@@ -247,7 +247,11 @@ public class Tutor_register extends AppCompatActivity {
     }
 
     // register Tutor
-    private void registerTutor(String txt_name, String txt_email, String txt_dob, String txt_gender, String txt_phone, String txt_address, String txt_subject, String txt_intro, String txt_password, Uri img) {
+    private void registerTutor(String txt_name, String txt_email,
+                               String txt_dob, String txt_gender,
+                               String txt_phone, String txt_address,
+                               String txt_subject, String txt_intro,
+                               String txt_password, Uri img) {
             FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
 //        final  StorageReference imgReference  =  storageReference.child(System.currentTimeMillis()+"."+getFilesExtension(img));
@@ -305,7 +309,9 @@ public class Tutor_register extends AppCompatActivity {
                         });
                     }
                     private void createUser(FirebaseUser firebaseUser, String urlImage) {
-                        Tutor tutor = new Tutor(firebaseUser.getUid(), txt_name, txt_dob, txt_address, txt_phone, txt_gender, txt_subject, txt_intro, urlImage, new StatusAdd());
+                        Tutor tutor = new Tutor(firebaseUser.getUid(), txt_name, txt_dob,
+                                txt_address, txt_phone, txt_gender, txt_subject, txt_intro,
+                                urlImage, new StatusAdd());
                         referenceProfile.child(firebaseUser.getUid()).setValue(tutor).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {

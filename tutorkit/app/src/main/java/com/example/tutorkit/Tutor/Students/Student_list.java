@@ -103,14 +103,12 @@ public class Student_list extends AppCompatActivity {
                                 studentArrayList.add(snapshot.getValue(Student.class));
                                 adapter.notifyDataSetChanged();
                             }
-
                             @Override
                             public void onCancelled(@NonNull DatabaseError error) {
 
                             }
                         });
                     }
-
                 }else {
                 }
             }

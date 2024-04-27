@@ -2,6 +2,7 @@ package com.example.tutorkit.Models;
 
 public class Tuition {
     private String ID,name, dateline, idStudent, idTutor;
+    private boolean status;
 
     private int amount, price;
     public Tuition() {
@@ -16,17 +17,24 @@ public class Tuition {
         this.amount = amount;
         this.price = price;
     }
+    public Tuition(String ID, String name, String dateline, String idStudent, String idTutor, int amount, int price, boolean status) {
+        this.ID = ID;
+        this.name = name;
+        this.dateline = dateline;
+        this.idStudent = idStudent;
+        this.idTutor = idTutor;
+        this.amount = amount;
+        this.price = price;
+        this.status = status; // Khởi tạo thuộc tính status
+    }
 
-//    public Tuition(String ID, String name, String dateline, String idStudent, int amount, int price) {
-//        this.ID = ID;
-//        this.name = name;
-//        this.dateline = dateline;
-//        this.idStudent = idStudent;
-//        this.amount = amount;
-//        this.price = price;
-//    }
+    public boolean isStatus() { // Getter cho status
+        return status;
+    }
 
-
+    public void setStatus(boolean status) { // Setter cho status
+        this.status = status;
+    }
     public String getIdTutor() {
         return idTutor;
     }

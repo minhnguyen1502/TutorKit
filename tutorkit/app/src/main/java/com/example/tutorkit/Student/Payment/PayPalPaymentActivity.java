@@ -5,9 +5,14 @@ import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.tutorkit.R;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.paypal.checkout.approve.Approval;
 import com.paypal.checkout.approve.OnApprove;
 import com.paypal.checkout.createorder.CreateOrder;
@@ -32,11 +37,16 @@ public class PayPalPaymentActivity extends AppCompatActivity {
     PaymentButtonContainer paymentButtonContainer;
     TextView txt_total;
     int total;
+    DatabaseReference databaseReference;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_paypal_payment);
+
+        databaseReference = FirebaseDatabase.getInstance().getReference();
 
         total = getIntent().getIntExtra("total", 0);
         txt_total = findViewById(R.id.txt_total);
@@ -79,19 +89,40 @@ public class PayPalPaymentActivity extends AppCompatActivity {
                             public void onCaptureComplete(@NotNull CaptureOrderResult result) {
                                 Log.d(TAG, String.format("CaptureOrderResult: %s", result));
                                 Toast.makeText(PayPalPaymentActivity.this, "Successful", Toast.LENGTH_SHORT).show();
+                                updateStatusInFirebase();
+
                             }
                         });
                     }
                 }
 
         );
+
     }
 
-//    @Override
-//    public void onBackPressed() {
-//        super.onBackPressed();
-//        finish();
-//    }
 
+    private void updateStatusInFirebase() {
+        // Assuming you have an ID for the tuition or a way to uniquely identify the tuition
+        // You can pass this ID from the previous activity or get it from somewhere else
+        String tuitionId = getIntent().getStringExtra("tuitionId"); // You need to pass this from the previous activity
+
+        if (tuitionId != null) {
+            databaseReference.child("tuition").child(tuitionId).child("status").setValue(true)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            Log.d(TAG, "Status updated successfully");
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.e(TAG, "Failed to update status", e);
+                        }
+                    });
+        } else {
+            Log.e(TAG, "Tuition ID is null");
+        }
+    }
 
 }

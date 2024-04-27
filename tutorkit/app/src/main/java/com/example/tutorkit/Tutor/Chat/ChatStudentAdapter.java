@@ -16,7 +16,6 @@ import com.example.tutorkit.R;
 import com.example.tutorkit.Tutor.Chat.Message.ChatActivity;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 

@@ -7,18 +7,9 @@ public class Student {
 
     public Student() {
     }
-
-    public Student(String name, String DOB, String gender, String address, String phone, String parent_phone, String img) {
-        this.name = name;
-        this.DOB = DOB;
-        this.gender = gender;
-        this.address = address;
-        this.phone = phone;
-        this.parent_phone = parent_phone;
-        this.img = img;
-    }
-
-    public Student(String id, String name, String DOB, String gender, String address, String phone, String parent_phone, String img, StatusAdd statusAdd) {
+    public Student(String id, String name, String DOB, String gender,
+                   String address, String phone,
+                   String parent_phone, String img, StatusAdd statusAdd) {
         this.id = id;
         this.name = name;
         this.DOB = DOB;
@@ -29,6 +20,19 @@ public class Student {
         this.img = img;
         this.statusAdd = statusAdd;
     }
+    public Student(String name, String DOB, String gender,
+                   String address, String phone,
+                   String parent_phone, String img) {
+        this.name = name;
+        this.DOB = DOB;
+        this.gender = gender;
+        this.address = address;
+        this.phone = phone;
+        this.parent_phone = parent_phone;
+        this.img = img;
+    }
+
+
 
     public String getId() {
         return id;

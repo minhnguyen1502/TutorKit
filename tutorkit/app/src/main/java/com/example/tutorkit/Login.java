@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.tutorkit.Student.Student_home;
 import com.example.tutorkit.Tutor.Tutor_home;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -37,15 +38,11 @@ public class Login extends AppCompatActivity {
 
     private EditText edt_email, edt_password;
     FirebaseAuth firebaseAuth;
-//     ProgressDialog progressDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-//        progressDialog = new ProgressDialog(Login.this);
-//        progressDialog.setMessage("Logging in...");
-//        progressDialog.setCancelable(false);
         register = findViewById(R.id.txt_register);
         edt_password = findViewById(R.id.edt_password);
         edt_email = findViewById(R.id.edt_email);
@@ -71,14 +68,10 @@ public class Login extends AppCompatActivity {
 
         Button btn_login = findViewById(R.id.btn_login);
         btn_login.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View view) {
-
-
                 String txt_email = edt_email.getText().toString();
                 String txt_password = edt_password.getText().toString();
-
                 if (TextUtils.isEmpty(txt_email)) {
                     Toast.makeText(Login.this, "Enter your email", Toast.LENGTH_SHORT).show();
                     edt_email.setError("Email is required");
@@ -92,11 +85,8 @@ public class Login extends AppCompatActivity {
                     Toast.makeText(Login.this, "Enter your email", Toast.LENGTH_SHORT).show();
                     edt_password.setError("Email is required");
                     edt_password.requestFocus();
-
                 } else {
-//                    progressDialog.dismiss();
                     login(txt_email, txt_password);
-//                    progressDialog.dismiss();
 
                 }
             }
@@ -108,39 +98,32 @@ public class Login extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 // check tutor or student.
-
                 if (task.isSuccessful()) {
                     //get instant of current tutor
                     FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
                     //check if email is verified before tutor can access their profile
-
                     if (firebaseUser.isEmailVerified()) {
                         Log.e("TAG", "onComplete: " + firebaseUser.getUid());
                         FirebaseDatabase.getInstance().getReference("tutors").child(firebaseUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
                                 Log.e("TAG", "onDataChange: " + snapshot.getKey());
                                 if (snapshot.getValue() != null) {
-
                                     Toast.makeText(Login.this, "Login success", Toast.LENGTH_SHORT).show();
                                     //open home
                                     Intent intent = new Intent(Login.this, Tutor_home.class);
                                     startActivity(intent);
                                     finish();
-
                                 } else {
                                     Toast.makeText(Login.this, "Login success", Toast.LENGTH_SHORT).show();
                                     //open home
-                                    Intent intent = new Intent(Login.this, com.example.tutorkit.Student.Student_home.class);
+                                    Intent intent = new Intent(Login.this, Student_home.class);
                                     startActivity(intent);
                                     finish();
                                 }
                             }
-
                             @Override
                             public void onCancelled(@NonNull DatabaseError error) {
-
                             }
                         });
                     } else {

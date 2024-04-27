@@ -78,20 +78,27 @@ public class PaymentAdapter extends RecyclerView.Adapter<PaymentAdapter.ViewHold
         holder.dateline.setText("Dateline : " + tuition.getDateline());
         int n_total = tuition.getPrice()*tuition.getAmount();
         holder.total.setText(String.valueOf(n_total));
-
+        if (tuition.isStatus()) { // assuming isStatus() returns the status as boolean
+            holder.status.setText("Done");
+            holder.status.setTextColor(Color.GREEN);
+            holder.buttonUpdate.setText("Done");
+            holder.buttonUpdate.setFocusable(false);
+        } else {
+            holder.status.setText("Not Yet");
+            holder.status.setTextColor(Color.RED);
+            holder.buttonUpdate.setText("Payment");
+            holder.buttonUpdate.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent i = new Intent(context, PayPalPaymentActivity.class);
+                    i.putExtra("total", n_total);
+                    i.putExtra("tuitionId", tuition.getID());
+                    context.startActivity(i);
+                }
+            });
+        }
         holder.buttonDelete.setVisibility(View.GONE);
-
-        holder.buttonUpdate.setText("Payment");
-        holder.buttonUpdate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(context, PayPalPaymentActivity.class);
-                i.putExtra("total", n_total);
-                context.startActivity(i);
-
-            }
-        });
-
+        
     }
 
     @Override
@@ -105,6 +112,7 @@ public class PaymentAdapter extends RecyclerView.Adapter<PaymentAdapter.ViewHold
         TextView price;
         TextView dateline;
         TextView total;
+        TextView status;
         Button buttonDelete;
         Button buttonUpdate;
 
@@ -116,6 +124,7 @@ public class PaymentAdapter extends RecyclerView.Adapter<PaymentAdapter.ViewHold
             price = itemView.findViewById(R.id.txt_price);
             dateline = itemView.findViewById(R.id.txt_date);
             total = itemView.findViewById(R.id.txt_total);
+            status = itemView.findViewById(R.id.status);
 
             buttonDelete = itemView.findViewById(R.id.buttonDelete);
             buttonUpdate = itemView.findViewById(R.id.buttonUpdate);

@@ -64,7 +64,8 @@ public class ViewProfileTutor extends AppCompatActivity {
 
         try {
             // Check if the tutor ID exists in the Student
-            DatabaseReference studentRef = FirebaseDatabase.getInstance().getReference("Student").child(FirebaseAuth.getInstance().getUid()).child("IdTutors").child(tutorId);
+            DatabaseReference studentRef = FirebaseDatabase.getInstance().getReference("Student")
+                    .child(FirebaseAuth.getInstance().getUid()).child("IdTutors").child(tutorId);
             studentRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

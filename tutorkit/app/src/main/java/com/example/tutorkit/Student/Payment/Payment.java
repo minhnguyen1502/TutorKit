@@ -39,13 +39,11 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class Payment extends AppCompatActivity {
-
     DatabaseReference databaseReference;
     RecyclerView recyclerView;
     ArrayList<Tuition> tuitionArrayList;
     PaymentAdapter adapter;
     ArrayList<String> idStudent;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,7 +57,6 @@ public class Payment extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
         tuitionArrayList = new ArrayList<>();
         idStudent = new ArrayList<>();
 

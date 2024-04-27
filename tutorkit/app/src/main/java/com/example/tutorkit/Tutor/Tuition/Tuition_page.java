@@ -321,7 +321,7 @@ public class Tuition_page extends AppCompatActivity {
                              if (selectedDate != null && selectedDate.after(currentDate)) {
                                  // The selected date is in the future, proceed to add the assignment
                                  databaseReference.child("tuition").child(id)
-                                         .setValue(new Tuition(id, name, dateline, student.getId(), idTutor, amount, price));
+                                         .setValue(new Tuition(id, name, dateline, student.getId(), idTutor, amount, price,false));
                                  Toast.makeText(context, "DONE!", Toast.LENGTH_SHORT).show();
                                  dialog.dismiss();
                              } else {

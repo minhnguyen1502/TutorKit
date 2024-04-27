@@ -76,6 +76,13 @@ public class TuitionAdapter extends RecyclerView.Adapter<TuitionAdapter.ViewHold
         holder.dateline.setText("Dateline : " + tuition.getDateline());
         holder.total.setText(String.valueOf(tuition.getPrice() * tuition.getAmount()));
 
+        if (tuition.isStatus()) { // assuming isStatus() returns the status as boolean
+            holder.status.setText("Done");
+            holder.status.setTextColor(Color.GREEN);
+        } else {
+            holder.status.setText("Not Yet");
+            holder.status.setTextColor(Color.RED);
+        }
         holder.update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -106,6 +113,7 @@ public class TuitionAdapter extends RecyclerView.Adapter<TuitionAdapter.ViewHold
         TextView price;
         TextView dateline;
         TextView total;
+        TextView status;
         Button delete;
         Button update;
 
@@ -118,6 +126,7 @@ public class TuitionAdapter extends RecyclerView.Adapter<TuitionAdapter.ViewHold
             price = itemView.findViewById(R.id.txt_price);
             dateline = itemView.findViewById(R.id.txt_date);
             total = itemView.findViewById(R.id.txt_total);
+            status = itemView.findViewById(R.id.status);
 
             delete = itemView.findViewById(R.id.buttonDelete);
             update = itemView.findViewById(R.id.buttonUpdate);
@@ -243,7 +252,7 @@ public class TuitionAdapter extends RecyclerView.Adapter<TuitionAdapter.ViewHold
 
                             if (selectedDate != null && selectedDate.after(currentDate)) {
                                 // The selected date is in the future, proceed to add the assignment
-                                databaseReference.child("tuition").child(id).setValue(new Tuition(id, s_name, s_dateline, student.getId(), idTutor, s_amount, s_price));
+                                databaseReference.child("tuition").child(id).setValue(new Tuition(id, s_name, s_dateline, student.getId(), idTutor, s_amount, s_price,false));
                                 Toast.makeText(context, " Updated successfully!", Toast.LENGTH_SHORT).show();
                                 dialog.dismiss();
                             } else {

@@ -7,7 +7,9 @@ public class Tutor {
     public Tutor() {
     }
 
-    public Tutor(String id, String name, String DOB, String address, String phone, String gender, String subject, String introduction, String img, StatusAdd statusAdd) {
+    public Tutor(String id, String name, String DOB, String address,
+                 String phone, String gender, String subject,
+                 String introduction, String img, StatusAdd statusAdd) {
         this.id = id;
         this.name = name;
         this.DOB = DOB;
@@ -20,7 +22,9 @@ public class Tutor {
         this.statusAdd = statusAdd;
     }
 
-    public Tutor(String id, String name, String DOB, String address, String phone, String gender, String subject, String introduction, String img) {
+    public Tutor(String id, String name, String DOB, String address,
+                 String phone, String gender, String subject,
+                 String introduction, String img) {
         this.id = id;
         this.name = name;
         this.DOB = DOB;
