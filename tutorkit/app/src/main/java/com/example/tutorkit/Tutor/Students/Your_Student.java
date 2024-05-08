@@ -99,10 +99,8 @@ public class Your_Student extends AppCompatActivity {
                                 adapter.notifyDataSetChanged();
                                 Log.e("TAG", "onDataChange: " + studentArrayList);
                             }
-
                             @Override
                             public void onCancelled(@NonNull DatabaseError error) {
-
                             }
                         });
                     }

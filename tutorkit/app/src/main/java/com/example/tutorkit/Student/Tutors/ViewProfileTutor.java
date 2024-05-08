@@ -63,7 +63,6 @@ public class ViewProfileTutor extends AppCompatActivity {
         });
 
         try {
-            // Check if the tutor ID exists in the Student
             DatabaseReference studentRef = FirebaseDatabase.getInstance().getReference("Student")
                     .child(FirebaseAuth.getInstance().getUid()).child("IdTutors").child(tutorId);
             studentRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -85,8 +84,6 @@ public class ViewProfileTutor extends AppCompatActivity {
                         });
                     }
                 }
-
-
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
                     Toast.makeText(ViewProfileTutor.this, "Failed to load student status", Toast.LENGTH_SHORT).show();
