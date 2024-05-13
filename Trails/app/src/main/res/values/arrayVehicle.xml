@@ -1,0 +1,11 @@
+<resources>
+    <string-array name="vehicle">
+        <item>Personal Vehicle</item>
+        <item>Carpooling or Ridesharing</item>
+        <item>Rental Vehicles</item>
+        <item>Shuttle Services</item>
+        <item>Public Transportation</item>
+        <item>Bicycles</item>
+        <item>Hiking on Foot</item>
+    </string-array>
+</resources>

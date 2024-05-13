@@ -1,0 +1,10 @@
+<resources>
+    <string-array name="level">
+        <item>Beginner Hiker</item>
+        <item>Intermediate Hiker</item>
+        <item>Advanced Hiker</item>
+        <item>Expert Hiker</item>
+        <item>Ultra Hiker</item>
+        <item>Trail Runner</item>
+    </string-array>
+</resources>

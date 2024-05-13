@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="LavenderBlush1">#FFF0F5</color>
+    <color name="LavenderBlush2">#EEE0E5</color>
+    <color name="LavenderBlush3">#CDC1C5</color>
+    <color name="LavenderBlush4">#8B8386</color>
+    <color name="Lavender">#E6E6FA</color>
+    <color name="DarkOrange">#FF8C00</color>
+    <color name="DarkOrange1">#CD6600</color>
+    <color name="DarkOrange3">#CD950C</color>
+    <color name="IndianRed1">#FF6A6A</color>
+    <color name="IndianRed2">#EE6363</color>
+    <color name="IndianRed3">#CD5555</color>
+    <color name="RosyBrown1">#FFC1C1</color>
+    <color name="RosyBrown2">#EEB4B4</color>
+    <color name="RosyBrown3">#CD9B9B</color>
+    <color name="colorSecondary">#2d3e52</color>
+    <color name="colorTextPrimary">#13b298</color>
+    <color name="colorTextSecondary">#CBD5ED</color>
+    <color name="colorThemeExtra">#FF5252</color>
+    <color name="colorPrimaryDark">#67c415</color>
+    <color name="colorAccent">#E9EBEE</color>
+</resources>

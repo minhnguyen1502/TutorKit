@@ -1,0 +1,9 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.Trails" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your light theme here. -->
+         <item name="colorPrimary">@color/LavenderBlush3</item>
+    </style>
+
+    <style name="Theme.Trails" parent="Base.Theme.Trails" />
+</resources>
